@@ -48,8 +48,8 @@ static void res_get_handler(coap_message_t *request, coap_message_t *response, u
  * preferred_size and offset, but must respect the REST_MAX_CHUNK_SIZE limit for the buffer.
  * If a smaller block size is requested for CoAP, the REST framework automatically splits the data.
  */
-RESOURCE(res_hello,
-         "title=\"air quality state: ?len=0..\";rt=\"Text\"",
+RESOURCE(res_danger,
+         "title=\"airquality: ?len=0..\";rt=\"Text\"",
          res_get_handler,
          NULL,
          NULL,
@@ -59,7 +59,7 @@ static void
 res_get_handler(coap_message_t *request, coap_message_t *response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset)
 {
 
-    
+  printf("siamo in res_get_handler\n");
   const char *len = NULL;
   /* Some data that has the length up to REST_MAX_CHUNK_SIZE. For more, see the chunk resource. */
   char const *const message = "Hello World! ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxy";
@@ -82,4 +82,10 @@ res_get_handler(coap_message_t *request, coap_message_t *response, uint8_t *buff
   coap_set_header_content_format(response, TEXT_PLAIN); /* text/plain is the default, hence this option could be omitted. */
   coap_set_header_etag(response, (uint8_t *)&length, 1);
   coap_set_payload(response, buffer, length);
+}
+
+int get_danger()
+{
+  //implement ml prediction
+  return 1;
 }
