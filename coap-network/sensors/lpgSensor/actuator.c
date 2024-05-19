@@ -86,7 +86,7 @@ PROCESS_THREAD(coap_client_process, ev, data)
 
     while(1){
     coap_init_message(request, COAP_TYPE_CON, COAP_GET, 0);
-    coap_set_header_uri_path(request, "resources/res_danger");
+    coap_set_header_uri_path(request, "/res_danger");
 
     const char *uri_path;
     int len = coap_get_header_uri_path(request, &uri_path);
