@@ -56,7 +56,7 @@
 
 /* FIXME: This server address is hard-coded for Cooja and link-local for unconnected border router. */
 //#define SERVER_EP "coap://[fe80::212:7402:0002:0202]"
-#define SERVER_EP "coap://[fe80::202:2:2:2]"
+#define SERVER_EP "coap://[fe80::205:5:5:5]"
 
 
 PROCESS(coap_client_process, "CoAP Client Process");
