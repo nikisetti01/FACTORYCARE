@@ -48,6 +48,7 @@
 
 #if BORDER_ROUTER_CONF_WEBSERVER
 #define UIP_CONF_TCP 1
+#define UIP_CONF_DS6_DEFAULT_PREFIX 0xfd00
 #endif
 
 #endif /* PROJECT_CONF_H_ */

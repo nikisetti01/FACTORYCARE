@@ -40,6 +40,15 @@
 #include <string.h>
 #include "coap-engine.h"
 
+#include "model/functionsML.h"
+
+#define MAX_LINE_LENGTH 100
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 static void res_get_handler(coap_message_t *request, coap_message_t *response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset);
 
 /*
@@ -60,9 +69,14 @@ res_get_handler(coap_message_t *request, coap_message_t *response, uint8_t *buff
 {
 
   printf("siamo in res_get_handler\n");
+  printf("non va un cazzo")
   const char *len = NULL;
   /* Some data that has the length up to REST_MAX_CHUNK_SIZE. For more, see the chunk resource. */
-  char const *const message = "Hello World! ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxy";
+  int val = get_danger();
+
+  printf("val %i\n", val);
+
+  char const *const message = (char)val;//"Hello World! ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxy";
   int length = 12; /*           |<-------->| */
 
   /* The query string can be retrieved by rest_get_query() or parsed for its key-value pairs. */
@@ -79,6 +93,8 @@ res_get_handler(coap_message_t *request, coap_message_t *response, uint8_t *buff
     memcpy(buffer, message, length);
   }
 
+  printf("buffer %s\n", buffer);
+
   coap_set_header_content_format(response, TEXT_PLAIN); /* text/plain is the default, hence this option could be omitted. */
   coap_set_header_etag(response, (uint8_t *)&length, 1);
   coap_set_payload(response, buffer, length);
@@ -86,6 +102,54 @@ res_get_handler(coap_message_t *request, coap_message_t *response, uint8_t *buff
 
 int get_danger()
 {
-  //implement ml prediction
-  return 1;
+  printf("get_danger: predizione in corso\n");
+  float features[] = { 0, 0, 0, 0, 0, 0, 0 };
+  printf("%p\n", eml_net_activation_function_strs);
+
+  FILE *file = fopen("model/modelData.csv", "r");
+  if (file == NULL) {
+    printf("Error opening file\n");
+    return -1;
+  }
+
+    // Read the file line by line
+  char line[MAX_LINE_LENGTH];
+
+  printf("line %s\n", line);
+
+  int line_count = 0;
+  line_count = rand() % 301;
+
+  while (fgets(line, sizeof(line), file)) {
+    // Skip the first line (header)
+    if (line_count == 0) {
+      line_count++;
+      continue;
+    }
+
+      // Split the line into tokens
+    char *token;
+    token = strtok(line, ",");
+    int token_count = 0;
+    while (token != NULL) {
+      
+      // Convert the token to float and assign it to the corresponding feature
+      features[token_count] = atof(token);
+      token = strtok(NULL, ",");
+      token_count++;
+    }
+
+      // Break after reading the first line
+    break;
+  }
+
+  fclose(file);
+
+  int lenght = 7;
+
+  printf("features %f, %f, %f, %f, %f, %f, %f\n", features[0], features[1], features[2], features[3], features[4], features[5], features[6]);
+      
+  printf("%p\n",  eml_net_activation_function_strs);
+
+  int predicted_class = predict_class(features, lenght);
 }
