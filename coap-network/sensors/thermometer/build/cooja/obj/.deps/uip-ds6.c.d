@@ -17,8 +17,8 @@ build/cooja/obj/uip-ds6.o: ../../../../../os/net/ipv6/uip-ds6.c \
  ../../../../../arch/platform/cooja/./sys/cooja_mt.h \
  ../../../../../os/sys/pt.h ../../../../../os/sys/clock.h \
  ../../../../../os/net/ipv6/uipbuf.h ../../../../../os/net/linkaddr.h \
- ../../../../../os/net/../contiki.h ../../../../../os/net/ipv6/tcpip.h \
- ../../../../../os/sys/stimer.h ../../../../../os/net/ipv6/uip-ds6-nbr.h \
+ ../../../../../os/net/ipv6/tcpip.h ../../../../../os/sys/stimer.h \
+ ../../../../../os/net/ipv6/uip-ds6-nbr.h \
  ../../../../../os/net/nbr-table.h ../../../../../os/net/netstack.h \
  ../../../../../os/net/mac/mac.h ../../../../../os/dev/radio.h \
  ../../../../../os/net/mac/framer/framer.h \
@@ -64,7 +64,6 @@ project-conf.h:
 ../../../../../os/sys/clock.h:
 ../../../../../os/net/ipv6/uipbuf.h:
 ../../../../../os/net/linkaddr.h:
-../../../../../os/net/../contiki.h:
 ../../../../../os/net/ipv6/tcpip.h:
 ../../../../../os/sys/stimer.h:
 ../../../../../os/net/ipv6/uip-ds6-nbr.h:

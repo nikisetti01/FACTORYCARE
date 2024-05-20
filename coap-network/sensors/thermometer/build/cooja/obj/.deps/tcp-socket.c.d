@@ -17,10 +17,10 @@ build/cooja/obj/tcp-socket.o: ../../../../../os/net/ipv6/tcp-socket.c \
  ../../../../../arch/platform/cooja/./sys/cooja_mt.h \
  ../../../../../os/sys/pt.h ../../../../../os/sys/clock.h \
  ../../../../../os/net/ipv6/uipbuf.h ../../../../../os/net/linkaddr.h \
- ../../../../../os/net/../contiki.h ../../../../../os/net/ipv6/tcpip.h \
- ../../../../../os/net/ipv6/uiplib.h ../../../../../os/contiki-net.h \
- ../../../../../os/contiki.h ../../../../../os/net/ipv6/tcpip.h \
- ../../../../../os/net/ipv6/uip.h ../../../../../os/net/ipv6/uiplib.h \
+ ../../../../../os/net/ipv6/tcpip.h ../../../../../os/net/ipv6/uiplib.h \
+ ../../../../../os/contiki-net.h ../../../../../os/contiki.h \
+ ../../../../../os/net/ipv6/tcpip.h ../../../../../os/net/ipv6/uip.h \
+ ../../../../../os/net/ipv6/uiplib.h \
  ../../../../../os/net/ipv6/uip-udp-packet.h \
  ../../../../../os/net/ipv6/simple-udp.h \
  ../../../../../os/net/ipv6/uip-nameserver.h \
@@ -79,7 +79,6 @@ project-conf.h:
 ../../../../../os/sys/clock.h:
 ../../../../../os/net/ipv6/uipbuf.h:
 ../../../../../os/net/linkaddr.h:
-../../../../../os/net/../contiki.h:
 ../../../../../os/net/ipv6/tcpip.h:
 ../../../../../os/net/ipv6/uiplib.h:
 ../../../../../os/contiki-net.h:
