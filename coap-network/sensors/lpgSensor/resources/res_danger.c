@@ -50,6 +50,7 @@
 #include <string.h>
 
 static void res_get_handler(coap_message_t *request, coap_message_t *response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset);
+int get_danger();
 
 /*
  * A handler function named [resource name]_handler must be implemented for each RESOURCE.
@@ -69,14 +70,15 @@ res_get_handler(coap_message_t *request, coap_message_t *response, uint8_t *buff
 {
 
   printf("siamo in res_get_handler\n");
-  printf("non va un cazzo")
+
   const char *len = NULL;
   /* Some data that has the length up to REST_MAX_CHUNK_SIZE. For more, see the chunk resource. */
   int val = get_danger();
 
   printf("val %i\n", val);
 
-  char const *const message = (char)val;//"Hello World! ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxy";
+  char message[12];
+  sprintf(message, "%d", val);
   int length = 12; /*           |<-------->| */
 
   /* The query string can be retrieved by rest_get_query() or parsed for its key-value pairs. */
@@ -100,56 +102,66 @@ res_get_handler(coap_message_t *request, coap_message_t *response, uint8_t *buff
   coap_set_payload(response, buffer, length);
 }
 
-int get_danger()
-{
+int get_danger() {
   printf("get_danger: predizione in corso\n");
   float features[] = { 0, 0, 0, 0, 0, 0, 0 };
-  printf("%p\n", eml_net_activation_function_strs);
 
-  FILE *file = fopen("model/modelData.csv", "r");
+  FILE* file = fopen("model/modelData.csv", "r");
   if (file == NULL) {
+    perror("Error opening file");
     printf("Error opening file\n");
+    //features[0] = 0.1;
+    //features[1] = 0.1;
+    //features[2] = 0.1;
+    //features[3] = 0.1;
+    //features[4] = 0.1;
+    //features[5] = 0.1;
+    //features[6] = 0.1;
+
     return -1;
   }
 
-    // Read the file line by line
   char line[MAX_LINE_LENGTH];
-
-  printf("line %s\n", line);
+  if (fgets(line, sizeof(line), file) == NULL) {
+    printf("Error reading file\n");
+    fclose(file);
+    return -1;
+  }
 
   int line_count = 0;
   line_count = rand() % 301;
 
   while (fgets(line, sizeof(line), file)) {
-    // Skip the first line (header)
     if (line_count == 0) {
       line_count++;
       continue;
     }
 
-      // Split the line into tokens
-    char *token;
-    token = strtok(line, ",");
+    char *token = strtok(line, ",");
     int token_count = 0;
-    while (token != NULL) {
-      
-      // Convert the token to float and assign it to the corresponding feature
+    while (token != NULL && token_count < 7) {
       features[token_count] = atof(token);
       token = strtok(NULL, ",");
       token_count++;
     }
 
-      // Break after reading the first line
+    if (token_count < 7) {
+      printf("Error: insufficient tokens in line\n");
+      fclose(file);
+      return -1;
+    }
+
     break;
   }
 
   fclose(file);
 
-  int lenght = 7;
+  printf("features: %f, %f, %f, %f, %f, %f, %f\n", features[0], features[1], features[2], features[3], features[4], features[5], features[6]);
 
-  printf("features %f, %f, %f, %f, %f, %f, %f\n", features[0], features[1], features[2], features[3], features[4], features[5], features[6]);
-      
-  printf("%p\n",  eml_net_activation_function_strs);
+  int result = predict_class(features, 7);
+  if (result == -1) {
+    printf("Prediction error\n");
+  }
 
-  int predicted_class = predict_class(features, lenght);
+  return result;
 }

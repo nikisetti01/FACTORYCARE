@@ -22,15 +22,19 @@ build/cooja/obj/sensor.o: sensor.c \
  ../../../../../os/net/app-layer/coap/coap-endpoint.h \
  ../../../../../os/net/ipv6/uip.h ../../../../../os/net/ipv6/uipopt.h \
  ../../../../../os/net/ipv6/uipbuf.h ../../../../../os/net/linkaddr.h \
- ../../../../../os/net/ipv6/tcpip.h \
+ ../../../../../os/net/../contiki.h ../../../../../os/net/ipv6/tcpip.h \
  ../../../../../os/net/app-layer/coap/coap-timer.h \
  ../../../../../os/net/app-layer/coap/coap-transactions.h \
  ../../../../../os/net/app-layer/coap/coap-engine.h \
  ../../../../../os/net/app-layer/coap/coap-observe.h \
  ../../../../../os/net/app-layer/coap/coap-separate.h \
  ../../../../../os/net/app-layer/coap/coap-observe-client.h \
- resources/res_danger.c ../../../../../os/dev/button-hal.h \
- ../../../../../os/dev/gpio-hal.h \
+ resources/res_danger.c resources/model/functionsML.h \
+ resources/model/air_model.h \
+ /home/iot_ubuntu_intel/.local/lib/python3.10/site-packages/emlearn/eml_trees.h \
+ /home/iot_ubuntu_intel/.local/lib/python3.10/site-packages/emlearn/eml_common.h \
+ /home/iot_ubuntu_intel/.local/lib/python3.10/site-packages/emlearn/eml_log.h \
+ ../../../../../os/dev/button-hal.h ../../../../../os/dev/gpio-hal.h \
  ../../../../../arch/platform/cooja/./dev/gpio-hal-arch.h \
  ../../../../../os/sys/ctimer.h ../../../../../os/sys/log.h \
  ../../../../../os/sys/log-conf.h
@@ -67,6 +71,7 @@ build/cooja/obj/sensor.o: sensor.c \
 ../../../../../os/net/ipv6/uipopt.h:
 ../../../../../os/net/ipv6/uipbuf.h:
 ../../../../../os/net/linkaddr.h:
+../../../../../os/net/../contiki.h:
 ../../../../../os/net/ipv6/tcpip.h:
 ../../../../../os/net/app-layer/coap/coap-timer.h:
 ../../../../../os/net/app-layer/coap/coap-transactions.h:
@@ -75,6 +80,11 @@ build/cooja/obj/sensor.o: sensor.c \
 ../../../../../os/net/app-layer/coap/coap-separate.h:
 ../../../../../os/net/app-layer/coap/coap-observe-client.h:
 resources/res_danger.c:
+resources/model/functionsML.h:
+resources/model/air_model.h:
+/home/iot_ubuntu_intel/.local/lib/python3.10/site-packages/emlearn/eml_trees.h:
+/home/iot_ubuntu_intel/.local/lib/python3.10/site-packages/emlearn/eml_common.h:
+/home/iot_ubuntu_intel/.local/lib/python3.10/site-packages/emlearn/eml_log.h:
 ../../../../../os/dev/button-hal.h:
 ../../../../../os/dev/gpio-hal.h:
 ../../../../../arch/platform/cooja/./dev/gpio-hal-arch.h:
