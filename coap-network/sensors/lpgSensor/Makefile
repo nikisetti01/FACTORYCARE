@@ -14,3 +14,4 @@ INC += /home/iot_ubuntu_intel/.local/lib/python3.10/site-packages/emlearn
 MODULES_REL += /home/iot_ubuntu_intel/.local/lib/python3.10/site-packages/emlearn
 
 include $(CONTIKI)/Makefile.include
+
