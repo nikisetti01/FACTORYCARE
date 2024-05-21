@@ -17,6 +17,10 @@ build/cooja/obj/csma-output.o: \
  ../../../../../os/sys/pt.h ../../../../../os/sys/clock.h \
  ../../../../../os/net/mac/mac.h ../../../../../os/dev/radio.h \
  ../../../../../os/net/packetbuf.h ../../../../../os/net/linkaddr.h \
+<<<<<<< HEAD
+=======
+ ../../../../../os/net/../contiki.h \
+>>>>>>> main
  ../../../../../os/net/mac/llsec802154.h \
  ../../../../../os/net/mac/framer/frame802154.h \
  ../../../../../os/net/ipv6/uip.h ../../../../../os/net/ipv6/uipopt.h \
@@ -59,6 +63,10 @@ project-conf.h:
 ../../../../../os/dev/radio.h:
 ../../../../../os/net/packetbuf.h:
 ../../../../../os/net/linkaddr.h:
+<<<<<<< HEAD
+=======
+../../../../../os/net/../contiki.h:
+>>>>>>> main
 ../../../../../os/net/mac/llsec802154.h:
 ../../../../../os/net/mac/framer/frame802154.h:
 ../../../../../os/net/ipv6/uip.h:
