@@ -33,7 +33,7 @@ static void res_get_handler(coap_message_t *request, coap_message_t *response, u
     float next_temperature = predict();
     
     // Costruisce il payload della risposta
-    int length = snprintf((char *)buffer, preferred_size, "Next predicted temperature: %.2f\n", next_temperature);
+    int length = snprintf((char *)buffer, preferred_size, "%.2f", next_temperature);
 
     // Imposta i campi della risposta CoAP
     coap_set_header_content_format(response, TEXT_PLAIN);

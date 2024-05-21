@@ -78,9 +78,9 @@ res_get_handler(coap_message_t *request, coap_message_t *response, uint8_t *buff
   printf("val %i\n", val);
 
   char message[20];
-  sprintf(message, "RES_DANGER: %d", val);
+  sprintf(message, "%i", val);
   int length = 20; /*           |<-------->| */
-
+ 
   /* The query string can be retrieved by rest_get_query() or parsed for its key-value pairs. */
   if(coap_get_query_variable(request, "len", &len)) {
     length = atoi(len);

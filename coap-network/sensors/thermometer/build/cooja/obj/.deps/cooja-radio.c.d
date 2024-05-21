@@ -18,10 +18,7 @@ build/cooja/obj/cooja-radio.o: \
  ../../../../../arch/platform/cooja/./sys/cooja_mt.h \
  ../../../../../arch/platform/cooja/./lib/simEnvChange.h \
  ../../../../../os/net/packetbuf.h ../../../../../os/net/linkaddr.h \
-<<<<<<< HEAD
-=======
  ../../../../../os/net/../contiki.h \
->>>>>>> main
  ../../../../../os/net/mac/llsec802154.h \
  ../../../../../os/net/mac/framer/frame802154.h \
  ../../../../../os/net/ipv6/uip.h ../../../../../os/net/ipv6/uipopt.h \
@@ -60,10 +57,7 @@ project-conf.h:
 ../../../../../arch/platform/cooja/./lib/simEnvChange.h:
 ../../../../../os/net/packetbuf.h:
 ../../../../../os/net/linkaddr.h:
-<<<<<<< HEAD
-=======
 ../../../../../os/net/../contiki.h:
->>>>>>> main
 ../../../../../os/net/mac/llsec802154.h:
 ../../../../../os/net/mac/framer/frame802154.h:
 ../../../../../os/net/ipv6/uip.h:
