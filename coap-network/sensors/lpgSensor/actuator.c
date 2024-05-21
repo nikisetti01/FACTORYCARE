@@ -1,41 +1,3 @@
-/*
- * Copyright (c) 2013, Institute for Pervasive Computing, ETH Zurich
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- * 3. Neither the name of the Institute nor the names of its contributors
- *    may be used to endorse or promote products derived from this software
- *    without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE INSTITUTE AND CONTRIBUTORS ``AS IS'' AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED.  IN NO EVENT SHALL THE INSTITUTE OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
- * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
- * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
- * SUCH DAMAGE.
- *
- * This file is part of the Contiki operating system.
- */
-
-/**
- * \file
- *      Erbium (Er) CoAP client example.
- * \author
- *      Matthias Kovatsch <kovatsch@inf.ethz.ch>
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -43,6 +5,8 @@
 #include "contiki-net.h"
 #include "coap-engine.h"
 #include "coap-blocking-api.h"
+#include "sys/etimer.h"
+
 #if PLATFORM_SUPPORTS_BUTTON_HAL
 #include "dev/button-hal.h"
 #else
@@ -52,56 +16,112 @@
 /* Log configuration */
 #include "coap-log.h"
 #define LOG_MODULE "App"
-#define LOG_LEVEL  LOG_LEVEL_RPL
+#define LOG_LEVEL  LOG_LEVEL_APP
 
-/* FIXME: This server address is hard-coded for Cooja and link-local for unconnected border router. */
-//#define SERVER_EP "coap://[fe80::212:7402:0002:0202]"
-#define SERVER_EP "coap://[fe80::203:3:3:3]"
+#define SERVER_EP_TEMP "coap://[fd00::202:2:2:2]:5683"
+#define SERVER_EP_LPG   "coap://[fd00::204:4:4:4]:5683"
 
+#define CRITICAL_TEMP_VALUE = 20; 
+
+static char* service_url = "predict-temp";
 
 PROCESS(coap_client_process, "CoAP Client Process");
 AUTOSTART_PROCESSES(&coap_client_process);
 
+static int lpgValue = 0;
+static int tempValue = 0;
+
 void response_handler(coap_message_t *response) {
-    printf("response_handler\n");
-    if(response==NULL)
-    {
+    if(response == NULL) {
         printf("No response received.\n");
         return;
     }
-  const uint8_t *chunk;
+    const uint8_t *chunk;
+    int len = coap_get_payload(response, &chunk);
+    printf("Response: |%.*s|\n", len, (char *)chunk);
 
-  int len = coap_get_payload(response, &chunk);
-  printf("|%.*s\n", len, (char *)chunk);
+    //lpg analysis
+    if(strncmp((char *)chunk, "0", len) == 0) {
+        printf("lpg sensor activity is normal\n");
+        lpgValue = 0;
+    } else if(strncmp((char *)chunk, "1", len) == 0) {
+        printf("lpg sensor activity is high: DANGER\n");
+        lpgValue = 1;
+    } else if(strncmp((char *)chunk, "2", len) == 0) {
+        printf("lpg sensor activity is extremely high: CRITIC\n");
+        lpgValue = 2;
+    } else {
+        printf("Unknown response\n");
+    }
+    
+    //temp analysis
+    tempValue = atoi((char *)chunk);
+    printf("Converted value: %d\n", tempValue);
+    if(tempValue>CRITICAL_TEMP_VALUE){
+        printf("Temperature is critical\n");
+    }
+    else{
+        printf("Temperature is normal\n");
+    }
 }
 
 PROCESS_THREAD(coap_client_process, ev, data)
 {
-  PROCESS_BEGIN();
+    PROCESS_BEGIN();
 
-  static coap_endpoint_t server_ep;
-  static coap_message_t request[1];
+    static coap_endpoint_t server_ep_temp;
+    static coap_endpoint_t server_ep_lpg;
+    static coap_message_t request[1];
+    static struct etimer timer;
 
-  coap_endpoint_parse(SERVER_EP, strlen(SERVER_EP), &server_ep);
+    coap_endpoint_parse(SERVER_EP_TEMP, strlen(SERVER_EP_TEMP), &server_ep_temp);
+    coap_endpoint_parse(SERVER_EP_LPG,strlen(SERVER_EP_LPG),&server_ep_lpg);
 
-    while(1){
-    //PROCESS_WAIT_EVENT_UNTIL(ev == buttn_hal_press_event);
-    coap_init_message(request, COAP_TYPE_CON, COAP_GET, 0);
-    coap_set_header_uri_path(request, "/res_danger");
+    etimer_set(&timer, CLOCK_SECOND * 5);
+    static struct etimer lpg_timer;
 
-    const char *uri_path;
-    int len = coap_get_header_uri_path(request, &uri_path);
-  
-     if (len > 0) {
-        printf("URI Path: %.*s\n", len, uri_path);
-    } else {
-        printf("No URI Path in request\n");
+    while(1) {
+      PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&timer));
+
+      //first request to the temperature sensor
+      coap_init_message(request, COAP_TYPE_CON, COAP_GET, 0);
+      coap_set_header_uri_path(request, service_url);
+      printf("Sending request to %s\n", SERVER_EP_TEMP);
+      COAP_BLOCKING_REQUEST(&server_ep_temp, request, response_handler);
+
+      //second request to the lpg sensor
+      coap_init_message(request, COAP_TYPE_CON, COAP_GET, 0);
+      coap_set_header_uri_path(request, "/res_danger");
+      printf("Sending request to %s\n", SERVER_EP_LPG);
+      COAP_BLOCKING_REQUEST(&server_ep_lpg, request, response_handler);
+
+      // Reset the timer for the next cycle
+      etimer_reset(&timer);
+
+      if(lpgValue == 2) {
+        // Activate the lpg timer
+        etimer_set(&lpg_timer, CLOCK_SECOND);
+      } else {
+        // Deactivate the lpg timer
+        etimer_stop(&lpg_timer);
+      }
+
+      PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&lpg_timer));
+
+      // Toggle the LED
+      if(lpgValue == 2) {
+        // Turn on the red LED
+        printf("Turning on the red LED\n");
+
+        
+
+      } else {
+        // Turn off the red LED
+        printf("Turning off the red LED\n");
+      }
+
+      etimer_reset(&lpg_timer);
     }
 
-
-    printf("Sending request to %s\n", SERVER_EP);
-
-    COAP_BLOCKING_REQUEST(&server_ep, request, response_handler);
-  }
-  PROCESS_END();
+    PROCESS_END();
 }

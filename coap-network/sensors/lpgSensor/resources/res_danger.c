@@ -106,6 +106,7 @@ int get_danger() {
   printf("get_danger: predizione in corso\n");
   float features[] = { 0, 0, 0, 0, 0, 0, 0 };
 
+  /*
   FILE* file = fopen("model/modelData.csv", "r");
   if (file == NULL) {
     perror("Error opening file");
@@ -157,8 +158,11 @@ int get_danger() {
   fclose(file);
 
   printf("features: %f, %f, %f, %f, %f, %f, %f\n", features[0], features[1], features[2], features[3], features[4], features[5], features[6]);
+  */
 
-  int result = predict_class(features, 7);
+  int result = rand() % 3 -1; // predict_class(features, 7);
+  printf("result: %d\n", result);
+
   if (result == -1) {
     printf("Prediction error\n");
   }
