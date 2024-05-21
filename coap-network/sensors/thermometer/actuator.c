@@ -22,18 +22,39 @@
 #define SERVER_EP_LPG   "coap://[fd00::204:4:4:4]:5683"
 
 static char* service_url = "predict-temp";
+static float next_temperature;
+static char lpg_level[64];
 
 PROCESS(coap_client_process, "CoAP Client Process");
 AUTOSTART_PROCESSES(&coap_client_process);
 
-void response_handler(coap_message_t *response) {
+void response_handler_temp(coap_message_t *response) {
     if(response == NULL) {
         printf("No response received.\n");
         return;
     }
     const uint8_t *chunk;
     int len = coap_get_payload(response, &chunk);
-    printf("Response: |%.*s|\n", len, (char *)chunk);
+   char temp_str[len + 1];
+    strncpy(temp_str, (char *)chunk, len);
+    temp_str[len] = '\0';
+    temperature = strtof(temp_str, NULL);
+    printf("Temperature Response: |%.*s| (Parsed: %.2f)\n", len, (char *)chunk, temperature);
+}
+void response_handler_lpg(coap_message_t *response) {
+    if(response == NULL) {
+        printf("No response received from LPG sensor.\n");
+        return;
+    }
+    const uint8_t *chunk;
+    int len = coap_get_payload(response, &chunk);
+    if (len < sizeof(lpg_score)) {
+        strncpy(lpg_value, (char *)chunk, len);
+        lpg_score[len] = '\0';
+        printf("LPG Response: |%s|\n", lpg_value);
+    } else {
+        printf("LPG response too long to handle.\n");
+    }
 }
 
 PROCESS_THREAD(coap_client_process, ev, data)
@@ -59,6 +80,7 @@ PROCESS_THREAD(coap_client_process, ev, data)
         printf("Sending request to %s\n", SERVER_EP_TEMP);
 
         COAP_BLOCKING_REQUEST(&server_ep_temp, request, response_handler);
+        
         coap_init_message(request, COAP_TYPE_CON, COAP_GET, 0);
         coap_set_header_uri_path(request, "/res_danger");
         printf("Sending request to %s\n", SERVER_EP_LPG);
