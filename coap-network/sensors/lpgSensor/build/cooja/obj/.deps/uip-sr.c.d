@@ -16,8 +16,8 @@ build/cooja/obj/uip-sr.o: ../../../../../os/net/ipv6/uip-sr.c \
  ../../../../../os/sys/pt.h ../../../../../os/sys/clock.h \
  ../../../../../os/net/ipv6/uip-sr.h ../../../../../os/net/ipv6/uip.h \
  ../../../../../os/net/ipv6/uipopt.h ../../../../../os/net/ipv6/uipbuf.h \
- ../../../../../os/net/linkaddr.h ../../../../../os/net/ipv6/tcpip.h \
- ../../../../../os/net/ipv6/uiplib.h \
+ ../../../../../os/net/linkaddr.h ../../../../../os/net/../contiki.h \
+ ../../../../../os/net/ipv6/tcpip.h ../../../../../os/net/ipv6/uiplib.h \
  ../../../../../os/net/routing/routing.h \
  ../../../../../os/net/ipv6/uip-ds6-nbr.h \
  ../../../../../os/net/ipv6/uip-nd6.h ../../../../../os/sys/stimer.h \
@@ -57,6 +57,7 @@ build/cooja/obj/uip-sr.o: ../../../../../os/net/ipv6/uip-sr.c \
 ../../../../../os/net/ipv6/uipopt.h:
 ../../../../../os/net/ipv6/uipbuf.h:
 ../../../../../os/net/linkaddr.h:
+../../../../../os/net/../contiki.h:
 ../../../../../os/net/ipv6/tcpip.h:
 ../../../../../os/net/ipv6/uiplib.h:
 ../../../../../os/net/routing/routing.h:

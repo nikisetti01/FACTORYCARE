@@ -22,7 +22,7 @@ build/cooja/obj/coap-separate.o: \
  ../../../../../os/net/app-layer/coap/coap-endpoint.h \
  ../../../../../os/net/ipv6/uip.h ../../../../../os/net/ipv6/uipopt.h \
  ../../../../../os/net/ipv6/uipbuf.h ../../../../../os/net/linkaddr.h \
- ../../../../../os/net/ipv6/tcpip.h \
+ ../../../../../os/net/../contiki.h ../../../../../os/net/ipv6/tcpip.h \
  ../../../../../os/net/app-layer/coap/coap-separate.h \
  ../../../../../os/net/app-layer/coap/coap-engine.h \
  ../../../../../os/net/app-layer/coap/coap-timer.h \
@@ -63,6 +63,7 @@ build/cooja/obj/coap-separate.o: \
 ../../../../../os/net/ipv6/uipopt.h:
 ../../../../../os/net/ipv6/uipbuf.h:
 ../../../../../os/net/linkaddr.h:
+../../../../../os/net/../contiki.h:
 ../../../../../os/net/ipv6/tcpip.h:
 ../../../../../os/net/app-layer/coap/coap-separate.h:
 ../../../../../os/net/app-layer/coap/coap-engine.h:

@@ -1,9 +1,7 @@
 CONTIKI_PROJECT = coap-example-client
 # coap-example-observe-client is outdated but will be ported at a later point
 all: $(CONTIKI_PROJECT)
-MODULES_REL += /home/iot_ubuntu_intel/.local/lib/python3.10/site-packages/emlearn
-TARGET_LIBFILES += -lm
-INC += /home/iot_ubuntu_intel/.local/lib/python3.10/site-packages/emlearn
+
 # Do not try to build on Sky because of code size limitation
 PLATFORMS_EXCLUDE = sky z1
 

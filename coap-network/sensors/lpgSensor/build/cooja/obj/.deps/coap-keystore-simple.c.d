@@ -18,7 +18,7 @@ build/cooja/obj/coap-keystore-simple.o: \
  ../../../../../os/sys/pt.h ../../../../../os/sys/clock.h \
  ../../../../../os/net/ipv6/uip.h ../../../../../os/net/ipv6/uipopt.h \
  ../../../../../os/net/ipv6/uipbuf.h ../../../../../os/net/linkaddr.h \
- ../../../../../os/net/ipv6/tcpip.h \
+ ../../../../../os/net/../contiki.h ../../../../../os/net/ipv6/tcpip.h \
  ../../../../../os/net/app-layer/coap/coap-keystore.h
 ../../../../../os/net/app-layer/coap/module-macros.h:
 ../../../../../os/net/app-layer/coap/coap-endpoint.h:
@@ -48,5 +48,6 @@ build/cooja/obj/coap-keystore-simple.o: \
 ../../../../../os/net/ipv6/uipopt.h:
 ../../../../../os/net/ipv6/uipbuf.h:
 ../../../../../os/net/linkaddr.h:
+../../../../../os/net/../contiki.h:
 ../../../../../os/net/ipv6/tcpip.h:
 ../../../../../os/net/app-layer/coap/coap-keystore.h:

@@ -17,7 +17,7 @@ build/cooja/obj/frame802154e-ie.o: \
  ../../../../../arch/platform/cooja/./sys/cooja_mt.h \
  ../../../../../os/sys/pt.h ../../../../../os/sys/clock.h \
  ../../../../../os/net/mac/mac.h ../../../../../os/dev/radio.h \
- ../../../../../os/net/linkaddr.h \
+ ../../../../../os/net/linkaddr.h ../../../../../os/net/../contiki.h \
  ../../../../../os/net/mac/tsch/tsch-conf.h \
  ../../../../../os/net/mac/tsch/tsch-const.h \
  ../../../../../os/net/packetbuf.h \
@@ -61,6 +61,7 @@ build/cooja/obj/frame802154e-ie.o: \
 ../../../../../os/net/mac/mac.h:
 ../../../../../os/dev/radio.h:
 ../../../../../os/net/linkaddr.h:
+../../../../../os/net/../contiki.h:
 ../../../../../os/net/mac/tsch/tsch-conf.h:
 ../../../../../os/net/mac/tsch/tsch-const.h:
 ../../../../../os/net/packetbuf.h:
