@@ -15,9 +15,9 @@ build/cooja/obj/sicslowpan.o: ../../../../../os/net/ipv6/sicslowpan.c \
  ../../../../../arch/platform/cooja/./sys/cooja_mt.h \
  ../../../../../os/sys/pt.h ../../../../../os/sys/clock.h \
  ../../../../../os/net/link-stats.h ../../../../../os/net/linkaddr.h \
- ../../../../../os/net/../contiki.h ../../../../../os/net/ipv6/uipopt.h \
- ../../../../../os/net/ipv6/tcpip.h ../../../../../os/net/ipv6/uip.h \
- ../../../../../os/net/ipv6/uipbuf.h ../../../../../os/net/ipv6/uip-ds6.h \
+ ../../../../../os/net/ipv6/uipopt.h ../../../../../os/net/ipv6/tcpip.h \
+ ../../../../../os/net/ipv6/uip.h ../../../../../os/net/ipv6/uipbuf.h \
+ ../../../../../os/net/ipv6/uip-ds6.h \
  ../../../../../os/net/ipv6/multicast/uip-mcast6.h \
  ../../../../../os/net/ipv6/multicast/uip-mcast6-engines.h \
  ../../../../../os/net/ipv6/multicast/uip-mcast6-route.h \
@@ -68,7 +68,6 @@ build/cooja/obj/sicslowpan.o: ../../../../../os/net/ipv6/sicslowpan.c \
 ../../../../../os/sys/clock.h:
 ../../../../../os/net/link-stats.h:
 ../../../../../os/net/linkaddr.h:
-../../../../../os/net/../contiki.h:
 ../../../../../os/net/ipv6/uipopt.h:
 ../../../../../os/net/ipv6/tcpip.h:
 ../../../../../os/net/ipv6/uip.h:

@@ -17,8 +17,12 @@ build/cooja/obj/uip-packetqueue.o: \
  ../../../../../arch/platform/cooja/./sys/cooja_mt.h \
  ../../../../../os/sys/pt.h ../../../../../os/sys/clock.h \
  ../../../../../os/net/ipv6/uipbuf.h ../../../../../os/net/linkaddr.h \
+<<<<<<< HEAD
+ ../../../../../os/net/ipv6/tcpip.h ../../../../../os/lib/memb.h \
+=======
  ../../../../../os/net/../contiki.h ../../../../../os/net/ipv6/tcpip.h \
  ../../../../../os/lib/memb.h \
+>>>>>>> main
  ../../../../../os/net/ipv6/uip-packetqueue.h \
  ../../../../../os/sys/ctimer.h
 ../../../../../os/net/app-layer/coap/module-macros.h:
@@ -49,7 +53,10 @@ project-conf.h:
 ../../../../../os/sys/clock.h:
 ../../../../../os/net/ipv6/uipbuf.h:
 ../../../../../os/net/linkaddr.h:
+<<<<<<< HEAD
+=======
 ../../../../../os/net/../contiki.h:
+>>>>>>> main
 ../../../../../os/net/ipv6/tcpip.h:
 ../../../../../os/lib/memb.h:
 ../../../../../os/net/ipv6/uip-packetqueue.h:

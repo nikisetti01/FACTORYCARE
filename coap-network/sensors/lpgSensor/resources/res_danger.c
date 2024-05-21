@@ -77,9 +77,9 @@ res_get_handler(coap_message_t *request, coap_message_t *response, uint8_t *buff
 
   printf("val %i\n", val);
 
-  char message[12];
-  sprintf(message, "%d", val);
-  int length = 12; /*           |<-------->| */
+  char message[20];
+  sprintf(message, "RES_DANGER: %d", val);
+  int length = 20; /*           |<-------->| */
 
   /* The query string can be retrieved by rest_get_query() or parsed for its key-value pairs. */
   if(coap_get_query_variable(request, "len", &len)) {
@@ -104,8 +104,9 @@ res_get_handler(coap_message_t *request, coap_message_t *response, uint8_t *buff
 
 int get_danger() {
   printf("get_danger: predizione in corso\n");
-  float features[] = { 0, 0, 0, 0, 0, 0, 0 };
+  //float features[] = { 0, 0, 0, 0, 0, 0, 0 };
 
+  /*
   FILE* file = fopen("model/modelData.csv", "r");
   if (file == NULL) {
     perror("Error opening file");
@@ -157,8 +158,11 @@ int get_danger() {
   fclose(file);
 
   printf("features: %f, %f, %f, %f, %f, %f, %f\n", features[0], features[1], features[2], features[3], features[4], features[5], features[6]);
+  */
 
-  int result = predict_class(features, 7);
+  int result = rand() % 3; // predict_class(features, 7);
+  printf("result: %d\n", result);
+
   if (result == -1) {
     printf("Prediction error\n");
   }

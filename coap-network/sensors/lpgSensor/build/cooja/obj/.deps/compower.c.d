@@ -16,7 +16,6 @@ build/cooja/obj/compower.o: ../../../../../os/sys/compower.c \
  ../../../../../os/sys/pt.h ../../../../../os/sys/clock.h \
  ../../../../../os/sys/energest.h ../../../../../os/sys/compower.h \
  ../../../../../os/net/packetbuf.h ../../../../../os/net/linkaddr.h \
- ../../../../../os/net/../contiki.h \
  ../../../../../os/net/mac/llsec802154.h \
  ../../../../../os/net/mac/framer/frame802154.h \
  ../../../../../os/net/ipv6/uip.h ../../../../../os/net/ipv6/uipopt.h \
@@ -50,7 +49,6 @@ build/cooja/obj/compower.o: ../../../../../os/sys/compower.c \
 ../../../../../os/sys/compower.h:
 ../../../../../os/net/packetbuf.h:
 ../../../../../os/net/linkaddr.h:
-../../../../../os/net/../contiki.h:
 ../../../../../os/net/mac/llsec802154.h:
 ../../../../../os/net/mac/framer/frame802154.h:
 ../../../../../os/net/ipv6/uip.h:

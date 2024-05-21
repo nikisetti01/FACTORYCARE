@@ -17,10 +17,16 @@ build/cooja/obj/gpio-hal.o: ../../../../../os/dev/gpio-hal.c \
  ../../../../../os/dev/gpio-hal.h \
  ../../../../../arch/platform/cooja/./dev/gpio-hal-arch.h \
  ../../../../../os/lib/list.h ../../../../../os/sys/log.h \
+<<<<<<< HEAD
+ ../../../../../os/net/linkaddr.h ../../../../../os/sys/log-conf.h \
+ ../../../../../os/net/ipv6/uip.h ../../../../../os/net/ipv6/uipopt.h \
+ ../../../../../os/net/ipv6/uipbuf.h ../../../../../os/net/ipv6/tcpip.h
+=======
  ../../../../../os/net/linkaddr.h ../../../../../os/net/../contiki.h \
  ../../../../../os/sys/log-conf.h ../../../../../os/net/ipv6/uip.h \
  ../../../../../os/net/ipv6/uipopt.h ../../../../../os/net/ipv6/uipbuf.h \
  ../../../../../os/net/ipv6/tcpip.h
+>>>>>>> main
 ../../../../../os/net/app-layer/coap/module-macros.h:
 ../../../../../os/contiki.h:
 ../../../../../arch/platform/cooja/./contiki-conf.h:
@@ -50,7 +56,10 @@ project-conf.h:
 ../../../../../os/lib/list.h:
 ../../../../../os/sys/log.h:
 ../../../../../os/net/linkaddr.h:
+<<<<<<< HEAD
+=======
 ../../../../../os/net/../contiki.h:
+>>>>>>> main
 ../../../../../os/sys/log-conf.h:
 ../../../../../os/net/ipv6/uip.h:
 ../../../../../os/net/ipv6/uipopt.h:

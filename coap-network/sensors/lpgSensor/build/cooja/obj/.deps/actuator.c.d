@@ -17,9 +17,8 @@ build/cooja/obj/actuator.o: actuator.c \
  ../../../../../os/contiki-net.h ../../../../../os/contiki.h \
  ../../../../../os/net/ipv6/tcpip.h ../../../../../os/net/ipv6/uip.h \
  ../../../../../os/net/ipv6/uipopt.h ../../../../../os/net/ipv6/uipbuf.h \
- ../../../../../os/net/linkaddr.h ../../../../../os/net/../contiki.h \
- ../../../../../os/net/ipv6/tcpip.h ../../../../../os/net/ipv6/uip.h \
- ../../../../../os/net/ipv6/uiplib.h \
+ ../../../../../os/net/linkaddr.h ../../../../../os/net/ipv6/tcpip.h \
+ ../../../../../os/net/ipv6/uip.h ../../../../../os/net/ipv6/uiplib.h \
  ../../../../../os/net/ipv6/uip-udp-packet.h \
  ../../../../../os/net/ipv6/simple-udp.h \
  ../../../../../os/net/ipv6/uip-nameserver.h \
@@ -62,8 +61,9 @@ build/cooja/obj/actuator.o: actuator.c \
  ../../../../../os/net/app-layer/coap/coap-observe-client.h \
  ../../../../../os/net/app-layer/coap/coap-blocking-api.h \
  ../../../../../os/net/app-layer/coap/coap-request-state.h \
- ../../../../../os/dev/button-hal.h ../../../../../os/dev/gpio-hal.h \
+ ../../../../../os/dev/leds.h ../../../../../os/dev/gpio-hal.h \
  ../../../../../arch/platform/cooja/./dev/gpio-hal-arch.h \
+ ../../../../../os/dev/button-hal.h \
  ../../../../../os/net/app-layer/coap/coap-log.h \
  ../../../../../os/sys/log.h ../../../../../os/sys/log-conf.h
 ../../../../../os/net/app-layer/coap/module-macros.h:
@@ -96,7 +96,6 @@ build/cooja/obj/actuator.o: actuator.c \
 ../../../../../os/net/ipv6/uipopt.h:
 ../../../../../os/net/ipv6/uipbuf.h:
 ../../../../../os/net/linkaddr.h:
-../../../../../os/net/../contiki.h:
 ../../../../../os/net/ipv6/tcpip.h:
 ../../../../../os/net/ipv6/uip.h:
 ../../../../../os/net/ipv6/uiplib.h:
@@ -150,9 +149,10 @@ build/cooja/obj/actuator.o: actuator.c \
 ../../../../../os/net/app-layer/coap/coap-observe-client.h:
 ../../../../../os/net/app-layer/coap/coap-blocking-api.h:
 ../../../../../os/net/app-layer/coap/coap-request-state.h:
-../../../../../os/dev/button-hal.h:
+../../../../../os/dev/leds.h:
 ../../../../../os/dev/gpio-hal.h:
 ../../../../../arch/platform/cooja/./dev/gpio-hal-arch.h:
+../../../../../os/dev/button-hal.h:
 ../../../../../os/net/app-layer/coap/coap-log.h:
 ../../../../../os/sys/log.h:
 ../../../../../os/sys/log-conf.h:

@@ -16,7 +16,7 @@ build/cooja/obj/net-debug.o: ../../../../../os/net/net-debug.c \
  ../../../../../arch/platform/cooja/./sys/cooja_mt.h \
  ../../../../../os/sys/pt.h ../../../../../os/sys/clock.h \
  ../../../../../os/net/ipv6/uipbuf.h ../../../../../os/net/linkaddr.h \
- ../../../../../os/net/../contiki.h ../../../../../os/net/ipv6/tcpip.h
+ ../../../../../os/net/ipv6/tcpip.h
 ../../../../../os/net/app-layer/coap/module-macros.h:
 ../../../../../os/net/net-debug.h:
 ../../../../../os/net/ipv6/uip.h:
@@ -45,5 +45,4 @@ build/cooja/obj/net-debug.o: ../../../../../os/net/net-debug.c \
 ../../../../../os/sys/clock.h:
 ../../../../../os/net/ipv6/uipbuf.h:
 ../../../../../os/net/linkaddr.h:
-../../../../../os/net/../contiki.h:
 ../../../../../os/net/ipv6/tcpip.h:

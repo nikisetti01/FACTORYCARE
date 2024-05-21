@@ -15,10 +15,9 @@ build/cooja/obj/frame802154.o: \
  ../../../../../arch/platform/cooja/./sys/cooja_mt.h \
  ../../../../../os/sys/pt.h ../../../../../os/sys/clock.h \
  ../../../../../os/net/mac/framer/frame802154.h \
- ../../../../../os/net/linkaddr.h ../../../../../os/net/../contiki.h \
- ../../../../../os/net/mac/llsec802154.h ../../../../../os/net/ipv6/uip.h \
- ../../../../../os/net/ipv6/uipopt.h ../../../../../os/net/ipv6/uipbuf.h \
- ../../../../../os/net/ipv6/tcpip.h
+ ../../../../../os/net/linkaddr.h ../../../../../os/net/mac/llsec802154.h \
+ ../../../../../os/net/ipv6/uip.h ../../../../../os/net/ipv6/uipopt.h \
+ ../../../../../os/net/ipv6/uipbuf.h ../../../../../os/net/ipv6/tcpip.h
 ../../../../../os/net/app-layer/coap/module-macros.h:
 ../../../../../os/sys/cc.h:
 ../../../../../os/contiki.h:
@@ -44,7 +43,6 @@ build/cooja/obj/frame802154.o: \
 ../../../../../os/sys/clock.h:
 ../../../../../os/net/mac/framer/frame802154.h:
 ../../../../../os/net/linkaddr.h:
-../../../../../os/net/../contiki.h:
 ../../../../../os/net/mac/llsec802154.h:
 ../../../../../os/net/ipv6/uip.h:
 ../../../../../os/net/ipv6/uipopt.h:

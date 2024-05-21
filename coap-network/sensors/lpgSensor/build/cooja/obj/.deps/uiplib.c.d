@@ -16,8 +16,7 @@ build/cooja/obj/uiplib.o: ../../../../../os/net/ipv6/uiplib.c \
  ../../../../../arch/platform/cooja/./sys/cooja_mt.h \
  ../../../../../os/sys/pt.h ../../../../../os/sys/clock.h \
  ../../../../../os/net/ipv6/uipbuf.h ../../../../../os/net/linkaddr.h \
- ../../../../../os/net/../contiki.h ../../../../../os/net/ipv6/tcpip.h \
- ../../../../../os/net/ipv6/uiplib.h \
+ ../../../../../os/net/ipv6/tcpip.h ../../../../../os/net/ipv6/uiplib.h \
  ../../../../../os/net/ipv6/ip64-addr.h ../../../../../os/sys/log.h \
  ../../../../../os/sys/log-conf.h
 ../../../../../os/net/app-layer/coap/module-macros.h:
@@ -47,7 +46,6 @@ build/cooja/obj/uiplib.o: ../../../../../os/net/ipv6/uiplib.c \
 ../../../../../os/sys/clock.h:
 ../../../../../os/net/ipv6/uipbuf.h:
 ../../../../../os/net/linkaddr.h:
-../../../../../os/net/../contiki.h:
 ../../../../../os/net/ipv6/tcpip.h:
 ../../../../../os/net/ipv6/uiplib.h:
 ../../../../../os/net/ipv6/ip64-addr.h:

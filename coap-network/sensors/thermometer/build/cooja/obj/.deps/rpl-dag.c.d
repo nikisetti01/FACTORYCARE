@@ -18,7 +18,11 @@ build/cooja/obj/rpl-dag.o: \
  ../../../../../arch/platform/cooja/./sys/cooja_mt.h \
  ../../../../../os/sys/pt.h ../../../../../os/sys/clock.h \
  ../../../../../os/net/ipv6/uipbuf.h ../../../../../os/net/linkaddr.h \
+<<<<<<< HEAD
+ ../../../../../os/net/ipv6/tcpip.h \
+=======
  ../../../../../os/net/../contiki.h ../../../../../os/net/ipv6/tcpip.h \
+>>>>>>> main
  ../../../../../os/net/routing/rpl-lite/rpl-const.h \
  ../../../../../os/net/routing/rpl-lite/rpl-conf.h \
  ../../../../../os/net/routing/rpl-lite/rpl-types.h \
@@ -78,7 +82,10 @@ project-conf.h:
 ../../../../../os/sys/clock.h:
 ../../../../../os/net/ipv6/uipbuf.h:
 ../../../../../os/net/linkaddr.h:
+<<<<<<< HEAD
+=======
 ../../../../../os/net/../contiki.h:
+>>>>>>> main
 ../../../../../os/net/ipv6/tcpip.h:
 ../../../../../os/net/routing/rpl-lite/rpl-const.h:
 ../../../../../os/net/routing/rpl-lite/rpl-conf.h:
