@@ -85,6 +85,7 @@ PROCESS_THREAD(coap_client_process, ev, data)
   coap_endpoint_parse(SERVER_EP, strlen(SERVER_EP), &server_ep);
 
     while(1){
+    //PROCESS_WAIT_EVENT_UNTIL(ev == buttn_hal_press_event);
     coap_init_message(request, COAP_TYPE_CON, COAP_GET, 0);
     coap_set_header_uri_path(request, "/res_danger");
 
