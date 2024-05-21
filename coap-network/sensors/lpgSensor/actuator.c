@@ -6,6 +6,7 @@
 #include "coap-engine.h"
 #include "coap-blocking-api.h"
 #include "sys/etimer.h"
+#include "leds.h"
 
 #if PLATFORM_SUPPORTS_BUTTON_HAL
 #include "dev/button-hal.h"
@@ -19,9 +20,9 @@
 #define LOG_LEVEL  LOG_LEVEL_APP
 
 #define SERVER_EP_TEMP "coap://[fd00::202:2:2:2]:5683"
-#define SERVER_EP_LPG   "coap://[fd00::204:4:4:4]:5683"
+#define SERVER_EP_LPG   "coap://[fd00::203:3:3:3]:5683"
 
-#define CRITICAL_TEMP_VALUE = 20; 
+#define CRITICAL_TEMP_VALUE 20
 
 static char* service_url = "predict-temp";
 
@@ -40,29 +41,37 @@ void response_handler(coap_message_t *response) {
     int len = coap_get_payload(response, &chunk);
     printf("Response: |%.*s|\n", len, (char *)chunk);
 
-    //lpg analysis
-    if(strncmp((char *)chunk, "0", len) == 0) {
-        printf("lpg sensor activity is normal\n");
-        lpgValue = 0;
-    } else if(strncmp((char *)chunk, "1", len) == 0) {
-        printf("lpg sensor activity is high: DANGER\n");
-        lpgValue = 1;
-    } else if(strncmp((char *)chunk, "2", len) == 0) {
-        printf("lpg sensor activity is extremely high: CRITIC\n");
-        lpgValue = 2;
-    } else {
+      // Check if the first word is "RES_DANGER" or "RES_TEMP"
+      char firstWord[20];
+      sscanf((char *)chunk, "%s", firstWord);
+
+      if (strcmp(firstWord, "RES_DANGER:") == 0) {
+        // Handle RES_DANGER response
+        lpgValue = atoi((char *)(chunk + strlen(firstWord) + 1));
+        printf("Converted value: %d\n", lpgValue);
+        if(lpgValue == 0) {
+          printf("LPG is normal\n");
+        } else if(lpgValue == 1) {
+          printf("LPG is high\n");
+        } else if (lpgValue == 2){
+          printf("LPG is critical\n");
+        }else{
+          printf("Unknown LPG value\n");
+        }
+
+
+      } else if (strcmp(firstWord, "RES_TEMP:") == 0) {
+        // Handle RES_TEMP response
+        tempValue = atoi((char *)(chunk + strlen(firstWord) + 1));
+        printf("Converted value: %d\n", tempValue);
+        if (tempValue > CRITICAL_TEMP_VALUE) {
+          printf("Temperature is critical\n");
+        } else {
+          printf("Temperature is normal\n");
+        }
+      } else {
         printf("Unknown response\n");
-    }
-    
-    //temp analysis
-    tempValue = atoi((char *)chunk);
-    printf("Converted value: %d\n", tempValue);
-    if(tempValue>CRITICAL_TEMP_VALUE){
-        printf("Temperature is critical\n");
-    }
-    else{
-        printf("Temperature is normal\n");
-    }
+      }
 }
 
 PROCESS_THREAD(coap_client_process, ev, data)
@@ -98,26 +107,32 @@ PROCESS_THREAD(coap_client_process, ev, data)
       // Reset the timer for the next cycle
       etimer_reset(&timer);
 
+      if(lpgValue == 0) {
+        leds_on(LEDS_NUM_TO_MASK(LEDS_GREEN));
+      }
+      
+      if(lpgValue == 1) {
+        leds_on(LEDS_NUM_TO_MASK(LEDS_RED));
+        leds_toggle(LEDS_NUM_TO_MASK(LEDS_GREEN));
+      }
+
       if(lpgValue == 2) {
-        // Activate the lpg timer
-        etimer_set(&lpg_timer, CLOCK_SECOND);
-      } else {
-        // Deactivate the lpg timer
-        etimer_stop(&lpg_timer);
+        etimer_set(&lpg_timer, CLOCK_SECOND*2);
+        leds_on(LEDS_NUM_TO_MASK(LEDS_RED));
       }
 
       PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&lpg_timer));
 
       // Toggle the LED
       if(lpgValue == 2) {
-        // Turn on the red LED
-        printf("Turning on the red LED\n");
+        leds_toggle(LEDS_NUM_TO_MASK(LEDS_RED));
+      }
 
-        
-
-      } else {
-        // Turn off the red LED
-        printf("Turning off the red LED\n");
+      if(tempValue>CRITICAL_TEMP_VALUE){
+        leds_on(LEDS_NUM_TO_MASK(LEDS_YELLOW));
+      }else
+      {
+        leds_off(LEDS_NUM_TO_MASK(LEDS_YELLOW));
       }
 
       etimer_reset(&lpg_timer);
