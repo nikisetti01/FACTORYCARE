@@ -20,7 +20,8 @@
 #define LOG_LEVEL  LOG_LEVEL_APP
 
 #define SERVER_EP_TEMP "coap://[fd00::202:2:2:2]:5683"
-#define SERVER_EP_LPG   "coap://[fd00::203:3:3:3]:5683"
+#define SERVER_EP_LPG  "coap://[fe80::f6ce:36a2:c608:75a9]:5683" //TRY WITH DONGLE
+//#define SERVER_EP_LPG   "coap://[fd00::203:3:3:3]:5683"
 
 #define CRITICAL_TEMP_VALUE 20
 
@@ -86,7 +87,7 @@ PROCESS_THREAD(coap_client_process, ev, data)
     coap_endpoint_parse(SERVER_EP_TEMP, strlen(SERVER_EP_TEMP), &server_ep_temp);
     coap_endpoint_parse(SERVER_EP_LPG,strlen(SERVER_EP_LPG),&server_ep_lpg);
 
-    etimer_set(&timer, CLOCK_SECOND * 5);
+    etimer_set(&timer, CLOCK_SECOND/4); // * 5 è assai lento
     static struct etimer lpg_timer;
 
     while(1) {
@@ -96,7 +97,7 @@ PROCESS_THREAD(coap_client_process, ev, data)
       coap_init_message(request, COAP_TYPE_CON, COAP_GET, 0);
       coap_set_header_uri_path(request, service_url);
       printf("Sending request to %s\n", SERVER_EP_TEMP);
-      COAP_BLOCKING_REQUEST(&server_ep_temp, request, response_handler);
+      COAP_BLOCKING_REQUEST(&server_ep_temp, request, response_handler); //modifica creando risposta per temp e lpg in modo distinto
 
       //second request to the lpg sensor
       coap_init_message(request, COAP_TYPE_CON, COAP_GET, 0);
@@ -108,24 +109,24 @@ PROCESS_THREAD(coap_client_process, ev, data)
       etimer_reset(&timer);
 
       if(lpgValue == 0) {
-        leds_on(LEDS_NUM_TO_MASK(LEDS_GREEN));
+         leds_single_on(LEDS_GREEN);
       }
       
       if(lpgValue == 1) {
-        leds_on(LEDS_NUM_TO_MASK(LEDS_RED));
-        leds_toggle(LEDS_NUM_TO_MASK(LEDS_GREEN));
+        leds_single_on(LEDS_RED);
+        leds_single_off(LEDS_NUM_TO_MASK(LEDS_GREEN));
       }
 
       if(lpgValue == 2) {
         etimer_set(&lpg_timer, CLOCK_SECOND*2);
-        leds_on(LEDS_NUM_TO_MASK(LEDS_RED));
+        leds_single_on(LEDS_RED);
       }
 
       PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&lpg_timer));
 
       // Toggle the LED
       if(lpgValue == 2) {
-        leds_toggle(LEDS_NUM_TO_MASK(LEDS_RED));
+        leds_single_toggle(LEDS_NUM_TO_MASK(LEDS_RED));
       }
 
       if(tempValue>CRITICAL_TEMP_VALUE){

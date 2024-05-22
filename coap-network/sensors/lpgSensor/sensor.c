@@ -44,6 +44,12 @@
 #include "contiki.h"
 #include "coap-engine.h"
 #include "resources/res_danger.c"
+//for ipv6
+#include "net/ipv6/uip-ds6.h"
+#include "net/ipv6/uip-ds6-route.h"
+#include "net/ipv6/uip-ds6-nbr.h"
+#include "net/ipv6/uip-nd6.h"
+#include "net/ipv6/uip-icmp6.h"
 
 #if PLATFORM_SUPPORTS_BUTTON_HAL
 #include "dev/button-hal.h"
@@ -70,6 +76,8 @@ AUTOSTART_PROCESSES(&lpgSensorServer);
 
 PROCESS_THREAD(lpgSensorServer, ev, data)
 {
+  static struct etimer timer;
+
   PROCESS_BEGIN();
   printf("lpgSensorServer\n");
   coap_activate_resource(&res_danger, "res_danger");
@@ -83,10 +91,13 @@ PROCESS_THREAD(lpgSensorServer, ev, data)
    */
   //res_danger.get_handler = res_get_handler;
 
+    etimer_set(&timer, CLOCK_SECOND * 10);
 
     while(1) {
-        PROCESS_WAIT_EVENT();
-        printf("è successo qualcosa\n");
+
+      PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&timer));
+      etimer_reset(&timer);
+      
     }
 
     PROCESS_END();

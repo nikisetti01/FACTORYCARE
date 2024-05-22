@@ -101,7 +101,7 @@ res_get_handler(coap_message_t *request, coap_message_t *response, uint8_t *buff
   coap_set_header_etag(response, (uint8_t *)&length, 1);
   coap_set_payload(response, buffer, length);
 }
-
+static int prova=0;
 int get_danger() {
   printf("get_danger: predizione in corso\n");
   //float features[] = { 0, 0, 0, 0, 0, 0, 0 };
@@ -160,7 +160,9 @@ int get_danger() {
   printf("features: %f, %f, %f, %f, %f, %f, %f\n", features[0], features[1], features[2], features[3], features[4], features[5], features[6]);
   */
 
-  int result = rand() % 3; // predict_class(features, 7);
+  int result = prova;//rand() % 3; // predict_class(features, 7);
+  prova++;
+  prova>2?prova=0:prova;
   printf("result: %d\n", result);
 
   if (result == -1) {
