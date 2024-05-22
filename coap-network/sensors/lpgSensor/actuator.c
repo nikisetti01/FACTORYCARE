@@ -33,47 +33,58 @@ AUTOSTART_PROCESSES(&coap_client_process);
 static int lpgValue = 0;
 static int tempValue = 0;
 
-void response_handler(coap_message_t *response) {
-    if(response == NULL) {
+void response_handler_LPG(coap_message_t *response) {
+    printf("response_handler\n");
+    if(response==NULL)
+    {
         printf("No response received.\n");
         return;
     }
-    const uint8_t *chunk;
-    int len = coap_get_payload(response, &chunk);
-    printf("Response: |%.*s|\n", len, (char *)chunk);
+  const uint8_t *chunk;
 
-      // Check if the first word is "RES_DANGER" or "RES_TEMP"
-      char firstWord[20];
-      sscanf((char *)chunk, "%s", firstWord);
+  int len = coap_get_payload(response, &chunk);
+  printf("|%.*s\n", len, (char *)chunk);
 
-      if (strcmp(firstWord, "RES_DANGER:") == 0) {
-        // Handle RES_DANGER response
-        lpgValue = atoi((char *)(chunk + strlen(firstWord) + 1));
-        printf("Converted value: %d\n", lpgValue);
-        if(lpgValue == 0) {
-          printf("LPG is normal\n");
-        } else if(lpgValue == 1) {
-          printf("LPG is high\n");
-        } else if (lpgValue == 2){
-          printf("LPG is critical\n");
-        }else{
-          printf("Unknown LPG value\n");
-        }
-
-
-      } else if (strcmp(firstWord, "RES_TEMP:") == 0) {
-        // Handle RES_TEMP response
-        tempValue = atoi((char *)(chunk + strlen(firstWord) + 1));
-        printf("Converted value: %d\n", tempValue);
-        if (tempValue > CRITICAL_TEMP_VALUE) {
-          printf("Temperature is critical\n");
-        } else {
-          printf("Temperature is normal\n");
-        }
-      } else {
-        printf("Unknown response\n");
-      }
+  int value = atoi((char *)chunk);
+  lpgValue = value;
+  if(lpgValue == 0)
+  {
+    printf("lpg is normal");
+  }else if(lpgValue == 1)
+  {
+    printf("lpg is dangerous");
+  }else if(lpgValue == 2)
+  {
+    printf("lpg is critical");  
+  }else
+  {
+    printf("lpg is unknown");
+  }
 }
+
+void response_handler_TEMP(coap_message_t *response) {
+    printf("response_handler\n");
+    if(response==NULL)
+    {
+        printf("No response received.\n");
+        return;
+    }
+  const uint8_t *chunk;
+
+  int len = coap_get_payload(response, &chunk);
+  printf("|%.*s\n", len, (char *)chunk);
+
+  float value = atof((char *)chunk);
+  tempValue = value;
+  if(tempValue > CRITICAL_TEMP_VALUE)
+  {
+    printf("Temperature is critical");
+  }else
+  {
+    printf("Temperature is normal");
+  }
+}
+
 
 PROCESS_THREAD(coap_client_process, ev, data)
 {
@@ -97,13 +108,13 @@ PROCESS_THREAD(coap_client_process, ev, data)
       coap_init_message(request, COAP_TYPE_CON, COAP_GET, 0);
       coap_set_header_uri_path(request, service_url);
       printf("Sending request to %s\n", SERVER_EP_TEMP);
-      COAP_BLOCKING_REQUEST(&server_ep_temp, request, response_handler); //modifica creando risposta per temp e lpg in modo distinto
+      COAP_BLOCKING_REQUEST(&server_ep_temp, request, response_handler_TEMP); //modifica creando risposta per temp e lpg in modo distinto
 
       //second request to the lpg sensor
       coap_init_message(request, COAP_TYPE_CON, COAP_GET, 0);
       coap_set_header_uri_path(request, "/res_danger");
       printf("Sending request to %s\n", SERVER_EP_LPG);
-      COAP_BLOCKING_REQUEST(&server_ep_lpg, request, response_handler);
+      COAP_BLOCKING_REQUEST(&server_ep_lpg, request, response_handler_LPG);
 
       // Reset the timer for the next cycle
       etimer_reset(&timer);
