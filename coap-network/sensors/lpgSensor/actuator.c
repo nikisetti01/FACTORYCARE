@@ -20,7 +20,7 @@
 #define LOG_LEVEL  LOG_LEVEL_APP
 
 #define SERVER_EP_TEMP "coap://[fd00::202:2:2:2]:5683"
-#define SERVER_EP_LPG  "coap://[fe80::f6ce:36a2:c608:75a9]:5683" //TRY WITH DONGLE
+#define SERVER_EP_LPG  "coap://[fe80::f6ce:3686:4ff2:1a3]:5683" //TRY WITH DONGLE
 //#define SERVER_EP_LPG   "coap://[fd00::203:3:3:3]:5683"
 
 #define CRITICAL_TEMP_VALUE 20
@@ -34,7 +34,6 @@ static int lpgValue = 0;
 static int tempValue = 0;
 
 void response_handler_LPG(coap_message_t *response) {
-    printf("response_handler\n");
     if(response==NULL)
     {
         printf("No response received.\n");
@@ -49,16 +48,16 @@ void response_handler_LPG(coap_message_t *response) {
   lpgValue = value;
   if(lpgValue == 0)
   {
-    printf("lpg is normal");
+    printf("lpg is normal\n");
   }else if(lpgValue == 1)
   {
-    printf("lpg is dangerous");
+    printf("lpg is dangerous\n");
   }else if(lpgValue == 2)
   {
-    printf("lpg is critical");  
+    printf("lpg is critical\n");  
   }else
   {
-    printf("lpg is unknown");
+    printf("lpg is unknown\n");
   }
 }
 
