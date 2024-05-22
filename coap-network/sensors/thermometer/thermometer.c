@@ -5,6 +5,7 @@
 #include "resources/res-predict-temp.c"
 #include <stdio.h>
 #include "sys/log.h"
+#include "resources/machine_learning/temperature_prediction.h"
 #define LOG_MODULE "App"
 #define LOG_LEVEL LOG_LEVEL_APP
 
@@ -13,7 +14,7 @@ coap_message_t request[1];
 
 PROCESS(thermometer_process, "Thermometer Process");
 AUTOSTART_PROCESSES(&thermometer_process);
-
+ static struct etimer prediction_timer;
 PROCESS_THREAD(thermometer_process, ev, data)
 {
     PROCESS_BEGIN();
@@ -26,13 +27,22 @@ PROCESS_THREAD(thermometer_process, ev, data)
 
     // Inizializza il generatore di numeri casuali
     random_init(0);
-
+    etimer_set(&prediction_timer, CLOCK_SECOND * 3);
     printf("CoAP server started\n");
 
     // Processo principaale in loop
     while(1) {
         PROCESS_WAIT_EVENT();
-        printf("è successo qualcosa");
+        if(etimer_expired(&prediction_timer)) {
+            // Aggiorna i sensori e fai la previsione
+            update_sensors_and_predict();
+             
+              res_predict_temp.trigger();
+
+            // Resetta il timer per il prossimo aggiornamento
+            etimer_reset(&prediction_timer);
+        }
+       
     }
 
     PROCESS_END();

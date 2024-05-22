@@ -40,5 +40,6 @@
 #define PROJECT_CONF_H_
 
 #define LOG_LEVEL_APP LOG_LEVEL_DBG
+#define COAP_OBSERVE_CLIENT 1
 
 #endif /* PROJECT_CONF_H_ */

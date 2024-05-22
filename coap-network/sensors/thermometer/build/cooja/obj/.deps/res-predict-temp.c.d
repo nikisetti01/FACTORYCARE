@@ -1,4 +1,4 @@
-build/cooja/obj/thermometer.o: thermometer.c \
+build/cooja/obj/res-predict-temp.o: resources/res-predict-temp.c \
  ../../../../../os/net/app-layer/coap/module-macros.h \
  ../../../../../os/contiki.h \
  ../../../../../arch/platform/cooja/./contiki-conf.h project-conf.h \
@@ -60,9 +60,7 @@ build/cooja/obj/thermometer.o: thermometer.c \
  ../../../../../os/net/app-layer/coap/coap-observe.h \
  ../../../../../os/net/app-layer/coap/coap-separate.h \
  ../../../../../os/net/app-layer/coap/coap-observe-client.h \
- ../../../../../os/lib/random.h resources/res-predict-temp.c \
- resources/machine_learning/temperature_prediction.h \
- ../../../../../os/sys/log.h ../../../../../os/sys/log-conf.h
+ resources/machine_learning/temperature_prediction.h
 ../../../../../os/net/app-layer/coap/module-macros.h:
 ../../../../../os/contiki.h:
 ../../../../../arch/platform/cooja/./contiki-conf.h:
@@ -146,8 +144,4 @@ project-conf.h:
 ../../../../../os/net/app-layer/coap/coap-observe.h:
 ../../../../../os/net/app-layer/coap/coap-separate.h:
 ../../../../../os/net/app-layer/coap/coap-observe-client.h:
-../../../../../os/lib/random.h:
-resources/res-predict-temp.c:
 resources/machine_learning/temperature_prediction.h:
-../../../../../os/sys/log.h:
-../../../../../os/sys/log-conf.h:

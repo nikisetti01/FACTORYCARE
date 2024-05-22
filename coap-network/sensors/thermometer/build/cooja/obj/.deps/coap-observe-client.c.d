@@ -29,7 +29,9 @@ build/cooja/obj/coap-observe-client.o: \
  ../../../../../os/net/app-layer/coap/coap-timer.h \
  ../../../../../os/net/app-layer/coap/coap-observe.h \
  ../../../../../os/net/app-layer/coap/coap-separate.h \
- ../../../../../os/lib/memb.h ../../../../../os/lib/list.h
+ ../../../../../os/lib/memb.h ../../../../../os/lib/list.h \
+ ../../../../../os/net/app-layer/coap/coap-log.h \
+ ../../../../../os/sys/log.h ../../../../../os/sys/log-conf.h
 ../../../../../os/net/app-layer/coap/module-macros.h:
 ../../../../../os/net/app-layer/coap/coap.h:
 ../../../../../os/net/app-layer/coap/coap-constants.h:
@@ -73,3 +75,6 @@ project-conf.h:
 ../../../../../os/net/app-layer/coap/coap-separate.h:
 ../../../../../os/lib/memb.h:
 ../../../../../os/lib/list.h:
+../../../../../os/net/app-layer/coap/coap-log.h:
+../../../../../os/sys/log.h:
+../../../../../os/sys/log-conf.h:
