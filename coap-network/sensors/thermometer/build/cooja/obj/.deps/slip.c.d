@@ -16,12 +16,8 @@ build/cooja/obj/slip.o: ../../../../../os/dev/slip.c \
  ../../../../../os/sys/pt.h ../../../../../os/sys/clock.h \
  ../../../../../os/net/ipv6/uip.h ../../../../../os/net/ipv6/uipopt.h \
  ../../../../../os/net/ipv6/uipbuf.h ../../../../../os/net/linkaddr.h \
-<<<<<<< HEAD
- ../../../../../os/net/ipv6/tcpip.h ../../../../../os/dev/slip.h
-=======
  ../../../../../os/net/../contiki.h ../../../../../os/net/ipv6/tcpip.h \
  ../../../../../os/dev/slip.h
->>>>>>> main
 ../../../../../os/net/app-layer/coap/module-macros.h:
 ../../../../../os/contiki.h:
 ../../../../../arch/platform/cooja/./contiki-conf.h:
@@ -50,9 +46,6 @@ project-conf.h:
 ../../../../../os/net/ipv6/uipopt.h:
 ../../../../../os/net/ipv6/uipbuf.h:
 ../../../../../os/net/linkaddr.h:
-<<<<<<< HEAD
-=======
 ../../../../../os/net/../contiki.h:
->>>>>>> main
 ../../../../../os/net/ipv6/tcpip.h:
 ../../../../../os/dev/slip.h:

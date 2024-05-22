@@ -18,8 +18,9 @@ build/cooja/obj/rpl-dag-root.o: \
  ../../../../../os/contiki-net.h ../../../../../os/contiki.h \
  ../../../../../os/net/ipv6/tcpip.h ../../../../../os/net/ipv6/uip.h \
  ../../../../../os/net/ipv6/uipopt.h ../../../../../os/net/ipv6/uipbuf.h \
- ../../../../../os/net/linkaddr.h ../../../../../os/net/ipv6/tcpip.h \
- ../../../../../os/net/ipv6/uip.h ../../../../../os/net/ipv6/uiplib.h \
+ ../../../../../os/net/linkaddr.h ../../../../../os/net/../contiki.h \
+ ../../../../../os/net/ipv6/tcpip.h ../../../../../os/net/ipv6/uip.h \
+ ../../../../../os/net/ipv6/uiplib.h \
  ../../../../../os/net/ipv6/uip-udp-packet.h \
  ../../../../../os/net/ipv6/simple-udp.h \
  ../../../../../os/net/ipv6/uip-nameserver.h \
@@ -92,6 +93,7 @@ build/cooja/obj/rpl-dag-root.o: \
 ../../../../../os/net/ipv6/uipopt.h:
 ../../../../../os/net/ipv6/uipbuf.h:
 ../../../../../os/net/linkaddr.h:
+../../../../../os/net/../contiki.h:
 ../../../../../os/net/ipv6/tcpip.h:
 ../../../../../os/net/ipv6/uip.h:
 ../../../../../os/net/ipv6/uiplib.h:

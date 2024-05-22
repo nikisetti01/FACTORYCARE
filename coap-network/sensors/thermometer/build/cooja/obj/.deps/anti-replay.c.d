@@ -16,10 +16,7 @@ build/cooja/obj/anti-replay.o: \
  ../../../../../arch/platform/cooja/./sys/cooja_mt.h \
  ../../../../../os/sys/pt.h ../../../../../os/sys/clock.h \
  ../../../../../os/net/packetbuf.h ../../../../../os/net/linkaddr.h \
-<<<<<<< HEAD
-=======
  ../../../../../os/net/../contiki.h \
->>>>>>> main
  ../../../../../os/net/mac/llsec802154.h \
  ../../../../../os/net/mac/framer/frame802154.h \
  ../../../../../os/net/ipv6/uip.h ../../../../../os/net/ipv6/uipopt.h \
@@ -53,10 +50,7 @@ project-conf.h:
 ../../../../../os/sys/clock.h:
 ../../../../../os/net/packetbuf.h:
 ../../../../../os/net/linkaddr.h:
-<<<<<<< HEAD
-=======
 ../../../../../os/net/../contiki.h:
->>>>>>> main
 ../../../../../os/net/mac/llsec802154.h:
 ../../../../../os/net/mac/framer/frame802154.h:
 ../../../../../os/net/ipv6/uip.h:

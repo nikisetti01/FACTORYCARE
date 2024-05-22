@@ -16,8 +16,8 @@ build/cooja/obj/iq-seeder.o: ../../../../../os/lib/iq-seeder.c \
  ../../../../../arch/platform/cooja/./sys/cooja_mt.h \
  ../../../../../os/sys/pt.h ../../../../../os/sys/clock.h \
  ../../../../../os/lib/aes-128.h ../../../../../os/net/netstack.h \
- ../../../../../os/net/mac/mac.h ../../../../../os/dev/radio.h \
- ../../../../../os/net/mac/framer/framer.h \
+ ../../../../../os/net/../contiki.h ../../../../../os/net/mac/mac.h \
+ ../../../../../os/dev/radio.h ../../../../../os/net/mac/framer/framer.h \
  ../../../../../os/net/linkaddr.h
 ../../../../../os/net/app-layer/coap/module-macros.h:
 ../../../../../os/lib/iq-seeder.h:
@@ -46,6 +46,7 @@ build/cooja/obj/iq-seeder.o: ../../../../../os/lib/iq-seeder.c \
 ../../../../../os/sys/clock.h:
 ../../../../../os/lib/aes-128.h:
 ../../../../../os/net/netstack.h:
+../../../../../os/net/../contiki.h:
 ../../../../../os/net/mac/mac.h:
 ../../../../../os/dev/radio.h:
 ../../../../../os/net/mac/framer/framer.h:

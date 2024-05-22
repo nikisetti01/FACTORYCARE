@@ -16,14 +16,9 @@ build/cooja/obj/nbr-table.o: ../../../../../os/net/nbr-table.c \
  ../../../../../os/sys/pt.h ../../../../../os/sys/clock.h \
  ../../../../../os/lib/memb.h ../../../../../os/lib/list.h \
  ../../../../../os/net/nbr-table.h ../../../../../os/net/linkaddr.h \
-<<<<<<< HEAD
- ../../../../../os/net/netstack.h ../../../../../os/net/mac/mac.h \
- ../../../../../os/dev/radio.h ../../../../../os/net/mac/framer/framer.h \
-=======
  ../../../../../os/net/../contiki.h ../../../../../os/net/netstack.h \
  ../../../../../os/net/mac/mac.h ../../../../../os/dev/radio.h \
  ../../../../../os/net/mac/framer/framer.h \
->>>>>>> main
  ../../../../../os/net/ipv6/uip-debug.h ../../../../../os/net/net-debug.h \
  ../../../../../os/net/ipv6/uip.h ../../../../../os/net/ipv6/uipopt.h \
  ../../../../../os/net/ipv6/uipbuf.h ../../../../../os/net/ipv6/tcpip.h \
@@ -56,10 +51,7 @@ project-conf.h:
 ../../../../../os/lib/list.h:
 ../../../../../os/net/nbr-table.h:
 ../../../../../os/net/linkaddr.h:
-<<<<<<< HEAD
-=======
 ../../../../../os/net/../contiki.h:
->>>>>>> main
 ../../../../../os/net/netstack.h:
 ../../../../../os/net/mac/mac.h:
 ../../../../../os/dev/radio.h:
