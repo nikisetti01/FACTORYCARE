@@ -106,8 +106,13 @@ PROCESS_THREAD(lpgSensorServer, ev, data)
 
     while(1) {
 
-      PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&timer));
+      PROCESS_WAIT_EVENT();
+      if(etimer_expired(&timer)){
+        
+      res_danger.trigger();
+      printf("notifico il danger");
       etimer_reset(&timer);
+      }
       
     }
 
