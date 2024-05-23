@@ -11,7 +11,7 @@ PLATFORMS_EXCLUDE = sky z1
 MODULES_REL+=/home/iot_ubuntu_intel/.local/lib/python3.10/site-packages/emlearn
 TARGET_LIBFILES+=-lm
 INC+=/home/iot_ubuntu_intel/.local/lib/python3.10/site-packages/emlearn
-CONTIKI=../../../../..
+CONTIKI=../../../..
 
 # Include the CoAP implementation
 include $(CONTIKI)/Makefile.dir-variables

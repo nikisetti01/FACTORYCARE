@@ -20,7 +20,7 @@
 #define LOG_LEVEL LOG_LEVEL_APP
 
 #define SERVER_EP_TEMP "coap://[fd00::202:2:2:2]:5683"
-#define SERVER_EP_LPG  "coap://[fe80::f6ce:36a2:c608:75a9]:5683" //TRY WITH DONGLE
+#define SERVER_EP_LPG  "coap://[fd00::204:4:4:4]:5683" //TRY WITH DONGLE
 //#define SERVER_EP_LPG   "coap://[fd00::203:3:3:3]:5683"
 
 #define CRITICAL_TEMP_VALUE 20
@@ -64,7 +64,7 @@ void response_handler_TEMP(coap_message_t *response) {
     printf("Temperature Response: |%s| (Parsed: %.2f)\n", temp_str, tempValue);
 }
 
-void handle_notification_temp(struct coap_observee *observee, void *notification, coap_notification_flag_t flag) {
+void handle_notification_temp(struct coap_observee_s *observee, void *notification, coap_notification_flag_t flag) {
     coap_message_t *msg = (coap_message_t *)notification;
     if (msg) {
         printf("Received temperature notification\n");
@@ -75,7 +75,7 @@ void handle_notification_temp(struct coap_observee *observee, void *notification
     }
 }
 
-void handle_notification_lpg(struct coap_observee *observee, void *notification, coap_notification_flag_t flag) {
+void handle_notification_lpg(struct coap_observee_s *observee, void *notification, coap_notification_flag_t flag) {
     coap_message_t *msg = (coap_message_t *)notification;
     if (msg) {
         printf("Received LPG notification\n");

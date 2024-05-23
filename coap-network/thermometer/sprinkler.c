@@ -29,7 +29,7 @@ static int lpg_level = 0;
 static int led_now = -1;
 static float last_temperature = 0;
 static float k_temp = 0.1;
-// static float k_lpg=0.2;
+ static float k_lpg=0.2;
 static float water = 0;
 
 PROCESS(coap_client_process, "CoAP Client Process");
@@ -46,8 +46,9 @@ float update_water_production_temperature(float water, float last_temperature, f
     return water;
 }
 
-void update_water_production_lpg(float *water, float last_temperature, float next_temperature) {
-water = STARTING_WATER + water * water * k_lpg;
+float  update_water_production_lpg() {
+water = STARTING_WATER + (water * water * k_lpg);
+return water;
  }
 
 void response_handler_temp(coap_message_t *response) {
@@ -128,7 +129,7 @@ PROCESS_THREAD(coap_client_process, ev, data)
         if (ev == PROCESS_EVENT_TIMER && etimer_expired(&ledtimer))
         {
             if (lpg_level == 2) {
-                water=update_water_production_lpg;
+                water=update_water_production_lpg();
                 printf("on for lpg\n");
                 printf("Rilascio %f di acqua\n", water);
                 // Lampeggio del LED rosso se il livello di LPG è alto
