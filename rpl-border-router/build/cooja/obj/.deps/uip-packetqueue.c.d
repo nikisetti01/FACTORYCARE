@@ -13,9 +13,9 @@ build/cooja/obj/uip-packetqueue.o: ../../../os/net/ipv6/uip-packetqueue.c \
  ../../../arch/platform/cooja/./lib/simEnvChange.h \
  ../../../arch/platform/cooja/./sys/cooja_mt.h ../../../os/sys/pt.h \
  ../../../os/sys/clock.h ../../../os/net/ipv6/uipbuf.h \
- ../../../os/net/linkaddr.h ../../../os/net/ipv6/tcpip.h \
- ../../../os/lib/memb.h ../../../os/net/ipv6/uip-packetqueue.h \
- ../../../os/sys/ctimer.h
+ ../../../os/net/linkaddr.h ../../../os/net/../contiki.h \
+ ../../../os/net/ipv6/tcpip.h ../../../os/lib/memb.h \
+ ../../../os/net/ipv6/uip-packetqueue.h ../../../os/sys/ctimer.h
 ../../../os/services/rpl-border-router/module-macros.h:
 ../../../os/net/ipv6/uip.h:
 ../../../os/net/ipv6/uipopt.h:
@@ -44,6 +44,7 @@ project-conf.h:
 ../../../os/sys/clock.h:
 ../../../os/net/ipv6/uipbuf.h:
 ../../../os/net/linkaddr.h:
+../../../os/net/../contiki.h:
 ../../../os/net/ipv6/tcpip.h:
 ../../../os/lib/memb.h:
 ../../../os/net/ipv6/uip-packetqueue.h:

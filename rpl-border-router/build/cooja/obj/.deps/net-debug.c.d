@@ -14,7 +14,8 @@ build/cooja/obj/net-debug.o: ../../../os/net/net-debug.c \
  ../../../arch/platform/cooja/./lib/simEnvChange.h \
  ../../../arch/platform/cooja/./sys/cooja_mt.h ../../../os/sys/pt.h \
  ../../../os/sys/clock.h ../../../os/net/ipv6/uipbuf.h \
- ../../../os/net/linkaddr.h ../../../os/net/ipv6/tcpip.h
+ ../../../os/net/linkaddr.h ../../../os/net/../contiki.h \
+ ../../../os/net/ipv6/tcpip.h
 ../../../os/services/rpl-border-router/module-macros.h:
 ../../../os/net/net-debug.h:
 ../../../os/net/ipv6/uip.h:
@@ -44,4 +45,5 @@ project-conf.h:
 ../../../os/sys/clock.h:
 ../../../os/net/ipv6/uipbuf.h:
 ../../../os/net/linkaddr.h:
+../../../os/net/../contiki.h:
 ../../../os/net/ipv6/tcpip.h:
