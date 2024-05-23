@@ -12,9 +12,9 @@ build/cooja/obj/border-router.o: border-router.c \
  ../../../arch/platform/cooja/./lib/simEnvChange.h \
  ../../../arch/platform/cooja/./sys/cooja_mt.h ../../../os/sys/pt.h \
  ../../../os/sys/clock.h ../../../os/sys/log.h ../../../os/net/linkaddr.h \
- ../../../os/sys/log-conf.h ../../../os/net/ipv6/uip.h \
- ../../../os/net/ipv6/uipopt.h ../../../os/net/ipv6/uipbuf.h \
- ../../../os/net/ipv6/tcpip.h
+ ../../../os/net/../contiki.h ../../../os/sys/log-conf.h \
+ ../../../os/net/ipv6/uip.h ../../../os/net/ipv6/uipopt.h \
+ ../../../os/net/ipv6/uipbuf.h ../../../os/net/ipv6/tcpip.h
 ../../../os/services/rpl-border-router/module-macros.h:
 ../../../os/contiki.h:
 ../../../arch/platform/cooja/./contiki-conf.h:
@@ -41,6 +41,7 @@ project-conf.h:
 ../../../os/sys/clock.h:
 ../../../os/sys/log.h:
 ../../../os/net/linkaddr.h:
+../../../os/net/../contiki.h:
 ../../../os/sys/log-conf.h:
 ../../../os/net/ipv6/uip.h:
 ../../../os/net/ipv6/uipopt.h:

@@ -2,12 +2,13 @@
 #include "contiki-net.h"
 #include "coap-engine.h"
 #include "random.h"
-#include "resources/res-predict-temp.c"
+#include "global_variables.h"
 #include <stdio.h>
 #include "sys/log.h"
 #include "resources/machine_learning/temperature_prediction.h"
 #define LOG_MODULE "App"
 #define LOG_LEVEL LOG_LEVEL_APP
+ 
 
 extern coap_resource_t res_predict_temp;
 coap_message_t request[1]; 
@@ -34,9 +35,7 @@ PROCESS_THREAD(thermometer_process, ev, data)
     while(1) {
         PROCESS_WAIT_EVENT();
         if(etimer_expired(&prediction_timer)) {
-            // Aggiorna i sensori e fai la previsione
-            update_sensors_and_predict();
-             
+            // Aggiorna i sensori e fai la previsione             
               res_predict_temp.trigger();
 
             // Resetta il timer per il prossimo aggiornamento

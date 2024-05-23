@@ -13,9 +13,9 @@ build/cooja/obj/iq-seeder.o: ../../../os/lib/iq-seeder.c \
  ../../../arch/platform/cooja/./lib/simEnvChange.h \
  ../../../arch/platform/cooja/./sys/cooja_mt.h ../../../os/sys/pt.h \
  ../../../os/sys/clock.h ../../../os/lib/aes-128.h \
- ../../../os/net/netstack.h ../../../os/net/mac/mac.h \
- ../../../os/dev/radio.h ../../../os/net/mac/framer/framer.h \
- ../../../os/net/linkaddr.h
+ ../../../os/net/netstack.h ../../../os/net/../contiki.h \
+ ../../../os/net/mac/mac.h ../../../os/dev/radio.h \
+ ../../../os/net/mac/framer/framer.h ../../../os/net/linkaddr.h
 ../../../os/services/rpl-border-router/module-macros.h:
 ../../../os/lib/iq-seeder.h:
 ../../../os/lib/csprng.h:
@@ -44,6 +44,7 @@ project-conf.h:
 ../../../os/sys/clock.h:
 ../../../os/lib/aes-128.h:
 ../../../os/net/netstack.h:
+../../../os/net/../contiki.h:
 ../../../os/net/mac/mac.h:
 ../../../os/dev/radio.h:
 ../../../os/net/mac/framer/framer.h:

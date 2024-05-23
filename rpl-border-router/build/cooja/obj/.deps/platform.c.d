@@ -12,13 +12,13 @@ build/cooja/obj/platform.o: ../../../arch/platform/cooja/./platform.c \
  ../../../arch/platform/cooja/./lib/simEnvChange.h \
  ../../../arch/platform/cooja/./sys/cooja_mt.h ../../../os/sys/pt.h \
  ../../../os/sys/clock.h ../../../os/sys/log.h ../../../os/net/linkaddr.h \
- ../../../os/sys/log-conf.h ../../../os/net/ipv6/uip.h \
- ../../../os/net/ipv6/uipopt.h ../../../os/net/ipv6/uipbuf.h \
- ../../../os/net/ipv6/tcpip.h ../../../os/lib/random.h \
- ../../../os/net/netstack.h ../../../os/net/mac/mac.h \
- ../../../os/dev/radio.h ../../../os/net/mac/framer/framer.h \
- ../../../os/net/queuebuf.h ../../../os/net/packetbuf.h \
- ../../../os/net/mac/llsec802154.h \
+ ../../../os/net/../contiki.h ../../../os/sys/log-conf.h \
+ ../../../os/net/ipv6/uip.h ../../../os/net/ipv6/uipopt.h \
+ ../../../os/net/ipv6/uipbuf.h ../../../os/net/ipv6/tcpip.h \
+ ../../../os/lib/random.h ../../../os/net/netstack.h \
+ ../../../os/net/mac/mac.h ../../../os/dev/radio.h \
+ ../../../os/net/mac/framer/framer.h ../../../os/net/queuebuf.h \
+ ../../../os/net/packetbuf.h ../../../os/net/mac/llsec802154.h \
  ../../../os/net/mac/framer/frame802154.h \
  ../../../os/net/mac/csma/csma-security.h \
  ../../../os/net/mac/tsch/tsch-conf.h ../../../os/dev/eeprom.h \
@@ -67,6 +67,7 @@ project-conf.h:
 ../../../os/sys/clock.h:
 ../../../os/sys/log.h:
 ../../../os/net/linkaddr.h:
+../../../os/net/../contiki.h:
 ../../../os/sys/log-conf.h:
 ../../../os/net/ipv6/uip.h:
 ../../../os/net/ipv6/uipopt.h:

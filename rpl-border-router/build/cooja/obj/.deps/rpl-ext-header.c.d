@@ -15,11 +15,12 @@ build/cooja/obj/rpl-ext-header.o: \
  ../../../arch/platform/cooja/./sys/cooja_mt.h ../../../os/sys/pt.h \
  ../../../os/sys/clock.h ../../../os/net/ipv6/uip.h \
  ../../../os/net/ipv6/uipopt.h ../../../os/net/ipv6/uipbuf.h \
- ../../../os/net/linkaddr.h ../../../os/net/ipv6/tcpip.h \
- ../../../os/net/ipv6/uip-ds6-nbr.h ../../../os/net/ipv6/uip-nd6.h \
- ../../../os/sys/stimer.h ../../../os/net/nbr-table.h \
- ../../../os/net/netstack.h ../../../os/net/mac/mac.h \
- ../../../os/dev/radio.h ../../../os/net/mac/framer/framer.h \
+ ../../../os/net/linkaddr.h ../../../os/net/../contiki.h \
+ ../../../os/net/ipv6/tcpip.h ../../../os/net/ipv6/uip-ds6-nbr.h \
+ ../../../os/net/ipv6/uip-nd6.h ../../../os/sys/stimer.h \
+ ../../../os/net/nbr-table.h ../../../os/net/netstack.h \
+ ../../../os/net/mac/mac.h ../../../os/dev/radio.h \
+ ../../../os/net/mac/framer/framer.h \
  ../../../os/net/ipv6/uip-packetqueue.h ../../../os/sys/ctimer.h \
  ../../../os/net/ipv6/uip-ds6-route.h ../../../os/lib/list.h \
  ../../../os/net/ipv6/uip-sr.h ../../../os/net/routing/rpl-lite/rpl.h \
@@ -76,6 +77,7 @@ project-conf.h:
 ../../../os/net/ipv6/uipopt.h:
 ../../../os/net/ipv6/uipbuf.h:
 ../../../os/net/linkaddr.h:
+../../../os/net/../contiki.h:
 ../../../os/net/ipv6/tcpip.h:
 ../../../os/net/ipv6/uip-ds6-nbr.h:
 ../../../os/net/ipv6/uip-nd6.h:
