@@ -1,7 +1,7 @@
-build/cooja/obj/thermometer.o: thermometer.c \
+build/cooja/obj/actuator.o: actuator.c \
  ../../../../../os/net/app-layer/coap/module-macros.h \
  ../../../../../os/contiki.h \
- ../../../../../arch/platform/cooja/./contiki-conf.h project-conf.h \
+ ../../../../../arch/platform/cooja/./contiki-conf.h \
  ../../../../../os/contiki-default-conf.h ../../../../../os/sys/process.h \
  ../../../../../os/sys/pt.h ../../../../../os/sys/lc.h \
  ../../../../../os/sys/lc-switch.h ../../../../../os/sys/cc.h \
@@ -59,13 +59,16 @@ build/cooja/obj/thermometer.o: thermometer.c \
  ../../../../../os/net/app-layer/coap/coap-observe.h \
  ../../../../../os/net/app-layer/coap/coap-separate.h \
  ../../../../../os/net/app-layer/coap/coap-observe-client.h \
- ../../../../../os/lib/random.h global_variables.h \
- ../../../../../os/sys/log.h ../../../../../os/sys/log-conf.h \
- resources/machine_learning/temperature_prediction.h
+ ../../../../../os/net/app-layer/coap/coap-blocking-api.h \
+ ../../../../../os/net/app-layer/coap/coap-request-state.h \
+ ../../../../../os/dev/leds.h ../../../../../os/dev/gpio-hal.h \
+ ../../../../../arch/platform/cooja/./dev/gpio-hal-arch.h \
+ ../../../../../os/dev/button-hal.h \
+ ../../../../../os/net/app-layer/coap/coap-log.h \
+ ../../../../../os/sys/log.h ../../../../../os/sys/log-conf.h
 ../../../../../os/net/app-layer/coap/module-macros.h:
 ../../../../../os/contiki.h:
 ../../../../../arch/platform/cooja/./contiki-conf.h:
-project-conf.h:
 ../../../../../os/contiki-default-conf.h:
 ../../../../../os/sys/process.h:
 ../../../../../os/sys/pt.h:
@@ -144,8 +147,12 @@ project-conf.h:
 ../../../../../os/net/app-layer/coap/coap-observe.h:
 ../../../../../os/net/app-layer/coap/coap-separate.h:
 ../../../../../os/net/app-layer/coap/coap-observe-client.h:
-../../../../../os/lib/random.h:
-global_variables.h:
+../../../../../os/net/app-layer/coap/coap-blocking-api.h:
+../../../../../os/net/app-layer/coap/coap-request-state.h:
+../../../../../os/dev/leds.h:
+../../../../../os/dev/gpio-hal.h:
+../../../../../arch/platform/cooja/./dev/gpio-hal-arch.h:
+../../../../../os/dev/button-hal.h:
+../../../../../os/net/app-layer/coap/coap-log.h:
 ../../../../../os/sys/log.h:
 ../../../../../os/sys/log-conf.h:
-resources/machine_learning/temperature_prediction.h:

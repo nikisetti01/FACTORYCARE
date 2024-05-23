@@ -1,7 +1,8 @@
-build/cooja/obj/thermometer.o: thermometer.c \
+build/cooja/obj/rpl-ext-header.o: \
+ ../../../../../os/net/routing/rpl-lite/rpl-ext-header.c \
  ../../../../../os/net/app-layer/coap/module-macros.h \
- ../../../../../os/contiki.h \
- ../../../../../arch/platform/cooja/./contiki-conf.h project-conf.h \
+ ../../../../../os/net/routing/routing.h ../../../../../os/contiki.h \
+ ../../../../../arch/platform/cooja/./contiki-conf.h \
  ../../../../../os/contiki-default-conf.h ../../../../../os/sys/process.h \
  ../../../../../os/sys/pt.h ../../../../../os/sys/lc.h \
  ../../../../../os/sys/lc-switch.h ../../../../../os/sys/cc.h \
@@ -14,15 +15,9 @@ build/cooja/obj/thermometer.o: thermometer.c \
  ../../../../../arch/platform/cooja/./lib/simEnvChange.h \
  ../../../../../arch/platform/cooja/./sys/cooja_mt.h \
  ../../../../../os/sys/pt.h ../../../../../os/sys/clock.h \
- ../../../../../os/contiki-net.h ../../../../../os/contiki.h \
- ../../../../../os/net/ipv6/tcpip.h ../../../../../os/net/ipv6/uip.h \
- ../../../../../os/net/ipv6/uipopt.h ../../../../../os/net/ipv6/uipbuf.h \
- ../../../../../os/net/linkaddr.h ../../../../../os/net/ipv6/tcpip.h \
- ../../../../../os/net/ipv6/uip.h ../../../../../os/net/ipv6/uiplib.h \
- ../../../../../os/net/ipv6/uip-udp-packet.h \
- ../../../../../os/net/ipv6/simple-udp.h \
- ../../../../../os/net/ipv6/uip-nameserver.h \
- ../../../../../os/net/routing/routing.h \
+ ../../../../../os/net/ipv6/uip.h ../../../../../os/net/ipv6/uipopt.h \
+ ../../../../../os/net/ipv6/uipbuf.h ../../../../../os/net/linkaddr.h \
+ ../../../../../os/net/ipv6/tcpip.h \
  ../../../../../os/net/ipv6/uip-ds6-nbr.h \
  ../../../../../os/net/ipv6/uip-nd6.h ../../../../../os/sys/stimer.h \
  ../../../../../os/net/nbr-table.h ../../../../../os/net/netstack.h \
@@ -32,8 +27,12 @@ build/cooja/obj/thermometer.o: thermometer.c \
  ../../../../../os/sys/ctimer.h \
  ../../../../../os/net/ipv6/uip-ds6-route.h ../../../../../os/lib/list.h \
  ../../../../../os/net/ipv6/uip-sr.h \
- ../../../../../os/net/ipv6/uip-icmp6.h \
- ../../../../../os/net/ipv6/uip-ds6.h \
+ ../../../../../os/net/routing/rpl-lite/rpl.h \
+ ../../../../../os/net/routing/rpl-lite/rpl-const.h \
+ ../../../../../os/net/routing/rpl-lite/rpl-conf.h \
+ ../../../../../os/net/routing/rpl-lite/rpl-types.h \
+ ../../../../../os/net/routing/rpl-lite/rpl-icmp6.h \
+ ../../../../../os/net/ipv6/uip.h ../../../../../os/net/ipv6/uip-ds6.h \
  ../../../../../os/net/ipv6/multicast/uip-mcast6.h \
  ../../../../../os/net/ipv6/multicast/uip-mcast6-engines.h \
  ../../../../../os/net/ipv6/multicast/uip-mcast6-route.h \
@@ -42,30 +41,23 @@ build/cooja/obj/thermometer.o: thermometer.c \
  ../../../../../os/net/ipv6/multicast/roll-tm.h \
  ../../../../../os/net/ipv6/multicast/uip-mcast6-stats.h \
  ../../../../../os/net/ipv6/multicast/mpl.h \
- ../../../../../os/net/ipv6/psock.h ../../../../../os/contiki-lib.h \
- ../../../../../os/lib/list.h ../../../../../os/lib/memb.h \
- ../../../../../os/lib/random.h ../../../../../os/net/ipv6/udp-socket.h \
- ../../../../../os/net/ipv6/tcp-socket.h ../../../../../os/net/ipv6/uip.h \
- ../../../../../os/net/netstack.h \
- ../../../../../os/net/app-layer/coap/coap-engine.h \
- ../../../../../os/net/app-layer/coap/coap.h \
- ../../../../../os/net/app-layer/coap/coap-constants.h \
- ../../../../../os/net/app-layer/coap/coap-conf.h \
- ../../../../../os/net/app-layer/coap/coap-transport.h \
- ../../../../../os/net/app-layer/coap/coap-endpoint.h \
- ../../../../../os/net/app-layer/coap/coap-timer.h \
- ../../../../../os/net/app-layer/coap/coap-transactions.h \
- ../../../../../os/net/app-layer/coap/coap-engine.h \
- ../../../../../os/net/app-layer/coap/coap-observe.h \
- ../../../../../os/net/app-layer/coap/coap-separate.h \
- ../../../../../os/net/app-layer/coap/coap-observe-client.h \
- ../../../../../os/lib/random.h global_variables.h \
- ../../../../../os/sys/log.h ../../../../../os/sys/log-conf.h \
- resources/machine_learning/temperature_prediction.h
+ ../../../../../os/net/ipv6/uip-ds6-nbr.h \
+ ../../../../../os/net/routing/rpl-lite/rpl-dag.h \
+ ../../../../../os/net/routing/rpl-lite/rpl-dag-root.h \
+ ../../../../../os/net/routing/rpl-lite/rpl-neighbor.h \
+ ../../../../../os/net/ipv6/uip-ds6.h \
+ ../../../../../os/net/routing/rpl-lite/rpl-ext-header.h \
+ ../../../../../os/net/routing/rpl-lite/rpl-timers.h \
+ ../../../../../os/net/packetbuf.h \
+ ../../../../../os/net/mac/llsec802154.h \
+ ../../../../../os/net/mac/framer/frame802154.h \
+ ../../../../../os/net/mac/csma/csma-security.h \
+ ../../../../../os/net/mac/tsch/tsch-conf.h ../../../../../os/sys/log.h \
+ ../../../../../os/sys/log-conf.h
 ../../../../../os/net/app-layer/coap/module-macros.h:
+../../../../../os/net/routing/routing.h:
 ../../../../../os/contiki.h:
 ../../../../../arch/platform/cooja/./contiki-conf.h:
-project-conf.h:
 ../../../../../os/contiki-default-conf.h:
 ../../../../../os/sys/process.h:
 ../../../../../os/sys/pt.h:
@@ -86,20 +78,11 @@ project-conf.h:
 ../../../../../arch/platform/cooja/./sys/cooja_mt.h:
 ../../../../../os/sys/pt.h:
 ../../../../../os/sys/clock.h:
-../../../../../os/contiki-net.h:
-../../../../../os/contiki.h:
-../../../../../os/net/ipv6/tcpip.h:
 ../../../../../os/net/ipv6/uip.h:
 ../../../../../os/net/ipv6/uipopt.h:
 ../../../../../os/net/ipv6/uipbuf.h:
 ../../../../../os/net/linkaddr.h:
 ../../../../../os/net/ipv6/tcpip.h:
-../../../../../os/net/ipv6/uip.h:
-../../../../../os/net/ipv6/uiplib.h:
-../../../../../os/net/ipv6/uip-udp-packet.h:
-../../../../../os/net/ipv6/simple-udp.h:
-../../../../../os/net/ipv6/uip-nameserver.h:
-../../../../../os/net/routing/routing.h:
 ../../../../../os/net/ipv6/uip-ds6-nbr.h:
 ../../../../../os/net/ipv6/uip-nd6.h:
 ../../../../../os/sys/stimer.h:
@@ -113,7 +96,12 @@ project-conf.h:
 ../../../../../os/net/ipv6/uip-ds6-route.h:
 ../../../../../os/lib/list.h:
 ../../../../../os/net/ipv6/uip-sr.h:
-../../../../../os/net/ipv6/uip-icmp6.h:
+../../../../../os/net/routing/rpl-lite/rpl.h:
+../../../../../os/net/routing/rpl-lite/rpl-const.h:
+../../../../../os/net/routing/rpl-lite/rpl-conf.h:
+../../../../../os/net/routing/rpl-lite/rpl-types.h:
+../../../../../os/net/routing/rpl-lite/rpl-icmp6.h:
+../../../../../os/net/ipv6/uip.h:
 ../../../../../os/net/ipv6/uip-ds6.h:
 ../../../../../os/net/ipv6/multicast/uip-mcast6.h:
 ../../../../../os/net/ipv6/multicast/uip-mcast6-engines.h:
@@ -123,29 +111,17 @@ project-conf.h:
 ../../../../../os/net/ipv6/multicast/roll-tm.h:
 ../../../../../os/net/ipv6/multicast/uip-mcast6-stats.h:
 ../../../../../os/net/ipv6/multicast/mpl.h:
-../../../../../os/net/ipv6/psock.h:
-../../../../../os/contiki-lib.h:
-../../../../../os/lib/list.h:
-../../../../../os/lib/memb.h:
-../../../../../os/lib/random.h:
-../../../../../os/net/ipv6/udp-socket.h:
-../../../../../os/net/ipv6/tcp-socket.h:
-../../../../../os/net/ipv6/uip.h:
-../../../../../os/net/netstack.h:
-../../../../../os/net/app-layer/coap/coap-engine.h:
-../../../../../os/net/app-layer/coap/coap.h:
-../../../../../os/net/app-layer/coap/coap-constants.h:
-../../../../../os/net/app-layer/coap/coap-conf.h:
-../../../../../os/net/app-layer/coap/coap-transport.h:
-../../../../../os/net/app-layer/coap/coap-endpoint.h:
-../../../../../os/net/app-layer/coap/coap-timer.h:
-../../../../../os/net/app-layer/coap/coap-transactions.h:
-../../../../../os/net/app-layer/coap/coap-engine.h:
-../../../../../os/net/app-layer/coap/coap-observe.h:
-../../../../../os/net/app-layer/coap/coap-separate.h:
-../../../../../os/net/app-layer/coap/coap-observe-client.h:
-../../../../../os/lib/random.h:
-global_variables.h:
+../../../../../os/net/ipv6/uip-ds6-nbr.h:
+../../../../../os/net/routing/rpl-lite/rpl-dag.h:
+../../../../../os/net/routing/rpl-lite/rpl-dag-root.h:
+../../../../../os/net/routing/rpl-lite/rpl-neighbor.h:
+../../../../../os/net/ipv6/uip-ds6.h:
+../../../../../os/net/routing/rpl-lite/rpl-ext-header.h:
+../../../../../os/net/routing/rpl-lite/rpl-timers.h:
+../../../../../os/net/packetbuf.h:
+../../../../../os/net/mac/llsec802154.h:
+../../../../../os/net/mac/framer/frame802154.h:
+../../../../../os/net/mac/csma/csma-security.h:
+../../../../../os/net/mac/tsch/tsch-conf.h:
 ../../../../../os/sys/log.h:
 ../../../../../os/sys/log-conf.h:
-resources/machine_learning/temperature_prediction.h:
