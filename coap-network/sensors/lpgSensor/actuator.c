@@ -50,7 +50,7 @@ void response_handler_LPG(coap_message_t *response) {
   printf("|%.*s\n", len, (char *)chunk);
 
   int value = atoi((char *)chunk);
-  lpgValue = 2;
+  lpgValue = value;
   if(lpgValue == 0)
   {
     printf("lpg is normal\n");
