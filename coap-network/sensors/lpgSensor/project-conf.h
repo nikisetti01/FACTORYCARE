@@ -31,79 +31,15 @@
 
 /**
  * \file
- *      Erbium (Er) CoAP Engine example.
+ *      Erbium (Er) example project configuration.
  * \author
  *      Matthias Kovatsch <kovatsch@inf.ethz.ch>
  */
 
+#ifndef PROJECT_CONF_H_
+#define PROJECT_CONF_H_
 
+#define LOG_LEVEL_APP LOG_LEVEL_DBG
+#define COAP_OBSERVE_CLIENT 1
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "contiki.h"
-#include "coap-engine.h"
-#include "resources/res_danger.c"
-//for ipv6
-#include "net/ipv6/uip-ds6.h"
-#include "net/ipv6/uip-ds6-route.h"
-#include "net/ipv6/uip-ds6-nbr.h"
-#include "net/ipv6/uip-nd6.h"
-#include "net/ipv6/uip-icmp6.h"
-
-#if PLATFORM_SUPPORTS_BUTTON_HAL
-#include "dev/button-hal.h"
-#else
-#include "dev/button-sensor.h"
-#endif
-
-/* Log configuration */
-#include "sys/log.h"
-#define LOG_MODULE "App"
-#define LOG_LEVEL LOG_LEVEL_RPL
-/*
- * Resources to be activated need to be imported through the extern keyword.
- * The build system automatically compiles the resources in the corresponding sub-directory.
- */
-extern coap_resource_t
-  res_danger;
-
-coap_message_t request[1];      /* This way the packet can be treated as pointer as usual. */
-
-
-PROCESS(lpgSensorServer, "lpgSensor Server");
-AUTOSTART_PROCESSES(&lpgSensorServer);
-
-PROCESS_THREAD(lpgSensorServer, ev, data)
-{
-  static struct etimer timer;
-
-  PROCESS_BEGIN();
-  printf("lpgSensorServer\n");
-  coap_activate_resource(&res_danger, "res_danger");
-  LOG_INFO("Risorsa avviata\n");
-  printf("Risorsa avviata\n");
-
-  /*
-   * Bind the resources to their Uri-Path.
-   * WARNING: Activating twice only means alternate path, not two instances!
-   * All static variables are the same for each URI path.
-   */
-  //res_danger.get_handler = res_get_handler;
-
-    etimer_set(&timer, CLOCK_SECOND * 10);
-
-    while(1) {
-
-      PROCESS_WAIT_EVENT();
-      if(etimer_expired(&timer)){
-        
-      res_danger.trigger();
-      printf("notifico il danger");
-      etimer_reset(&timer);
-      }
-      
-    }
-
-    PROCESS_END();
-}
+#endif /* PROJECT_CONF_H_ */

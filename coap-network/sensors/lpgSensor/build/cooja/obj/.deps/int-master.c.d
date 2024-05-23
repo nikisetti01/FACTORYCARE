@@ -2,7 +2,7 @@ build/cooja/obj/int-master.o: \
  ../../../../../arch/platform/cooja/./int-master.c \
  ../../../../../os/net/app-layer/coap/module-macros.h \
  ../../../../../os/contiki.h \
- ../../../../../arch/platform/cooja/./contiki-conf.h \
+ ../../../../../arch/platform/cooja/./contiki-conf.h project-conf.h \
  ../../../../../os/contiki-default-conf.h ../../../../../os/sys/process.h \
  ../../../../../os/sys/pt.h ../../../../../os/sys/lc.h \
  ../../../../../os/sys/lc-switch.h ../../../../../os/sys/cc.h \
@@ -19,6 +19,7 @@ build/cooja/obj/int-master.o: \
 ../../../../../os/net/app-layer/coap/module-macros.h:
 ../../../../../os/contiki.h:
 ../../../../../arch/platform/cooja/./contiki-conf.h:
+project-conf.h:
 ../../../../../os/contiki-default-conf.h:
 ../../../../../os/sys/process.h:
 ../../../../../os/sys/pt.h:

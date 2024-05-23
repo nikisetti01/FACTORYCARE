@@ -1,7 +1,7 @@
 build/cooja/obj/udp-socket.o: ../../../../../os/net/ipv6/udp-socket.c \
  ../../../../../os/net/app-layer/coap/module-macros.h \
  ../../../../../os/contiki-net.h ../../../../../os/contiki.h \
- ../../../../../arch/platform/cooja/./contiki-conf.h \
+ ../../../../../arch/platform/cooja/./contiki-conf.h project-conf.h \
  ../../../../../os/contiki-default-conf.h ../../../../../os/sys/process.h \
  ../../../../../os/sys/pt.h ../../../../../os/sys/lc.h \
  ../../../../../os/sys/lc-switch.h ../../../../../os/sys/cc.h \
@@ -51,6 +51,7 @@ build/cooja/obj/udp-socket.o: ../../../../../os/net/ipv6/udp-socket.c \
 ../../../../../os/contiki-net.h:
 ../../../../../os/contiki.h:
 ../../../../../arch/platform/cooja/./contiki-conf.h:
+project-conf.h:
 ../../../../../os/contiki-default-conf.h:
 ../../../../../os/sys/process.h:
 ../../../../../os/sys/pt.h:

@@ -5,7 +5,7 @@ build/cooja/obj/coap-observe-client.o: \
  ../../../../../os/net/app-layer/coap/coap-constants.h \
  ../../../../../os/net/app-layer/coap/coap-conf.h \
  ../../../../../os/contiki.h \
- ../../../../../arch/platform/cooja/./contiki-conf.h \
+ ../../../../../arch/platform/cooja/./contiki-conf.h project-conf.h \
  ../../../../../os/contiki-default-conf.h ../../../../../os/sys/process.h \
  ../../../../../os/sys/pt.h ../../../../../os/sys/lc.h \
  ../../../../../os/sys/lc-switch.h ../../../../../os/sys/cc.h \
@@ -29,13 +29,16 @@ build/cooja/obj/coap-observe-client.o: \
  ../../../../../os/net/app-layer/coap/coap-timer.h \
  ../../../../../os/net/app-layer/coap/coap-observe.h \
  ../../../../../os/net/app-layer/coap/coap-separate.h \
- ../../../../../os/lib/memb.h ../../../../../os/lib/list.h
+ ../../../../../os/lib/memb.h ../../../../../os/lib/list.h \
+ ../../../../../os/net/app-layer/coap/coap-log.h \
+ ../../../../../os/sys/log.h ../../../../../os/sys/log-conf.h
 ../../../../../os/net/app-layer/coap/module-macros.h:
 ../../../../../os/net/app-layer/coap/coap.h:
 ../../../../../os/net/app-layer/coap/coap-constants.h:
 ../../../../../os/net/app-layer/coap/coap-conf.h:
 ../../../../../os/contiki.h:
 ../../../../../arch/platform/cooja/./contiki-conf.h:
+project-conf.h:
 ../../../../../os/contiki-default-conf.h:
 ../../../../../os/sys/process.h:
 ../../../../../os/sys/pt.h:
@@ -72,3 +75,6 @@ build/cooja/obj/coap-observe-client.o: \
 ../../../../../os/net/app-layer/coap/coap-separate.h:
 ../../../../../os/lib/memb.h:
 ../../../../../os/lib/list.h:
+../../../../../os/net/app-layer/coap/coap-log.h:
+../../../../../os/sys/log.h:
+../../../../../os/sys/log-conf.h:

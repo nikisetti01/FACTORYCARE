@@ -3,7 +3,7 @@ build/cooja/obj/framer-802154.o: \
  ../../../../../os/net/app-layer/coap/module-macros.h \
  ../../../../../os/net/mac/framer/framer-802154.h \
  ../../../../../os/net/packetbuf.h ../../../../../os/contiki.h \
- ../../../../../arch/platform/cooja/./contiki-conf.h \
+ ../../../../../arch/platform/cooja/./contiki-conf.h project-conf.h \
  ../../../../../os/contiki-default-conf.h ../../../../../os/sys/process.h \
  ../../../../../os/sys/pt.h ../../../../../os/sys/lc.h \
  ../../../../../os/sys/lc-switch.h ../../../../../os/sys/cc.h \
@@ -30,6 +30,7 @@ build/cooja/obj/framer-802154.o: \
 ../../../../../os/net/packetbuf.h:
 ../../../../../os/contiki.h:
 ../../../../../arch/platform/cooja/./contiki-conf.h:
+project-conf.h:
 ../../../../../os/contiki-default-conf.h:
 ../../../../../os/sys/process.h:
 ../../../../../os/sys/pt.h:

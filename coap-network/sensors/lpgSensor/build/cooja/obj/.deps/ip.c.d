@@ -3,7 +3,7 @@ build/cooja/obj/ip.o: ../../../../../arch/platform/cooja/dev/ip.c \
  ../../../../../arch/platform/cooja/./dev/ip.h \
  ../../../../../arch/platform/cooja/./lib/simEnvChange.h \
  ../../../../../os/contiki.h \
- ../../../../../arch/platform/cooja/./contiki-conf.h \
+ ../../../../../arch/platform/cooja/./contiki-conf.h project-conf.h \
  ../../../../../os/contiki-default-conf.h ../../../../../os/sys/process.h \
  ../../../../../os/sys/pt.h ../../../../../os/sys/lc.h \
  ../../../../../os/sys/lc-switch.h ../../../../../os/sys/cc.h \
@@ -24,6 +24,7 @@ build/cooja/obj/ip.o: ../../../../../arch/platform/cooja/dev/ip.c \
 ../../../../../arch/platform/cooja/./lib/simEnvChange.h:
 ../../../../../os/contiki.h:
 ../../../../../arch/platform/cooja/./contiki-conf.h:
+project-conf.h:
 ../../../../../os/contiki-default-conf.h:
 ../../../../../os/sys/process.h:
 ../../../../../os/sys/pt.h:

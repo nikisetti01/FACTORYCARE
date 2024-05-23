@@ -1,7 +1,7 @@
 build/cooja/obj/netstack.o: ../../../../../os/net/netstack.c \
  ../../../../../os/net/app-layer/coap/module-macros.h \
  ../../../../../os/net/netstack.h ../../../../../os/net/../contiki.h \
- ../../../../../arch/platform/cooja/./contiki-conf.h \
+ ../../../../../arch/platform/cooja/./contiki-conf.h project-conf.h \
  ../../../../../os/net/../contiki-default-conf.h \
  ../../../../../os/net/../sys/process.h ../../../../../os/sys/pt.h \
  ../../../../../os/sys/lc.h ../../../../../os/sys/lc-switch.h \
@@ -22,6 +22,7 @@ build/cooja/obj/netstack.o: ../../../../../os/net/netstack.c \
 ../../../../../os/net/netstack.h:
 ../../../../../os/net/../contiki.h:
 ../../../../../arch/platform/cooja/./contiki-conf.h:
+project-conf.h:
 ../../../../../os/net/../contiki-default-conf.h:
 ../../../../../os/net/../sys/process.h:
 ../../../../../os/sys/pt.h:
