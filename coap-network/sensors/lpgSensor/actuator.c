@@ -18,9 +18,11 @@
 #include "coap-log.h"
 #define LOG_MODULE "App"
 #define LOG_LEVEL  LOG_LEVEL_APP
+#define MAX_REGISTRATION_RETRY 3
 
 #define SERVER_EP_TEMP "coap://[fd00::202:2:2:2]:5683"
 #define SERVER_EP_LPG  "coap://[fe80::f6ce:36f4:9606:f869]:5683" //TRY WITH DONGLE
+#define SERVER_EP_JAVA "coap://[fd00:1]:5836"
 //#define SERVER_EP_LPG   "coap://[fd00::203:3:3:3]:5683"
 
 #define CRITICAL_TEMP_VALUE 20
@@ -72,7 +74,7 @@ void response_handler_LPG(coap_message_t *response) {
 }
 
 void response_handler_TEMP(coap_message_t *response) {
-    printf("response_handler\n");
+    printf("response_handler temp\n");
     if(response==NULL)
     {
         printf("No response received.\n");
@@ -94,15 +96,35 @@ void response_handler_TEMP(coap_message_t *response) {
   }
 }
 
+void response_handler_java(coap_message_t *response)
+{
+  printf("response_handler_java\n");
+  if(response==NULL)
+    {
+        printf("No response received.\n");
+        return;
+    }
+
+  const uint8_t *chunk;
+  int len = coap_get_payload(response, &chunk);
+  printf("|lpgSensor ipv6: %.*s\n", len, (char *)chunk);
+  printf("Registration completed\n");
+}
+
 
 PROCESS_THREAD(coap_client_process, ev, data)
 {
     PROCESS_BEGIN();
+    printf("fanActuator starting\n");
 
-    static coap_endpoint_t server_ep_temp;
+    static coap_endpoint_t server_ep_java; //for registration
+
+    static coap_endpoint_t server_ep_temp; 
     static coap_endpoint_t server_ep_lpg;
     static coap_message_t request[1];
     static struct etimer timer;
+
+    coap_endpoint_parse(SERVER_EP_JAVA,strlen(SERVER_EP_JAVA),&server_ep_java); //for registration
 
     coap_endpoint_parse(SERVER_EP_TEMP, strlen(SERVER_EP_TEMP), &server_ep_temp);
     coap_endpoint_parse(SERVER_EP_LPG,strlen(SERVER_EP_LPG),&server_ep_lpg);
@@ -110,12 +132,43 @@ PROCESS_THREAD(coap_client_process, ev, data)
     etimer_set(&timer, CLOCK_SECOND); // * 5 è assai lento
     static struct etimer lpg_timer;
 
+
+    while(max_registration_retry!=0){
+		/* -------------- REGISTRATION --------------*/
+		// Populate the coap_endpoint_t data structure
+		coap_endpoint_parse(SERVER_EP, strlen(SERVER_EP), &server_ep);
+		// Prepare the message
+		coap_init_message(request, COAP_TYPE_CON,COAP_POST, 0);
+		coap_set_header_uri_path(request, "registrationActuator");
+		//Set payload
+		coap_set_payload(request, (uint8_t *)NODE_NAME_JSON, sizeof(NODE_NAME_JSON) - 1);
+	
+		COAP_BLOCKING_REQUEST(&server_ep, request, client_chunk_handler);
+    
+		/* -------------- END REGISTRATION --------------*/
+		if(max_registration_retry == -1){		// something goes wrong more MAX_REGISTRATION_RETRY times, node goes to sleep then try again
+			etimer_set(&sleep_timer, 30*CLOCK_SECOND);
+			PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&sleep_timer));
+			max_registration_retry = MAX_REGISTRATION_RETRY;
+		}
+	}
+
+
+    //registration
+    coap_init_message(request, COAP_TYPE_CON, COAP_POST, 0);
+    coap_set_header_uri_path(request, "register");
+    printf("Sending registration request to %s\n", SERVER_EP_JAVA);
+
+    COAP_BLOCKING_REQUEST(&server_ep_temp, request, response_handler_java);
+
+
     while(1) {
       printf("Starting the client process\n");
       PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&timer));
 
       //first request to the temperature sensor
-      /*coap_init_message(request, COAP_TYPE_CON, COAP_GET, 0);
+      /*
+      coap_init_message(request, COAP_TYPE_CON, COAP_GET, 0);
       coap_set_header_uri_path(request, service_url);
       printf("Sending request to %s\n", SERVER_EP_TEMP);
       COAP_BLOCKING_REQUEST(&server_ep_temp, request, response_handler_TEMP); //modifica creando risposta per temp e lpg in modo distinto
@@ -131,7 +184,7 @@ PROCESS_THREAD(coap_client_process, ev, data)
       etimer_reset(&timer);
 
       printf("lpgValue: %d\n", lpgValue);
-      if(lpgValue == 0) {//PROVO A INVERTIRE, CORRETTAMENTE NON VA
+      if(lpgValue == 0) {
          printf("SETTING LED GREEN\n");
       }
       
