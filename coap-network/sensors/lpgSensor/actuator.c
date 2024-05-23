@@ -54,12 +54,12 @@ void response_handler_LPG(coap_message_t *response) {
   if(lpgValue == 0)
   {
     printf("lpg is normal\n");
-    leds_single_on(LEDS_GREEN);
+    leds_on(LEDS_GREEN);
     return;
   }else if(lpgValue == 1)
   {
     printf("lpg is dangerous\n");
-    leds_single_on(LEDS_RED);
+    leds_on(LEDS_RED);
     return;
   }else if(lpgValue == 2)
   {
@@ -141,7 +141,7 @@ PROCESS_THREAD(coap_client_process, ev, data)
 
       if(lpgValue == 2) {
         etimer_set(&lpg_timer, CLOCK_SECOND);
-        leds_single_toggle(LEDS_RED);
+        leds_toggle(LEDS_RED);
         printf("SETTING LED RED PULSING\n");
       }
 
