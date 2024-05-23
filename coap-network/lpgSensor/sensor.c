@@ -50,7 +50,7 @@
 #include "net/ipv6/uip-ds6-nbr.h"
 #include "net/ipv6/uip-nd6.h"
 #include "net/ipv6/uip-icmp6.h"
-
+#include SERVER_EP "coap://[fd00::1]"
 #if PLATFORM_SUPPORTS_BUTTON_HAL
 #include "dev/button-hal.h"
 #else
@@ -70,7 +70,16 @@ extern coap_resource_t
 
 coap_message_t request[1];      /* This way the packet can be treated as pointer as usual. */
 
+void response_handler_registration(coap_message_t*response){
+  if(response==NULL){
+    printf("No response received.\n");
+        return;
+  }
+  const uint8_t *chunk;
+  int len=coap_get_payload(response, &chunk);
+  printf("|%.*s\n", len, (char *)chunk);
 
+}
 PROCESS(lpgSensorServer, "lpgSensor Server");
 AUTOSTART_PROCESSES(&lpgSensorServer);
 
@@ -79,6 +88,8 @@ PROCESS_THREAD(lpgSensorServer, ev, data)
   static struct etimer timer;
 
   PROCESS_BEGIN();
+  printf("so client mi vorrei iscrivere");
+
   printf("lpgSensorServer\n");
   coap_activate_resource(&res_danger, "res_danger");
   LOG_INFO("Risorsa avviata\n");
