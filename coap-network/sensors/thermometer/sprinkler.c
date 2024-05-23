@@ -7,7 +7,6 @@
 #include "coap-blocking-api.h"
 #include "sys/etimer.h"
 #include "os/dev/leds.h"
-
 #if PLATFORM_SUPPORTS_BUTTON_HAL
 #include "dev/button-hal.h"
 #else
@@ -16,6 +15,7 @@
 
 /* Log configuration */
 #include "coap-log.h"
+
 #define LOG_MODULE "App"
 #define LOG_LEVEL LOG_LEVEL_APP
 #define STARTING_WATER 0.2
@@ -96,7 +96,7 @@ PROCESS_THREAD(coap_client_process, ev, data)
     static coap_endpoint_t server_ep_temp;
     //static coap_endpoint_t server_ep_lpg;
     //static coap_observee_t* observe_temp;
-    static coap_message_t request[1];
+    ///static coap_message_t request[1];
   
     static struct etimer ledtimer;
 
@@ -105,17 +105,18 @@ PROCESS_THREAD(coap_client_process, ev, data)
      
     printf("Sending observation request to %s\n", SERVER_EP_TEMP);
         // Request per il sensore di temperatura
-        coap_init_message(request, COAP_TYPE_CON, COAP_GET, 0);
-        coap_set_header_uri_path(request, service_url);
+        //coap_init_message(request, COAP_TYPE_CON, COAP_GET, 0);
+      ///  coap_set_header_uri_path(request, service_url);
         coap_obs_request_registration( &server_ep_temp, service_url, handle_notification_temp,NULL);
     
         
     
-    etimer_set(&ledtimer, CLOCK_SECOND); // Imposta il timer del LED a 1 secondo per iniziare
+    etimer_set(&ledtimer, 2* CLOCK_SECOND); // Imposta il timer del LED a 1 secondo per iniziare
 
 
     while (1)
     {
+          PROCESS_WAIT_EVENT();
        
 
         // Request per il sensore LPG
