@@ -44,11 +44,13 @@ class CoapResourceRegistrationActuator extends CoapResource {
             InetAddress addr = exchange.getSourceAddress();
 		    System.out.println(addr);
 
-            //inserting the sensor ip in the database
-            db.insertIPv6Address(String.valueOf(addr).substring(1), "actuator");
 
 
             try {
+                //inserting the sensor ip in the database
+                db.insertIPv6Address(String.valueOf(addr).substring(1), "actuator");
+                db.insertActuator();
+
                 // Retrieve the list of sensor IPs
                 List<String> sensorIPs = db.getSensorIPs();
                 JSONArray sensorArray = new JSONArray();

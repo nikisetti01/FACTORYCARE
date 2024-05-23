@@ -14,7 +14,7 @@ public class IPv6DatabaseManager {
     static final String JDBC_USER = "root";
     static final String JDBC_PASSWORD = "root";
 
-    private Connection connect() throws SQLException {
+    private static Connection connect() throws SQLException {
         return DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
     }
 
@@ -82,9 +82,37 @@ public class IPv6DatabaseManager {
         return sensorIPs;
     }
 
-    public void createTableActuator() {
+    public static void createTableActuator(){
+        String createTableSQL = "CREATE TABLE actuators ("
+                + "ipAddress VARCHAR(15) NOT NULL, "
+                + "actuatorType VARCHAR(50) NOT NULL, "
+                + "threshold FLOAT NOT NULL, "
+                + "state VARCHAR(10) NOT NULL CHECK (stato IN ('active', 'off')), "
+                + "PRIMARY KEY (ipAddress, actuatorType))";
+
+        try (Connection conn = connect();
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(createTableSQL);
+            System.out.println("Table created successfully.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void createTableSensor(/* colonne dato e tipo dato delle colonne */) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createTableActuator'");
+        throw new UnsupportedOperationException("Unimplemented method 'createTableSensor'");
+    }
+
+    public void insertSensor() {
+        // tipo sensore | valore predetto | timestamp |
+        throw new UnsupportedOperationException("Unimplemented method 'insertSensor'");
+    }
+
+    public void insertActuator() {
+        // indirizzi ip | tipo attuatore | cosa fa | threshold | in funzione/ non attiva |
+        throw new UnsupportedOperationException("Unimplemented method 'insertActuator'");
     }
 
     /*
