@@ -14,8 +14,8 @@ build/cooja/obj/uip-icmp6.o: ../../../os/net/ipv6/uip-icmp6.c \
  ../../../arch/platform/cooja/./lib/simEnvChange.h \
  ../../../arch/platform/cooja/./sys/cooja_mt.h ../../../os/sys/pt.h \
  ../../../os/sys/clock.h ../../../os/net/ipv6/uipbuf.h \
- ../../../os/net/linkaddr.h ../../../os/net/ipv6/tcpip.h \
- ../../../os/net/ipv6/multicast/uip-mcast6.h \
+ ../../../os/net/linkaddr.h ../../../os/net/../contiki.h \
+ ../../../os/net/ipv6/tcpip.h ../../../os/net/ipv6/multicast/uip-mcast6.h \
  ../../../os/net/ipv6/multicast/uip-mcast6-engines.h \
  ../../../os/net/ipv6/multicast/uip-mcast6-route.h \
  ../../../os/net/ipv6/multicast/smrf.h \
@@ -61,6 +61,7 @@ project-conf.h:
 ../../../os/sys/clock.h:
 ../../../os/net/ipv6/uipbuf.h:
 ../../../os/net/linkaddr.h:
+../../../os/net/../contiki.h:
 ../../../os/net/ipv6/tcpip.h:
 ../../../os/net/ipv6/multicast/uip-mcast6.h:
 ../../../os/net/ipv6/multicast/uip-mcast6-engines.h:

@@ -14,7 +14,7 @@ build/cooja/obj/csma-security.o: ../../../os/net/mac/csma/csma-security.c \
  ../../../os/sys/clock.h ../../../os/net/mac/csma/csma.h \
  ../../../os/net/mac/mac.h ../../../os/dev/radio.h \
  ../../../os/net/packetbuf.h ../../../os/net/linkaddr.h \
- ../../../os/net/mac/llsec802154.h \
+ ../../../os/net/../contiki.h ../../../os/net/mac/llsec802154.h \
  ../../../os/net/mac/framer/frame802154.h ../../../os/net/ipv6/uip.h \
  ../../../os/net/ipv6/uipopt.h ../../../os/net/ipv6/uipbuf.h \
  ../../../os/net/ipv6/tcpip.h ../../../os/net/mac/csma/csma-security.h \
@@ -53,6 +53,7 @@ project-conf.h:
 ../../../os/dev/radio.h:
 ../../../os/net/packetbuf.h:
 ../../../os/net/linkaddr.h:
+../../../os/net/../contiki.h:
 ../../../os/net/mac/llsec802154.h:
 ../../../os/net/mac/framer/frame802154.h:
 ../../../os/net/ipv6/uip.h:

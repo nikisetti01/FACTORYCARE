@@ -6,6 +6,5 @@
         "tuple": "c",
         "type_traits": "c",
         "utility": "c"
-    },
-    "java.configuration.updateBuildConfiguration": "interactive"
+    }
 }

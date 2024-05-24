@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "temperature_prediction.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
+}

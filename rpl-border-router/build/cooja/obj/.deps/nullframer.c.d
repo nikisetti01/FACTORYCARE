@@ -13,7 +13,7 @@ build/cooja/obj/nullframer.o: ../../../os/net/mac/framer/nullframer.c \
  ../../../arch/platform/cooja/./lib/simEnvChange.h \
  ../../../arch/platform/cooja/./sys/cooja_mt.h ../../../os/sys/pt.h \
  ../../../os/sys/clock.h ../../../os/net/linkaddr.h \
- ../../../os/net/mac/llsec802154.h \
+ ../../../os/net/../contiki.h ../../../os/net/mac/llsec802154.h \
  ../../../os/net/mac/framer/frame802154.h ../../../os/net/ipv6/uip.h \
  ../../../os/net/ipv6/uipopt.h ../../../os/net/ipv6/uipbuf.h \
  ../../../os/net/ipv6/tcpip.h ../../../os/net/mac/csma/csma-security.h \
@@ -45,6 +45,7 @@ project-conf.h:
 ../../../os/sys/pt.h:
 ../../../os/sys/clock.h:
 ../../../os/net/linkaddr.h:
+../../../os/net/../contiki.h:
 ../../../os/net/mac/llsec802154.h:
 ../../../os/net/mac/framer/frame802154.h:
 ../../../os/net/ipv6/uip.h:

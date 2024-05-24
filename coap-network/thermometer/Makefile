@@ -1,0 +1,24 @@
+CONTIKI_PROJECT = thermometer sprinkler
+# coap-example-observe-client is outdated but will be ported at a later point
+all: $(CONTIKI_PROJECT)
+# Aggiungi tutti i file sorgente necessari
+thermometer_SOURCES = thermometer_process.c resources/res-predict-temp.c global_variables.h
+sprinkler_SOURCES = sprinkler.c
+MODULES_REL=./resources
+MODULES_REL+=./resources/machine_learning
+# Do not try to build on Sky because of code size limitation
+PLATFORMS_EXCLUDE = sky z1
+MODULES_REL+=/home/iot_ubuntu_intel/.local/lib/python3.10/site-packages/emlearn
+TARGET_LIBFILES+=-lm
+INC+=/home/iot_ubuntu_intel/.local/lib/python3.10/site-packages/emlearn
+CONTIKI=../../../..
+
+# Include the CoAP implementation
+include $(CONTIKI)/Makefile.dir-variables
+MODULES+=$(CONTIKI_NG_APP_LAYER_DIR)/coap
+CFLAGS+=-I$(CONTIKI_NG_APP_LAYER_DIR)/coap
+
+# Verifica che il percorso per le librerie sia corretto
+LDFLAGS+=-L$(CONTIKI_NG_APP_LAYER_DIR)/coap
+
+include $(CONTIKI)/Makefile.include
