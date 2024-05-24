@@ -22,13 +22,14 @@
 #define SERVER_EP_TEMP "coap://[fd00::202:2:2:2]:5683"
 #define SERVER_EP_LPG "coap://[fd00::204:4:4:4]:5683"
 
-static char *service_url = "predict-temp";
+static char *service_url_temp= "predict-temp";
+static char *service_url_lpg= "res-danger";
 static float next_temperature=0;
 static int lpg_level;
 static int led_now = -1;
 static float last_temperature;
 static float k_temp=0.1;
-//static float k_lpg=0.2;
+static float k_lpg=0.2;
 static float water=0;
 PROCESS(coap_client_process, "CoAP Client Process");
 AUTOSTART_PROCESSES(&coap_client_process);
