@@ -7,7 +7,6 @@
 #include "coap-blocking-api.h"
 #include "sys/etimer.h"
 #include "leds.h"
-
 #if PLATFORM_SUPPORTS_BUTTON_HAL
 #include "dev/button-hal.h"
 #else
@@ -36,6 +35,7 @@ static char* service_url_lpg = "res_danger";
 
 PROCESS(coap_client_process, "CoAP Client Process");
 AUTOSTART_PROCESSES(&coap_client_process);
+
 
 static int lpgValue = 0;
 static int tempValue = 0;

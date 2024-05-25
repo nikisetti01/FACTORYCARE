@@ -22,14 +22,14 @@
 #define SERVER_EP_TEMP "coap://[fd00::202:2:2:2]:5683"
 #define SERVER_EP_LPG "coap://[fd00::204:4:4:4]:5683"
 
-<<<<<<< HEAD
-static char *service_url = "predict-temp";
+static char *service_url_temp= "predict-temp";
+static char *service_url_lpg= "res-danger";
 static float next_temperature=0;
 static int lpg_level;
 static int led_now = -1;
 static float last_temperature;
 static float k_temp=0.1;
-//static float k_lpg=0.2;
+static float k_lpg=0.2;
 static float water=0;
 PROCESS(coap_client_process, "CoAP Client Process");
 AUTOSTART_PROCESSES(&coap_client_process);
@@ -43,48 +43,16 @@ float update_water_production_temperature(float water, float last_temperature, f
     return water;
 }
 
-//void update_water_production_lpg(float *water, float last_temperature, float next_temperature) {
-  //  water = STARTING_WATER + water * water * k_lpg;
-//}
+float update_water_production_lpg() {
+    water = STARTING_WATER + water * water * k_lpg;
+    return water;
+}
 
 
 void response_handler_temp(coap_message_t *response )
 {
     if (response == NULL)
     {
-=======
-static char *service_url_temp = "predict-temp";
-static char *service_url_lpg = "res_danger";
-static float next_temperature = 0;
-static int lpg_level = 0;
-static int led_now = -1;
-static float last_temperature = 0;
-static float k_temp = 0.1;
- static float k_lpg=0.2;
-static float water = 0;
-
-PROCESS(coap_client_process, "CoAP Client Process");
-AUTOSTART_PROCESSES(&coap_client_process);
-
-float update_water_production_temperature(float water, float last_temperature, float next_temperature) {
-    float diff;
-    if (last_temperature < 20) {
-        water = STARTING_WATER;
-    } else {
-        diff = next_temperature - last_temperature;
-        water += diff * k_temp;
-    }
-    return water;
-}
-
-float  update_water_production_lpg() {
-water = STARTING_WATER + (water * water * k_lpg);
-return water;
- }
-
-void response_handler_temp(coap_message_t *response) {
-    if (response == NULL) {
->>>>>>> termobranch
         printf("No response received from temperature sensor.\n");
         return;
     }
@@ -93,26 +61,6 @@ void response_handler_temp(coap_message_t *response) {
     char temp_str[len + 1];
     strncpy(temp_str, (char *)chunk, len);
     temp_str[len] = '\0';
-<<<<<<< HEAD
-    last_temperature=next_temperature;
-    next_temperature = strtof(temp_str, NULL);
-    printf("Temperature Response: |%.*s| (Parsed: %.2f)\n", len, (char *)chunk, next_temperature);
-}
-void handle_notification_temp(struct coap_observee_s *observee, void *notification, coap_notification_flag_t flag){
-    coap_message_t *msg = (coap_message_t *)notification;
-    if(msg){
-        printf("Received notification ");
-        response_handler_temp(msg);
-    }
-    else 
-    printf("non arriva nulla \n");
-}
-/*
-void response_handler_lpg(coap_message_t *response)
-{
-    if (response == NULL)
-    {
-=======
     last_temperature = next_temperature;
     next_temperature = strtof(temp_str, NULL);
     printf("Temperature Response: |%.*s| (Parsed: %.2f)\n", len, (char *)chunk, next_temperature);
@@ -131,7 +79,6 @@ void handle_notification_temp(struct coap_observee_s *observee, void *notificati
 
 void response_handler_lpg(coap_message_t *response) {
     if (response == NULL) {
->>>>>>> termobranch
         printf("No response received from LPG sensor.\n");
         return;
     }
@@ -143,9 +90,6 @@ void response_handler_lpg(coap_message_t *response) {
     lpg_level = atoi(lpg_str); // Assumendo che il livello LPG sia un numero intero (0, 1, 2)
     printf("LPG Response: |%s| (Parsed: %d)\n", lpg_str, lpg_level);
 }
-<<<<<<< HEAD
-*/
-=======
 
 void handle_notification_lpg(struct coap_observee_s *observee, void *notification, coap_notification_flag_t flag) {
     coap_message_t *msg = (coap_message_t *)notification;
@@ -158,86 +102,11 @@ void handle_notification_lpg(struct coap_observee_s *observee, void *notificatio
     }
 }
 
->>>>>>> termobranch
 PROCESS_THREAD(coap_client_process, ev, data)
 {
     PROCESS_BEGIN();
 
     static coap_endpoint_t server_ep_temp;
-<<<<<<< HEAD
-    //static coap_endpoint_t server_ep_lpg;
-    //static coap_observee_t* observe_temp;
-    ///static coap_message_t request[1];
-  
-    static struct etimer ledtimer;
-
-    coap_endpoint_parse(SERVER_EP_TEMP, strlen(SERVER_EP_TEMP), &server_ep_temp);
-    //coap_endpoint_parse(SERVER_EP_LPG, strlen(SERVER_EP_LPG), &server_ep_lpg);
-     
-    printf("Sending observation request to %s\n", SERVER_EP_TEMP);
-        // Request per il sensore di temperatura
-        //coap_init_message(request, COAP_TYPE_CON, COAP_GET, 0);
-      ///  coap_set_header_uri_path(request, service_url);
-        coap_obs_request_registration( &server_ep_temp, service_url, handle_notification_temp,NULL);
-    
-        
-    
-    etimer_set(&ledtimer, 2* CLOCK_SECOND); // Imposta il timer del LED a 1 secondo per iniziare
-
-
-    while (1)
-    {
-          PROCESS_WAIT_EVENT();
-       
-
-        // Request per il sensore LPG
-        //coap_init_message(request, COAP_TYPE_CON, COAP_GET, 0);
-        //coap_set_header_uri_path(request, "/res_danger");
-        //printf("Sending request to %s\n", SERVER_EP_LPG);
-      //  COAP_BLOCKING_REQUEST(&server_ep_lpg, request, response_handler_lpg);
-
-        // Logica basata sulla temperatura e sul livello LPG
-        if (next_temperature < 20 && lpg_level != 2)
-        {
-            leds_single_off(led_now);
-            led_now = LEDS_GREEN;
-            leds_single_on(led_now);
-            printf("Sprinkler off\n");
-        }
-        else if (next_temperature >= 20 && lpg_level != 2)
-        {
-            leds_single_off(led_now);
-            led_now = LEDS_BLUE;
-            leds_single_on(led_now);
-            printf("on for temperature");
-            water=update_water_production_temperature(water,last_temperature,next_temperature);
-            printf("Rilascio %f di acqua", water);
-        }
-        else if (lpg_level == 2)
-        {   printf("on for lpg");
-            //update_water_production_lpg(&water);
-            printf("Rilascio %f di acqua", water);
-            // Lampeggia il LED rosso quando il livello LPG è 2
-            if (etimer_expired(&ledtimer))
-            {
-                // Inverti lo stato del LED rosso
-                if (led_now == LEDS_RED)
-                {
-                    leds_single_off(LEDS_RED);
-                   // led_now = LEDS_NONE; Imposta il LED a NONE per evitare che sia acceso senza controllo
-                }
-                else
-                {
-                    leds_single_on(LEDS_RED);
-                    led_now = LEDS_RED;
-                }
-                etimer_reset(&ledtimer); // Resetta il timer del LED per farlo lampeggiare ogni secondo
-            }
-        }
-
-        // Resetta il timer per il prossimo ciclo
-        //etimer_reset(&timer);
-=======
     static coap_endpoint_t server_ep_lpg;
     static struct etimer ledtimer;
 
@@ -291,7 +160,6 @@ PROCESS_THREAD(coap_client_process, ev, data)
                 printf("Rilascio %f di acqua\n", water);
             }
         }
->>>>>>> termobranch
     }
 
     PROCESS_END();

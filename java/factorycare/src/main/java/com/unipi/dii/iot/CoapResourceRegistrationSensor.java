@@ -37,7 +37,7 @@ class CoapResourceRegistrationSensor extends CoapResource {
         }
 
         Response response;
-        if (json != null && json.containsKey("sensors")) {
+        if (json != null && json.containsKey("sensor")) {
             InetAddress addr = exchange.getSourceAddress();
             System.out.println(addr);
 
