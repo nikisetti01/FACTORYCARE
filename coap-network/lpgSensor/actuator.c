@@ -24,7 +24,7 @@
 #define CRITICAL_TEMP_VALUE 20
 
 #define LOG_LEVEL LOG_LEVEL_APP
-//TRY WITH DONGLE
+
 //#define SERVER_EP_LPG   "coap://[fd00::203:3:3:3]:5683"
 
 #define CRITICAL_TEMP_VALUE 20

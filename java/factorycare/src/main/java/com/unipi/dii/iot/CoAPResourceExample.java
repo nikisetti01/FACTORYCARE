@@ -16,6 +16,7 @@ class CoAPResourceExample extends CoapResource {
     @Override
     public void handlePOST(CoapExchange exchange) {
     /* your stuff */
+    System.out.println("\n POST request received");
     exchange.respond("post hello world!\n");
     }
 }
