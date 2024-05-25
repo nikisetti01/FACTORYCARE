@@ -47,7 +47,7 @@ static coap_message_t request[1];
     coap_endpoint_parse(SERVER_EP, strlen(SERVER_EP), &server_ep);
     // Initialize POST request
     coap_init_message(request, COAP_TYPE_CON, COAP_POST, 0);
-    coap_set_header_uri_path(request, "/sensor_registration");
+    coap_set_header_uri_path(request, "/registrationSensor");
 
     // Create JSON payload
     cJSON *root = cJSON_CreateObject();
