@@ -3,7 +3,7 @@
 Fase 3:
 - Lore:
 - Scrivere il DB e la gestione classi DAO db con la nostra JavaApplication e MYSQL, simula dati per vedere se funziona roba casuale
-- Scheletro iscrizione chiavette
+- Scheletro iscrizione chiavette -> attualmente non funziona la registrazione, java non riceve le richieste del server
 - Io:
 - Domani perchè so stanco fare le POST per mandare l'iscrizione al server e capire come mandare i dati al server
 - FASE 4:
