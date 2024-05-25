@@ -1,7 +1,6 @@
 package com.unipi.dii.iot;
 
 import org.eclipse.californium.core.CoapResource;
-import org.eclipse.californium.core.coap.CoAP.ResponseCode;
 import org.eclipse.californium.core.server.resources.CoapExchange;
 
 class CoAPResourceExample extends CoapResource {
@@ -11,12 +10,13 @@ class CoAPResourceExample extends CoapResource {
     }
     @Override
     public void handleGET(CoapExchange exchange) {
-    exchange.respond("hello world");
+        System.out.println("\nGET request received");
+    exchange.respond("hello world\n");
     }
     @Override
     public void handlePOST(CoapExchange exchange) {
     /* your stuff */
-    exchange.respond(ResponseCode.CREATED);
+    exchange.respond("post hello world!\n");
     }
 }
    

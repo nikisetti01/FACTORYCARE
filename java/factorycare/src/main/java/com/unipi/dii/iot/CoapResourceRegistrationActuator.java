@@ -43,9 +43,6 @@ class CoapResourceRegistrationActuator extends CoapResource {
         if (json.containsKey("sensors")){
             InetAddress addr = exchange.getSourceAddress();
 		    System.out.println(addr);
-
-
-
             try {
                 //inserting the sensor ip in the database
                 db.insertIPv6Address(String.valueOf(addr).substring(1), "actuator");
@@ -58,7 +55,7 @@ class CoapResourceRegistrationActuator extends CoapResource {
                 
                 // Create the response JSON
                 JSONObject jsonResponse = new JSONObject();
-                jsonResponse.put("sensorIPs", sensorArray);
+                //jsonResponse.put("sensorIPs", sensorArray);
                 
                 response = new Response(CoAP.ResponseCode.CREATED);
                 response.setPayload(jsonResponse.toJSONString());

@@ -34,6 +34,8 @@ public class IPv6DatabaseManager {
     }
 
     public void insertIPv6Address(String address, String type) {
+        createTableIPV6();
+        
         String insertSQL = "INSERT INTO ipv6_addresses (address, type) VALUES (?, ?)";
 
         try (Connection conn = connect();
