@@ -55,7 +55,7 @@ class CoapResourceRegistrationActuator extends CoapResource {
                 
                 // Create the response JSON
                 JSONObject jsonResponse = new JSONObject();
-                //jsonResponse.put("sensorIPs", sensorArray);
+                jsonResponse.put("IPV6", sensorArray);
                 
                 response = new Response(CoAP.ResponseCode.CREATED);
                 response.setPayload(jsonResponse.toJSONString());

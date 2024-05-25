@@ -7,7 +7,10 @@ import org.eclipse.californium.core.coap.Response;
 import org.eclipse.californium.core.server.resources.CoapExchange;
 
 class MyServer extends CoapServer {
-
+    public static void main(String args[]) {
+        System.out.print("The server is Running!");
+    }
+    
     public void handleGET(CoapExchange exchange) {
         Response response = new Response(ResponseCode.CONTENT);
         if (exchange.getRequestOptions().getAccept() == MediaTypeRegistry.APPLICATION_XML) {

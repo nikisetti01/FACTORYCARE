@@ -15,7 +15,7 @@ class CoapResourceRegistrationSensor extends CoapResource {
 
     public CoapResourceRegistrationSensor(String name) {
         super(name);
-        setObservable(true);
+       // setObservable(true);
     }
 
     @Override
@@ -32,8 +32,9 @@ class CoapResourceRegistrationSensor extends CoapResource {
         try {
             JSONParser parser = new JSONParser();
             json = (JSONObject) parser.parse(s);
+            System.out.println(json);
         } catch (Exception err) {
-            System.err.println("Json format not valid!");
+            System.err.println(err);
         }
 
         Response response;
