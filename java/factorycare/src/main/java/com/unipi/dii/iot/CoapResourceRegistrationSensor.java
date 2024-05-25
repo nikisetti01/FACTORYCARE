@@ -25,6 +25,7 @@ class CoapResourceRegistrationSensor extends CoapResource {
     
     @Override
     public void handlePOST(CoapExchange exchange) {
+        System.out.println("POST request received");
         byte[] request = exchange.getRequestPayload();
         String s = new String(request);
         JSONObject json = null;
@@ -41,7 +42,6 @@ class CoapResourceRegistrationSensor extends CoapResource {
             System.out.println(addr);
 
             // Insert the sensor IP in the database
-
             try {
                 db.insertIPv6Address(addr.getHostAddress(), "sensor");
                 response = new Response(CoAP.ResponseCode.CREATED);

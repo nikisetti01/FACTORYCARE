@@ -1,43 +1,3 @@
-/*
- * Copyright (c) 2013, Institute for Pervasive Computing, ETH Zurich
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- * 3. Neither the name of the Institute nor the names of its contributors
- *    may be used to endorse or promote products derived from this software
- *    without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE INSTITUTE AND CONTRIBUTORS ``AS IS'' AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED.  IN NO EVENT SHALL THE INSTITUTE OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
- * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
- * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
- * SUCH DAMAGE.
- *
- * This file is part of the Contiki operating system.
- */
-
-/**
- * \file
- *      Erbium (Er) CoAP Engine example.
- * \author
- *      Matthias Kovatsch <kovatsch@inf.ethz.ch>
- */
-
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -50,7 +10,11 @@
 #include "net/ipv6/uip-ds6-nbr.h"
 #include "net/ipv6/uip-nd6.h"
 #include "net/ipv6/uip-icmp6.h"
-#include SERVER_EP "coap://[fd00::1]"
+#include "leds.h"
+#include "coap-blocking-api.h"
+
+#define SERVER_EP_JAVA "coap://[fd00::1]:5683"
+
 #if PLATFORM_SUPPORTS_BUTTON_HAL
 #include "dev/button-hal.h"
 #else
@@ -61,23 +25,36 @@
 #include "sys/log.h"
 #define LOG_MODULE "App"
 #define LOG_LEVEL LOG_LEVEL_RPL
-/*
- * Resources to be activated need to be imported through the extern keyword.
- * The build system automatically compiles the resources in the corresponding sub-directory.
- */
+#define MAX_REGISTRATION_RETRY 3
+static int max_registration_retry = MAX_REGISTRATION_RETRY;
+
+//static char* service_url_reg = "/registrationSensor";
+
 extern coap_resource_t
   res_danger;
 
-coap_message_t request[1];      /* This way the packet can be treated as pointer as usual. */
+coap_message_t request[1];  
+static struct etimer sleep_timer;
+
 
 void response_handler_registration(coap_message_t*response){
+  
+  leds_off(LEDS_RED);
+  leds_single_off(LEDS_YELLOW);
+
   if(response==NULL){
-    printf("No response received.\n");
-        return;
+    printf("No response received. %d\n",max_registration_retry);
+    max_registration_retry--;
+	  if(max_registration_retry==0)
+		  max_registration_retry=-1;
+    return;
   }
+  //registration worked, so we can stop the retry
   const uint8_t *chunk;
   int len=coap_get_payload(response, &chunk);
-  printf("|%.*s\n", len, (char *)chunk);
+  printf("|: %.*s\n", len, (char *)chunk);
+  max_registration_retry = 0;
+  printf("Registration completed\n");
 
 }
 PROCESS(lpgSensorServer, "lpgSensor Server");
@@ -86,21 +63,39 @@ AUTOSTART_PROCESSES(&lpgSensorServer);
 PROCESS_THREAD(lpgSensorServer, ev, data)
 {
   static struct etimer timer;
+  static coap_endpoint_t server_ep_java;
 
   PROCESS_BEGIN();
-  printf("so client mi vorrei iscrivere");
+
+  while(max_registration_retry!=0){
+    leds_on(LEDS_RED);
+    leds_single_on(LEDS_YELLOW);
+
+		/* -------------- REGISTRATION --------------*/
+		// Populate the coap_endpoint_t data structure
+		coap_endpoint_parse(SERVER_EP_JAVA, strlen(SERVER_EP_JAVA), &server_ep_java);
+		// Prepare the message
+		coap_init_message(request, COAP_TYPE_CON,COAP_POST, 0);
+		coap_set_header_uri_path(request, "/hello");//service_url_reg);
+		//Set payload
+		//coap_set_payload(request, (uint8_t *)"sensor", sizeof("sensor") - 1);
+	
+    printf("Tentativo di registrazione a %s\n",SERVER_EP_JAVA);
+
+		COAP_BLOCKING_REQUEST(&server_ep_java, request, response_handler_registration);
+    
+		/* -------------- END REGISTRATION --------------*/
+		if(max_registration_retry == -1){		// something goes wrong more MAX_REGISTRATION_RETRY times, node goes to sleep then try again
+			etimer_set(&sleep_timer, 30*CLOCK_SECOND);
+			PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&sleep_timer));
+			max_registration_retry = MAX_REGISTRATION_RETRY;
+		}
+	}
 
   printf("lpgSensorServer\n");
   coap_activate_resource(&res_danger, "res_danger");
-  LOG_INFO("Risorsa avviata\n");
+  //LOG_INFO("Risorsa avviata\n");
   printf("Risorsa avviata\n");
-
-  /*
-   * Bind the resources to their Uri-Path.
-   * WARNING: Activating twice only means alternate path, not two instances!
-   * All static variables are the same for each URI path.
-   */
-  //res_danger.get_handler = res_get_handler;
 
     etimer_set(&timer, CLOCK_SECOND * 10);
 

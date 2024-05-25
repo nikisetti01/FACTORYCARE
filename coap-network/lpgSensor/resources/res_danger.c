@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> d6acee9 (added all the modifies for server and java app with leds for registration)
 #include <stdlib.h>
 #include <string.h>
 #include "coap-engine.h"
