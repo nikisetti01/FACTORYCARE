@@ -78,7 +78,7 @@ static coap_message_t request[1];
     printf("il payload %s \n",payload);
 
 
-    coap_set_payload(request, (uint8_t *)payload, sizeof(payload)-1);
+    coap_set_payload(request, (uint16_t *)payload, strlen(payload)+30);
     printf("Sending the registration request\n");
 
     // Send the blocking request
@@ -86,7 +86,7 @@ static coap_message_t request[1];
 
     // Clean up JSON objects
     cJSON_Delete(root);
-    //free(payload);
+    free(payload);
 
     printf("Activate server term\n");
     LOG_INFO("Starting Erbium Example Server\n");
