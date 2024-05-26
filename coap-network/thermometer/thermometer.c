@@ -55,8 +55,8 @@ static coap_message_t request[1];
         LOG_ERR("Failed to create JSON object\n");
         PROCESS_EXIT();
     }
-    cJSON_AddStringToObject(root, "sensor", "thermometer");
-    cJSON_AddStringToObject(root, "ipv6", "[fd00::202:2:2:2]");
+    cJSON_AddStringToObject(root, "s", "thermometer");
+    //cJSON_AddStringToObject(root, "ipv6", "[fd00::202:2:2:2]");
     
     cJSON *string_array = cJSON_CreateArray();
     if (string_array == NULL) {
@@ -66,8 +66,8 @@ static coap_message_t request[1];
     }
     cJSON_AddItemToArray(string_array, cJSON_CreateString("temperature"));
     cJSON_AddItemToArray(string_array, cJSON_CreateString("humidity"));
-    cJSON_AddItemToObject(root, "sensing_type", string_array);
-    cJSON_AddNumberToObject(root, "time_sample", TIME_SAMPLE);
+    cJSON_AddItemToObject(root, "ss", string_array);
+    cJSON_AddNumberToObject(root, "t", TIME_SAMPLE);
 
     char *payload = cJSON_PrintUnformatted(root);
     if (payload == NULL) {
@@ -75,18 +75,18 @@ static coap_message_t request[1];
         cJSON_Delete(root);
         PROCESS_EXIT();
     }
-    printf("il payload %s \n",payload);
+    printf("il payload %s  lenght  %ld \n",payload, strlen(payload));
 
 
-    coap_set_payload(request, (uint16_t *)payload, strlen(payload)+30);
+    coap_set_payload(request, (uint8_t *)payload, strlen(payload));
     printf("Sending the registration request\n");
 
     // Send the blocking request
     COAP_BLOCKING_REQUEST(&server_ep, request,client_chunk_handler);
 
     // Clean up JSON objects
-    cJSON_Delete(root);
-    free(payload);
+    //cJSON_Delete(root);
+    //free(payload);
 
     printf("Activate server term\n");
     LOG_INFO("Starting Erbium Example Server\n");

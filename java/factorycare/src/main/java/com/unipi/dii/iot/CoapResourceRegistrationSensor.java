@@ -29,9 +29,9 @@ class CoapResourceRegistrationSensor extends CoapResource {
     public void handlePOST(CoapExchange exchange) {
         System.out.println("POST request received");
         
-        byte[] request = exchange.getRequestPayload();
-        String payloadString = new String(request);
-        System.out.println("Payload received: " + payloadString);
+        String payloadString = exchange.getRequestText();
+        String ipAddress=exchange.getSourceAddress().getHostAddress();
+        System.out.println("Payload received: " + payloadString+ "lunghezza"+ payloadString.length());
         
         JSONObject json = null;
         try {
@@ -46,10 +46,10 @@ class CoapResourceRegistrationSensor extends CoapResource {
         Response response;
         // Extracting and handling each element in the JSON payload
         if (json != null) {
-            String sensor = (String) json.get("sensor");
-            String ipv6 = (String) json.get("ipv6");
-            JSONArray sensingType = (JSONArray) json.get("sensing_type");
-            Long timeSample = (Long) json.get("time_sample");
+            String sensor = (String) json.get("s");
+            String ipv6 = ipAddress;
+            JSONArray sensingType = (JSONArray) json.get("ss");
+            Long timeSample = (Long) json.get("t");
            
             if (sensor != null && ipv6 != null && sensingType != null && timeSample != null) {
                 InetAddress addr = exchange.getSourceAddress();
