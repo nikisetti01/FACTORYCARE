@@ -67,8 +67,9 @@ class CoapResourceRegistrationSensor extends CoapResource {
 
                     // Assuming we need to store the details in the database as well
                    // db.insertSensorDetails(sensor, ipv6, sensingType.toString(), timeSample);
-
+                   
                     response = new Response(CoAP.ResponseCode.CREATED);
+                    System.out.print(CoAP.ResponseCode.CREATED);
                 } catch (Exception e) {
                     System.err.println("Error inserting sensor IP in the database: " + e.getMessage());
                     response = new Response(CoAP.ResponseCode.INTERNAL_SERVER_ERROR);
