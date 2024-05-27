@@ -10,10 +10,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IPv6DatabaseManager {
-    static final String JDBC_URL = "jdbc:mysql://localhost:3306/iotDatabase?useSSL=false";
+    static final String JDBC_URL = "jdbc:mysql://localhost:3306/iotdatabase";
     static final String JDBC_USER = "root";
-    static final String JDBC_PASSWORD = "root";
+    static final String JDBC_PASSWORD = "PASSWORD";
 
+    public static void createDatabase() {
+        String JDBC_URL1 = "jdbc:mysql://localhost:3306/";
+        String JDBC_USER1 = "root";
+        String JDBC_PASSWORD1 = "PASSWORD";
+        String DATABASE_NAME1 = "iotdatabase";
+    
+        String createDatabaseSQL = "CREATE DATABASE IF NOT EXISTS " + DATABASE_NAME1;
+    
+        try (Connection conn = DriverManager.getConnection(JDBC_URL1, JDBC_USER1, JDBC_PASSWORD1);
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(createDatabaseSQL);
+            System.out.println("Database created successfully.");
+        } catch (SQLException e) {
+            System.out.println("Database not created.");
+            e.printStackTrace();
+        }
+    }
+    
     static Connection connect() throws SQLException {
         return DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
     }
@@ -108,7 +126,7 @@ public class IPv6DatabaseManager {
                 + "sensorName VARCHAR(15) NOT NULL, "
                 + "types VARCHAR(50) NOT NULL, "
                 + "value INT NOT NULL, "
-                + "PRIMARY KEY (ipAddress, actuatorType))";
+                + "PRIMARY KEY (ipAddress, sensorName))";
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
