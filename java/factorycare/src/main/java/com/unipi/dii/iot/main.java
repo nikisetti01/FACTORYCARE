@@ -10,6 +10,6 @@ public class main {
         server.add(new CoapResourceRegistrationSensor("registrationSensor"));
         server.add(new CoapResourceRegistrationActuator("registrationActuator"));
         server.start();
-        System.out.print("The server is Running!");
+        System.out.print("The server is Running!\n");
     }
 }

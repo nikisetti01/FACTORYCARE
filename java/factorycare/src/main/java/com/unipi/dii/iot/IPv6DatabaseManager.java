@@ -121,6 +121,7 @@ public class IPv6DatabaseManager {
 
 
     public static void createTableSensor() {
+        System.out.println("Creating table sensors");
         String createTableSQL = "CREATE TABLE IF NOT EXISTS sensors ("
                 + "ipAddress VARCHAR(15) NOT NULL, "
                 + "sensorName VARCHAR(15) NOT NULL, "
