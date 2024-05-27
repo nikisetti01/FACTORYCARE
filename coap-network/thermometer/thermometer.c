@@ -16,12 +16,35 @@
 #define MAX_REGISTRATION_RETRY 3
 #define GOOD_ACK 65
 extern coap_resource_t res_predict_temp;
+extern coap_resource_t res_monitoring_temp;
 static int registration_retry_count = 0;
 static int registered = 0;
 
 PROCESS(thermometer_process, "Thermometer Process");
 AUTOSTART_PROCESSES(&thermometer_process);
  static struct etimer prediction_timer;
+ static struct etimer monitoring_timer;
+ // funzione che scrive in un file di testo campioni casuali di temperatura e umidità per la previsione (10) ogni riga tipo 1 20.0 30.0
+void write_samples() {
+    FILE *file = fopen("samples.txt", "w");
+    if (file == NULL) {
+        LOG_ERR("Failed to open file\n");
+        return;
+    }
+
+    for (int i = 0; i < 10; i++) {
+        fprintf(file, "%d %.1f %.1f\n", i, 15.0 + (random_rand() % 150) / 10.0, 30.0 + (random_rand() % 700) / 10.0);
+    }
+
+    fclose(file);
+}
+// funzione che cancella i sample creati
+void delete_samples() {
+    if (remove("samples.txt") != 0) {
+        LOG_ERR("Failed to delete file\n");
+    }
+}
+
  void client_chunk_handler(coap_message_t *response) {
     const uint8_t *chunk;
 
@@ -105,11 +128,15 @@ static coap_message_t request[1];
     //cJSON_Delete(root);
     //free(payload);
 if(registered==1){
+    // vorrei settare un timer che ogni due secondi attiva la risorsa per il monitoraggio temp e umidità res-monitoring
+    // e ogni 10 secondi attiva la risorsa per la previsione della temperatura res-predict-temp
+    write_samples();
     printf("Activate server term\n");
     LOG_INFO("Starting Erbium Example Server\n");
 
     // Activate resource
     coap_activate_resource(&res_predict_temp, "predict-temp");
+    coap_activate_resource(&res_monitoring_temp, "monitoring-temp");
 
     // Initialize random number generator
     random_init(0);
@@ -117,15 +144,30 @@ if(registered==1){
     printf("CoAP server started\n");
 
     // Main loop
-     etimer_set(&prediction_timer, CLOCK_SECOND * 3);
+     etimer_set(&prediction_timer, CLOCK_SECOND * 10);
+     etimer_set(&monitoring_timer, CLOCK_SECOND * 2);
 
 
     // Processo principaale in loop
     while(1) {
         PROCESS_YIELD();
+        // Gestione del timer per il monitoraggio
+        if(etimer_expired(&monitoring_timer)) {
+            // Aggiorna i sensori e fai la previsione             
+              res_monitoring_temp.trigger();
+              
+
+            // Resetta il timer per il prossimo aggiornamento
+            etimer_reset(&monitoring_timer);
+        }
         if(etimer_expired(&prediction_timer)) {
             // Aggiorna i sensori e fai la previsione             
               res_predict_temp.trigger();
+            
+              delete_samples();
+              write_samples();
+            
+              
               
 
             // Resetta il timer per il prossimo aggiornamento

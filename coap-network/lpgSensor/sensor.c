@@ -94,7 +94,7 @@ PROCESS_THREAD(lpgSensorServer, ev, data)
      cJSON *string_array = cJSON_CreateArray();
     if (string_array == NULL) {
         LOG_ERR("Failed to create JSON array\n");
-        cJSON_Delete(root);
+      
         PROCESS_EXIT();
     }
     cJSON_AddItemToArray(string_array, cJSON_CreateString("ts"));
@@ -107,7 +107,7 @@ PROCESS_THREAD(lpgSensorServer, ev, data)
     char *payload = cJSON_PrintUnformatted(root);
     if (payload == NULL) {
         LOG_ERR("Failed to print JSON object\n");
-        cJSON_Delete(root);
+       
         PROCESS_EXIT();
     }
     //printf("il payload %s  lenght  %ld \n",payload, strlen(payload));

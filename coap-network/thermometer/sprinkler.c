@@ -23,7 +23,7 @@
 #define STARTING_WATER 0.2
 #define SERVER_EP_APP "coap://[fd00::1]:5683"
 
-#define MAX_REGISTRATION_ENTRY 3
+#define MAX_REGISTRATION_ENTRY 5
 static char ipv6temp[40];
 static char ipv6lpg[40];
 static char *service_url_temp= "predict-temp";
