@@ -1,7 +1,6 @@
 package com.unipi.dii.iot;
 
 import java.net.InetAddress;
-import java.sql.SQLException;
 
 import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.coap.CoAP;
@@ -26,7 +25,7 @@ class CoapResourceRegistrationSensor extends CoapResource {
         exchange.respond("hello world");
     }
     
-    /*@Override
+    @Override
     public void handlePOST(CoapExchange exchange) {
         System.out.println("POST request received");
         //db setup
@@ -34,7 +33,8 @@ class CoapResourceRegistrationSensor extends CoapResource {
         
         String payloadString = exchange.getRequestText();
         String ipAddress=exchange.getSourceAddress().getHostAddress();
-        System.out.println("Payload received: " + payloadString+ "lunghezza"+ payloadString.length());
+        System.out.println("Payload received: " + payloadString+ " \nlunghezza"+ payloadString.length());
+        System.out.println("IP address: " + ipAddress + "\n");
         
         JSONObject json = null;
         try {
@@ -57,94 +57,15 @@ class CoapResourceRegistrationSensor extends CoapResource {
                 if (sensor != null && ipv6 != null && sensingType != null ) {
                     InetAddress addr = exchange.getSourceAddress();
                     System.out.println("Source address: " + addr);
-
-                    // Insert the sensor IP in the database
-
                     try {
-
+                        // Insert the sensor IP in the database
                         db.insertIPv6Address(addr.getHostAddress(), sensor);
                         System.out.println("Sensor: " + sensor);
                         System.out.println("IPv6: " + ipv6);
                         System.out.println("Sensing Types: " + sensingType);
                         System.out.println("Time Sample: " + timeSample);
-
+                        //insert sensor in the database
                         db.insertSensor(sensor, ipv6, sensingType.toString(), timeSample);
-
-                        // Assuming we need to store the details in the database as well
-                        // db.insertSensorDetails(sensor, ipv6, sensingType.toString(), timeSample);
-
-                        response = new Response(CoAP.ResponseCode.CREATED);
-                        System.out.print(CoAP.ResponseCode.CREATED);
-                    } catch (Exception e) {
-                        System.err.println("Error inserting sensor IP in the database: " + e.getMessage());
-                        response = new Response(CoAP.ResponseCode.INTERNAL_SERVER_ERROR);
-                    }
-                } else {
-                    System.err.println("Missing required JSON keys");
-                    response = new Response(CoAP.ResponseCode.BAD_REQUEST);
-                }
-            } else {
-                response = new Response(CoAP.ResponseCode.BAD_REQUEST);
-            }
-
-            // Assigning values from JSON payload to variables
-            String sensor = (String) json.get("s");
-            String[] sensingTypes = ((JSONArray) json.get("ss")).toArray(new String[0]);
-            long timeSample = (Long) json.get("t");
-
-            exchange.respond(response);
-            }*/
-            @Override
-    public void handlePOST(CoapExchange exchange) {
-        //db setup
-        System.out.println("POST request received");
-        //db setup
-        IPv6DatabaseManager.createTableSensor();
-        
-        String payloadString = exchange.getRequestText();
-        String ipAddress=exchange.getSourceAddress().getHostAddress();
-        System.out.println("Payload received: " + payloadString+ "lunghezza"+ payloadString.length());
-        
-        JSONObject json = null;
-
-        try {
-            JSONParser parser = new JSONParser();
-            json = (JSONObject) parser.parse(payloadString);
-            System.out.println("Parsed JSON: " + json);
-            } catch (ParseException err) {
-                System.err.println("JSON parsing error: " + err.getMessage());
-                exchange.respond(CoAP.ResponseCode.BAD_REQUEST, "Invalid JSON format");
-                return;
-            }
-            Response response;
-            
-            // Extracting and handling each element in the JSON payload
-            if (json != null) {
-                String sensor = (String) json.get("s");
-                String ipv6 = ipAddress;
-                JSONArray sensingType = (JSONArray) json.get("ss");
-                int timeSample = (int) json.get("t");
-                response = new Response(CoAP.ResponseCode.INTERNAL_SERVER_ERROR);
-                exchange.respond(response);
-
-                if (sensor != null && ipv6 != null && sensingType != null ) {
-                    InetAddress addr = exchange.getSourceAddress();
-                    System.out.println("Source address: " + addr);
-
-                    // Insert the sensor IP in the database
-
-                    try {
-
-                        db.insertIPv6Address(addr.getHostAddress(), sensor);
-                        System.out.println("Sensor: " + sensor);
-                        System.out.println("IPv6: " + ipv6);
-                        System.out.println("Sensing Types: " + sensingType);
-                        System.out.println("Time Sample: " + timeSample);
-
-                        db.insertSensor(sensor, ipv6, sensingType.toString(), timeSample);
-
-                        // Assuming we need to store the details in the database as well
-                        // db.insertSensorDetails(sensor, ipv6, sensingType.toString(), timeSample);
 
                         response = new Response(CoAP.ResponseCode.CREATED);
                         System.out.print(CoAP.ResponseCode.CREATED);
@@ -166,5 +87,5 @@ class CoapResourceRegistrationSensor extends CoapResource {
             long timeSample = (Long) json.get("t");
 
             exchange.respond(response);
-        }
+            }
     }

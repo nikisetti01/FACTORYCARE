@@ -1,7 +1,7 @@
 package com.unipi.dii.iot;
 
 import java.net.InetAddress;
-import java.sql.SQLException;
+import java.util.List;
 
 import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.coap.CoAP;
@@ -32,7 +32,8 @@ class CoapResourceRegistrationActuator extends CoapResource {
     
         String payloadString = exchange.getRequestText();
         String ipAddress = exchange.getSourceAddress().getHostAddress();
-        System.out.println("Payload received: " + payloadString + " length: " + payloadString.length());
+        System.out.println("Payload received: " + payloadString + " \nlength: " + payloadString.length());
+        System.out.println("IP address: " + ipAddress + "\n");
     
         Response response;
     
@@ -45,14 +46,18 @@ class CoapResourceRegistrationActuator extends CoapResource {
                 // Insert the sensor IP in the database
                 try {
                     // Assuming we need to store the details in the database as well
-                    // db.insertIPv6Address(addr.getHostAddress(), actuator);
-                    // db.insertSensorDetails(actuator, ipAddress, sensingType.toString(), timeSample);
+                    db.insertIPv6Address(addr.getHostAddress(), actuator);
+                    
+                    //after parsing the payload we have to create the table for this actuator
+                    IPv6DatabaseManager.createTableActuator();
     
                     // Create response JSON object
                     JSONObject responseJson = new JSONObject();
-                    // Assuming some SQL query results for ipv6 addresses
-                    responseJson.put("t", "[fd00::202:2:2:2]");
-                    responseJson.put("l", "[fd00::204:4:4:4]");
+                    // taking ips from database
+                    List<String> sensorIPs = db.getSensorIPs();
+                    for (String ip : sensorIPs) {
+                        responseJson.put("s", ip);
+                    }
                     System.out.println(responseJson);
     
                     response = new Response(CoAP.ResponseCode.CREATED);
