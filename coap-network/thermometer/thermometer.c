@@ -26,7 +26,11 @@ AUTOSTART_PROCESSES(&thermometer_process);
  static struct etimer monitoring_timer;
  // funzione che scrive in un file di testo campioni casuali di temperatura e umidità per la previsione (10) ogni riga tipo 1 20.0 30.0
 void write_samples() {
+<<<<<<< HEAD
     FILE *file = fopen("samples.txt", "w");
+=======
+    FILE *file = fopen("resources/sample.txt", "w");
+>>>>>>> main
     if (file == NULL) {
         LOG_ERR("Failed to open file\n");
         return;
@@ -40,7 +44,11 @@ void write_samples() {
 }
 // funzione che cancella i sample creati
 void delete_samples() {
+<<<<<<< HEAD
     if (remove("samples.txt") != 0) {
+=======
+    if (remove("resources/sample.txt") != 0) {
+>>>>>>> main
         LOG_ERR("Failed to delete file\n");
     }
 }
