@@ -7,7 +7,6 @@
 #include <stdlib.h> // Aggiunto per utilizzare random_rand()
 
 
-
 static void res_get_handler(coap_message_t *request, coap_message_t *response, uint8_t *buffer,
                             uint16_t preferred_size, int32_t *offset);
 

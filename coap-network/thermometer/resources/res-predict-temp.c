@@ -46,6 +46,7 @@ static void res_get_handler(coap_message_t *request, coap_message_t *response, u
 static void res_event_handler(void) {
     coap_notify_observers(&res_predict_temp);
 }
+<<<<<<< HEAD
 // funzione per leggere in un file di txt sample del tipo 0 20.0 30.0 e associa 
 float update_sensors_and_predict(void) {
     // Simula la lettura di nuovi valori di temperatura e umidità
@@ -62,3 +63,5 @@ float update_sensors_and_predict(void) {
     // Attiva l'evento per notificare gli osservatori
     return current_prediction;
 }
+=======
+>>>>>>> main
