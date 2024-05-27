@@ -6,10 +6,13 @@ thermometer_SOURCES = thermometer_process.c resources/res-predict-temp.c global_
 sprinkler_SOURCES = sprinkler.c
 MODULES_REL=./resources
 MODULES_REL+=./resources/machine_learning
+MODULES_REL+=./global_variable
 # Do not try to build on Sky because of code size limitation
 PLATFORMS_EXCLUDE = sky z1
 
 MODULES_REL+=../cJSON-master
+
+
 MODULES_REL+=/home/iot_ubuntu_intel/.local/lib/python3.10/site-packages/emlearn
 TARGET_LIBFILES+=-lm
 INC+=/home/iot_ubuntu_intel/.local/lib/python3.10/site-packages/emlearn

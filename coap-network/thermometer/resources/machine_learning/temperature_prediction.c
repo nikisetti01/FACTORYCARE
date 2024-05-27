@@ -56,36 +56,16 @@ float predict_next_temperature() {
     float predicted_temperature = eml_trees_regress1(&temperature_prediction_model, input, 20);
     return denormalized_prediction(predicted_temperature);
 }
-// funzione che legge da un file sample.txt con righe 1 30.0 20.0  i valori di temperatura e umidità li normalizza e predice la temperatura successiva
-float update_sensors_and_predict(void) {
-    // Leggi i valori di temperatura e umidità dal file
-    FILE *file = fopen("samples.txt", "r");
-    if (file == NULL) {
-        printf("Failed to open file\n");
-        return -1;
+// funzione che prende un array di 10 elementi temp e 10 elementi umidità e predice la temperatura successiva
+float predict_next_temperature_from_values(float temp[], float hum[]) {
+    // Prepara l'input per il modello di predizione
+    float input[20];
+    for(int i = 0; i < 10; i++) {
+        input[i] = temp[i];
+        input[10 + i] = hum[i];
     }
-
-    float new_temperature, new_humidity;
-    int count = 0;
-    while (fscanf(file, "%*d %f %f", &new_temperature, &new_humidity) == 2) {
-        // Normalizza i valori di temperatura e umidità
-        float normalized_temperature = normalize(new_temperature, TEMP_MIN, TEMP_MAX);
-        float normalized_humidity = normalize(new_humidity, HUMIDITY_MIN, HUMIDITY_MAX);
-
-        // Aggiorna gli array con i nuovi valori normalizzati
-        temperatures[index] = normalized_temperature;
-        humidities[index] = normalized_humidity;
-
-        // Aggiorna l'indice per il buffer circolare
-        index = (index + 1) % 10;
-        count++;
-    }
-
-    fclose(file);
-
+    
     // Predici la prossima temperatura
-    float current_prediction = predict_next_temperature();
-    printf("current prediction %f\n", current_prediction);
-
-    return current_prediction;
+    float predicted_temperature = eml_trees_regress1(&temperature_prediction_model, input, 20);
+    return denormalized_prediction(predicted_temperature);
 }
