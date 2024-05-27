@@ -27,6 +27,7 @@ AUTOSTART_PROCESSES(&thermometer_process);
 
     if (response == NULL) {
         LOG_ERR("Request timed out\n");
+        printf("Request timed out\n");
         return;
     }
 

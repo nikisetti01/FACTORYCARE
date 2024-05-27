@@ -44,6 +44,7 @@ void client_chunk_handler(coap_message_t *response) {
 
     if (response == NULL) {
         LOG_ERR("Request timed out\n");
+        printf("Request timed out\n");
         return;
     }
 
@@ -109,7 +110,7 @@ PROCESS_THREAD(lpgSensorServer, ev, data)
         cJSON_Delete(root);
         PROCESS_EXIT();
     }
-    printf("il payload %s  lenght  %ld \n",payload, strlen(payload));
+    //printf("il payload %s  lenght  %ld \n",payload, strlen(payload));
 
 
 		//Set payload
