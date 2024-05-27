@@ -14,7 +14,7 @@ public class IPv6DatabaseManager {
     static final String JDBC_USER = "root";
     static final String JDBC_PASSWORD = "root";
 
-    private static Connection connect() throws SQLException {
+    static Connection connect() throws SQLException {
         return DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
     }
 
@@ -85,7 +85,7 @@ public class IPv6DatabaseManager {
     }
 
     public static void createTableActuator(){
-        String createTableSQL = "CREATE TABLE actuators ("
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS actuators ("
                 + "ipAddress VARCHAR(15) NOT NULL, "
                 + "actuatorType VARCHAR(50) NOT NULL, "
                 + "threshold FLOAT NOT NULL, "
@@ -102,14 +102,38 @@ public class IPv6DatabaseManager {
     }
 
 
-    public void createTableSensor(/* colonne dato e tipo dato delle colonne */) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createTableSensor'");
+    public static void createTableSensor() {
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS sensors ("
+                + "ipAddress VARCHAR(15) NOT NULL, "
+                + "sensorName VARCHAR(15) NOT NULL, "
+                + "types VARCHAR(50) NOT NULL, "
+                + "value INT NOT NULL, "
+                + "PRIMARY KEY (ipAddress, actuatorType))";
+
+        try (Connection conn = connect();
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(createTableSQL);
+            System.out.println("Table created successfully.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void insertSensor() {
-        // tipo sensore | valore predetto | timestamp |
-        throw new UnsupportedOperationException("Unimplemented method 'insertSensor'");
+    public void insertSensor(String sensorName, String ip, String ss,int value) {
+        // tipo sensore | valore predetto | valore |
+        String insertSQL = "INSERT INTO sensors (ipAddress, sensorName, types, value) VALUES (?, ?, ?, ?)";
+
+        try (Connection conn = connect();
+            PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
+            pstmt.setString(1, ip);
+            pstmt.setString(2, sensorName);
+            pstmt.setString(3, ss);
+            pstmt.setInt(4, value);
+            pstmt.executeUpdate();
+            System.out.println("Sensor inserted successfully.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void insertActuator() {

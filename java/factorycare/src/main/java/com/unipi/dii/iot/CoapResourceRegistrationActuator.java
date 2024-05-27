@@ -1,14 +1,13 @@
 package com.unipi.dii.iot;
 
 import java.net.InetAddress;
+import java.sql.SQLException;
 
 import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.coap.CoAP;
 import org.eclipse.californium.core.coap.Response;
 import org.eclipse.californium.core.server.resources.CoapExchange;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 class CoapResourceRegistrationActuator extends CoapResource {
 
@@ -26,6 +25,9 @@ class CoapResourceRegistrationActuator extends CoapResource {
     
     @Override
     public void handlePOST(CoapExchange exchange) {
+        //db setup
+        IPv6DatabaseManager.createTableActuator();
+        
         System.out.println("POST request received");
     
         String payloadString = exchange.getRequestText();
