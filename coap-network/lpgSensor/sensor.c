@@ -15,7 +15,7 @@
 #include "../cJSON-master/cJSON.h"
 #define TIME_SAMPLE 5
 #define SERVER_EP_JAVA "coap://[fd00::1]:5683"
-#define GOOD_ACK 0
+#define GOOD_ACK 65
 
 #if PLATFORM_SUPPORTS_BUTTON_HAL
 #include "dev/button-hal.h"

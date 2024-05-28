@@ -124,7 +124,7 @@ public class IPv6DatabaseManager {
     }
 
 
-    public static void createTableSensor(String sensorName, String ip, JSONArray ss, int value) {
+    public static void createTableSensor(String sensorName, String ip, JSONArray ss, Long timeSample) {
         System.out.println("Creating table sensors");
         ip = ip.replace(":", "");
 
@@ -151,7 +151,7 @@ public class IPv6DatabaseManager {
         }
     }
 
-    public void insertSensorTHERMOMETER(String sensorName, String ip, JSONArray ss,int value) {
+    public void insertSensorTHERMOMETER(String sensorName, String ip, JSONArray ss,Long value) {
         // tipo sensore | valore predetto | valore |
         ip = ip.replace(":", "");
         String tableName = sensorName + "_" + ip;
@@ -163,7 +163,7 @@ public class IPv6DatabaseManager {
             pstmt.setFloat(2, value);
             pstmt.setFloat(3, value);
             pstmt.setFloat(4, value);
-            pstmt.setInt(4, value);
+            pstmt.setLong(4, value);
             pstmt.executeUpdate();
             System.out.println("Sensor inserted successfully.");
         } catch (SQLException e) {
@@ -171,7 +171,7 @@ public class IPv6DatabaseManager {
         }
     }
 
-    public void insertSensorLPG(String sensorName, String ip, JSONArray ss,int value) {
+    public void insertSensorLPG(String sensorName, String ip, JSONArray ss,Long value) {
         // tipo sensore | valore predetto | valore |
         String tableName = sensorName + "_" + ip;
         String insertSQL = "INSERT INTO " + tableName + " (sensorName, ts, co, humidity, light, motion, smoke, value) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -185,7 +185,7 @@ public class IPv6DatabaseManager {
             pstmt.setString(5, ss.get(3).toString());
             pstmt.setString(6, ss.get(4).toString());
             pstmt.setString(7, ss.get(5).toString());*/
-            pstmt.setInt(8, value);
+            pstmt.setLong(8, value);
             pstmt.executeUpdate();
             System.out.println("Sensor inserted successfully.");
         } catch (SQLException e) {
