@@ -8,19 +8,17 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import com.mysql.cj.xdevapi.JsonArray;
-import com.unipi.dii.iot.IPv6DatabaseManager;
 
-public class CoapObserverTemp {
+public class CoapObserverTemp implements Runnable {
 
     private CoapClient client;
   private  CoapObserveRelation relation;
     
 
-    public CoapObserverTemp() {
+    public CoapObserverTemp(String uri) {
        
         // Crea il client CoAP
-        String uri="coap://[fd00::202:2:2:2]:5683/monitoring_temp";
+
         client = new CoapClient(uri);
     
 
@@ -38,7 +36,7 @@ public class CoapObserverTemp {
                 try{
                    JSONParser parser = new JSONParser();
                     json = (JSONObject) parser.parse(content);
-                    int tiemeid=(int) json.get("id");
+                    long tiemeid=(long) json.get("id");
                     JSONArray ssArray =(JSONArray) json.get("ss");
                     dbManger.insertSensorTHERMOMETER("thermometer", "fd00:202:202",ssArray, tiemeid);
 
@@ -62,5 +60,9 @@ public class CoapObserverTemp {
         if (client != null) {
             client.shutdown();
         }
+    }
+    @Override
+    public void run() {
+        startObserving();
     }
 }
