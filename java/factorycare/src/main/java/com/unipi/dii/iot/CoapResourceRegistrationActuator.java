@@ -7,9 +7,7 @@ import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.coap.CoAP;
 import org.eclipse.californium.core.coap.Response;
 import org.eclipse.californium.core.server.resources.CoapExchange;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
 class CoapResourceRegistrationActuator extends CoapResource {
 
@@ -17,58 +15,67 @@ class CoapResourceRegistrationActuator extends CoapResource {
 
     public CoapResourceRegistrationActuator(String name) {
         super(name);
-        setObservable(true);
+        // setObservable(true);
     }
 
     @Override
     public void handleGET(CoapExchange exchange) {
         exchange.respond("hello world");
     }
-
     
     @Override
     public void handlePOST(CoapExchange exchange) {
-        byte[] request = exchange.getRequestPayload();
-        String s;
-        s = new String(request);
-        JSONObject json = null;
-        try {
-            JSONParser parser = new JSONParser();
-            json = (JSONObject) parser.parse(s);
-        }catch (Exception err){
-            System.err.println("Json format not valid!");
-        }
-
+        //db setup
+        IPv6DatabaseManager.createTableActuator();
+        
+        System.out.println("POST request received");
+    
+        String payloadString = exchange.getRequestText();
+        String ipAddress = exchange.getSourceAddress().getHostAddress();
+        System.out.println("Payload received: " + payloadString + " \nlength: " + payloadString.length());
+        System.out.println("IP address: " + ipAddress + "\n");
+    
         Response response;
-        if (json.containsKey("sensors")){
-            InetAddress addr = exchange.getSourceAddress();
-		    System.out.println(addr);
-
-            //inserting the sensor ip in the database
-            db.insertIPv6Address(String.valueOf(addr).substring(1), "actuator");
-
-
-            try {
-                // Retrieve the list of sensor IPs
-                List<String> sensorIPs = db.getSensorIPs();
-                JSONArray sensorArray = new JSONArray();
-                sensorArray.addAll(sensorIPs);
-                
-                // Create the response JSON
-                JSONObject jsonResponse = new JSONObject();
-                jsonResponse.put("sensorIPs", sensorArray);
-                
-                response = new Response(CoAP.ResponseCode.CREATED);
-                response.setPayload(jsonResponse.toJSONString());
-            } catch (Exception e) {
-
-                response = new Response(CoAP.ResponseCode.INTERNAL_SERVER_ERROR);
-                System.err.println("error sending ipv6s");
+    
+        String actuator =payloadString;
+    
+            if (actuator != null && ipAddress != null) {
+                InetAddress addr = exchange.getSourceAddress();
+                System.out.println("Source address: " + addr);
+    
+                // Insert the sensor IP in the database
+                try {
+                    // Assuming we need to store the details in the database as well
+                    db.insertIPv6Address(addr.getHostAddress(), actuator);
+                    
+                    //after parsing the payload we have to create the table for this actuator
+                    IPv6DatabaseManager.createTableActuator();
+    
+                    // Create response JSON object
+                    JSONObject responseJson = new JSONObject();
+                    // taking ips from database
+                    List<String> sensorIPs = db.getSensorIPs();
+                    for (String ip : sensorIPs) {
+                        responseJson.put("s", ip);
+                    }
+                    System.out.println(responseJson);
+                    //responseJson.put("ipv6temp", "fd00::202:2:2:2");
+                    //responseJson.put("ipv6lpg", "[fd00::204:4:4:4]");
+    
+                    response = new Response(CoAP.ResponseCode.CREATED);
+                    response.setPayload(responseJson.toJSONString());
+                    System.out.print(CoAP.ResponseCode.CREATED);
+                    exchange.respond(response);
+                } catch (Exception e) {
+                    System.err.println("Error inserting sensor IP in the database: " + e.getMessage());
+                    response = new Response(CoAP.ResponseCode.INTERNAL_SERVER_ERROR);
+                    exchange.respond(response);
+                }
+            } else {
+                System.err.println("Missing required key 'a' or IP address");
+                response = new Response(CoAP.ResponseCode.BAD_REQUEST);
+                exchange.respond(response);
             }
-
-        }else{
-            response = new Response(CoAP.ResponseCode.BAD_REQUEST);
-        }
-        exchange.respond(response);
+        } 
     }
-}
+    

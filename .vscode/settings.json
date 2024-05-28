@@ -6,5 +6,6 @@
         "tuple": "c",
         "type_traits": "c",
         "utility": "c"
-    }
+    },
+    "java.debug.settings.onBuildFailureProceed": true
 }

@@ -12,5 +12,5 @@ include $(CONTIKI)/Makefile.dir-variables
 MODULES += $(CONTIKI_NG_APP_LAYER_DIR)/coap
 INC += /home/iot_ubuntu_intel/.local/lib/python3.10/site-packages/emlearn
 MODULES_REL += /home/iot_ubuntu_intel/.local/lib/python3.10/site-packages/emlearn
-
+MODULES_REL+=../cJSON-master
 include $(CONTIKI)/Makefile.include

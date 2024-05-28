@@ -9,12 +9,32 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IPv6DatabaseManager {
-    static final String JDBC_URL = "jdbc:mysql://localhost:3306/iotDatabase?useSSL=false";
-    static final String JDBC_USER = "root";
-    static final String JDBC_PASSWORD = "root";
+import org.json.simple.JSONArray;
 
-    private Connection connect() throws SQLException {
+public class IPv6DatabaseManager {
+    static final String JDBC_URL = "jdbc:mysql://localhost:3306/iotdatabase";
+    static final String JDBC_USER = "root";
+    static final String JDBC_PASSWORD = "PASSWORD";
+
+    public static void createDatabase() {
+        String JDBC_URL1 = "jdbc:mysql://localhost:3306/";
+        String JDBC_USER1 = "root";
+        String JDBC_PASSWORD1 = "PASSWORD";
+        String DATABASE_NAME1 = "iotdatabase";
+    
+        String createDatabaseSQL = "CREATE DATABASE IF NOT EXISTS " + DATABASE_NAME1;
+    
+        try (Connection conn = DriverManager.getConnection(JDBC_URL1, JDBC_USER1, JDBC_PASSWORD1);
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(createDatabaseSQL);
+            System.out.println("Database created successfully.");
+        } catch (SQLException e) {
+            System.out.println("Database not created.");
+            e.printStackTrace();
+        }
+    }
+    
+    static Connection connect() throws SQLException {
         return DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
     }
 
@@ -34,6 +54,8 @@ public class IPv6DatabaseManager {
     }
 
     public void insertIPv6Address(String address, String type) {
+        createTableIPV6();
+        
         String insertSQL = "INSERT INTO ipv6_addresses (address, type) VALUES (?, ?)";
 
         try (Connection conn = connect();
@@ -47,22 +69,23 @@ public class IPv6DatabaseManager {
         }
     }
 
-    public void fetchIPv6Addresses() {
-        String querySQL = "SELECT * FROM ipv6_addresses";
+    public List<String> fetchIPv6Addresses() {
+        List<String> ipAddresses = new ArrayList<>();
+        String querySQL = "SELECT address FROM ipv6_addresses";
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(querySQL)) {
 
             while (rs.next()) {
-                int id = rs.getInt("id");
                 String address = rs.getString("address");
-                String type = rs.getString("type");
-                System.out.println("ID: " + id + ", Address: " + address + ", Type: " + type);
+                ipAddresses.add(address);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return ipAddresses;
     }
 
     public List<String> getSensorIPs() {
@@ -82,9 +105,96 @@ public class IPv6DatabaseManager {
         return sensorIPs;
     }
 
-    public void createTableActuator() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createTableActuator'");
+    public static void createTableActuator(){
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS actuators ("
+                + "ipAddress VARCHAR(50) NOT NULL, "
+                + "actuatorType VARCHAR(50) NOT NULL, "
+                + "threshold FLOAT NOT NULL, "
+                + "state VARCHAR(10) NOT NULL CHECK (stato IN ('active', 'off')), "
+                + "PRIMARY KEY (ipAddress, actuatorType))";
+
+        try (Connection conn = connect();
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(createTableSQL);
+            System.out.println("Table created successfully.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void createTableSensor(String sensorName, String ip, JSONArray ss, int value) {
+        System.out.println("Creating table sensors");
+        ip = ip.replace(":", "");
+
+        String tableName = sensorName + "_" + ip;
+
+        String createTableColumns = "";
+        for (int i = 0; i < ss.size(); i++) {
+            createTableColumns += ss.get(i).toString() + " FLOAT NOT NULL, ";
+        }
+        createTableColumns += "value INT NOT NULL";
+
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS " + tableName + " ("
+                + "sensorName VARCHAR(50) NOT NULL, "
+                + "ipAddress VARCHAR(50) NOT NULL, "
+                + createTableColumns + ", "
+                + "PRIMARY KEY (sensorName, ipAddress))";
+
+        try (Connection conn = connect();
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(createTableSQL);
+            System.out.println("Table created successfully.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insertSensorTHERMOMETER(String sensorName, String ip, JSONArray ss,int value) {
+        // tipo sensore | valore predetto | valore |
+        ip = ip.replace(":", "");
+        String tableName = sensorName + "_" + ip;
+        String insertSQL = "INSERT INTO " + tableName + " (sensorName, temperature, humidity, value) VALUES (?, ?, ?, ?)";
+
+        try (Connection conn = connect();
+            PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
+            pstmt.setString(1, sensorName);
+            pstmt.setFloat(2, value);
+            pstmt.setFloat(3, value);
+            pstmt.setFloat(4, value);
+            pstmt.setInt(4, value);
+            pstmt.executeUpdate();
+            System.out.println("Sensor inserted successfully.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insertSensorLPG(String sensorName, String ip, JSONArray ss,int value) {
+        // tipo sensore | valore predetto | valore |
+        String tableName = sensorName + "_" + ip;
+        String insertSQL = "INSERT INTO " + tableName + " (sensorName, ts, co, humidity, light, motion, smoke, value) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = connect();
+            PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
+            pstmt.setString(1, sensorName);
+            /*pstmt.setFL(2, ss.get(0).toString());
+            pstmt.setString(3, ss.get(1).toString()); DA METTERE I VALORI INTERI
+            pstmt.setString(4, ss.get(2).toString());
+            pstmt.setString(5, ss.get(3).toString());
+            pstmt.setString(6, ss.get(4).toString());
+            pstmt.setString(7, ss.get(5).toString());*/
+            pstmt.setInt(8, value);
+            pstmt.executeUpdate();
+            System.out.println("Sensor inserted successfully.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insertActuator() {
+        // indirizzi ip | tipo attuatore | cosa fa | threshold | in funzione/ non attiva |
+        throw new UnsupportedOperationException("Unimplemented method 'insertActuator'");
     }
 
     /*

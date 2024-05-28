@@ -56,3 +56,16 @@ float predict_next_temperature() {
     float predicted_temperature = eml_trees_regress1(&temperature_prediction_model, input, 20);
     return denormalized_prediction(predicted_temperature);
 }
+// funzione che prende un array di 10 elementi temp e 10 elementi umidità e predice la temperatura successiva
+float predict_next_temperature_from_values(float temp[], float hum[]) {
+    // Prepara l'input per il modello di predizione
+    float input[20];
+    for(int i = 0; i < 10; i++) {
+        input[i] = temp[i];
+        input[10 + i] = hum[i];
+    }
+    
+    // Predici la prossima temperatura
+    float predicted_temperature = eml_trees_regress1(&temperature_prediction_model, input, 20);
+    return denormalized_prediction(predicted_temperature);
+}
