@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -192,9 +193,43 @@ public class IPv6DatabaseManager {
         }
     }
 
-    public void insertActuator() {
-        // indirizzi ip | tipo attuatore | cosa fa | threshold | in funzione/ non attiva |
-        throw new UnsupportedOperationException("Unimplemented method 'insertActuator'");
+    public void insertActuatorSPRINKLER(String name, String ip, float threshold, String state) {
+
+        String tableName = name + "_" + ip.replace(":", "");
+        String insertSQL = "INSERT INTO " + tableName + " (sensorName, ipAddress, threshold, state, timestamp) VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection conn = connect();
+            PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
+            pstmt.setString(1, name);
+            pstmt.setString(2, ip);
+            pstmt.setFloat(3, threshold);
+            pstmt.setString(4, state);
+            pstmt.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
+            pstmt.executeUpdate();
+            System.out.println("Actuator inserted successfully.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void insertActuatorFAN(String name, String ip, float threshold, String state) {
+
+        String tableName = name + "_" + ip.replace(":", "");
+        String insertSQL = "INSERT INTO " + tableName + " (sensorName, ipAddress, threshold, state, timestamp) VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection conn = connect();
+            PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
+            pstmt.setString(1, name);
+            pstmt.setString(2, ip);
+            pstmt.setFloat(3, threshold);
+            pstmt.setString(4, state);
+            pstmt.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
+            pstmt.executeUpdate();
+            System.out.println("Actuator inserted successfully.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /*
