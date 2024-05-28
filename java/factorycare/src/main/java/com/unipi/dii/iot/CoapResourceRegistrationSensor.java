@@ -29,7 +29,6 @@ class CoapResourceRegistrationSensor extends CoapResource {
     public void handlePOST(CoapExchange exchange) {
         System.out.println("POST request received");
         //db setup
-        IPv6DatabaseManager.createTableSensor();
         
         String payloadString = exchange.getRequestText();
         String ipAddress=exchange.getSourceAddress().getHostAddress();
@@ -64,9 +63,19 @@ class CoapResourceRegistrationSensor extends CoapResource {
                         System.out.println("IPv6: " + ipv6);
                         System.out.println("Sensing Types: " + sensingType);
                         System.out.println("Time Sample: " + timeSample);
-                        //insert sensor in the database
-                        db.insertSensor(sensor, ipv6, sensingType.toString(), timeSample);
 
+                        //insert sensor in the database
+                        IPv6DatabaseManager.createTableSensor();
+                        if(sensor.equals("lpgsensor")) {
+                            db.insertSensorLPG(sensor, ipv6, sensingType, timeSample);
+                        } else if(sensor.equals("thermometer")){
+                            db.insertSensorTHERMOMETER(sensor, ipv6, sensingType, timeSample);
+                        }
+                        else
+                        {
+                            System.err.println("Missing required JSON keys");
+                            response = new Response(CoAP.ResponseCode.BAD_REQUEST);
+                        }
                         response = new Response(CoAP.ResponseCode.CREATED);
                         System.out.print(CoAP.ResponseCode.CREATED);
                     } catch (Exception e) {
