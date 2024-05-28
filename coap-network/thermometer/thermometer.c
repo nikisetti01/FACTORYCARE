@@ -113,7 +113,7 @@ PROCESS_THREAD(thermometer_process, ev, data)
 
         if (registered == 0) {
             LOG_INFO("Retry registration (%d/%d)\n", registration_retry_count, MAX_REGISTRATION_RETRY);
-            etimer_set(&prediction_timer, CLOCK_SECOND * 10); // Wait 10 seconds before retrying
+            etimer_set(&prediction_timer, CLOCK_SECOND * 5); // Wait 10 seconds before retrying
             PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&prediction_timer));
         }
     }

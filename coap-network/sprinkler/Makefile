@@ -6,9 +6,9 @@ all: $(CONTIKI_PROJECT)
 PLATFORMS_EXCLUDE = sky z1
 
 CONTIKI=../../../..
-
+MODULES_REL+=../cJSON-master
 # Include the CoAP implementation
 include $(CONTIKI)/Makefile.dir-variables
 MODULES += $(CONTIKI_NG_APP_LAYER_DIR)/coap
-MODULES_REL+=../cJSON-master
+
 include $(CONTIKI)/Makefile.include

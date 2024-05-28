@@ -59,8 +59,8 @@ class CoapResourceRegistrationActuator extends CoapResource {
                         responseJson.put("s", ip);
                     }
                     System.out.println(responseJson);
-                    responseJson.put("ipv6temp", "fd00::202:2:2:2");
-                    responseJson.put("ipv6lpg", "[fd00::204:4:4:4]";
+                    //responseJson.put("ipv6temp", "fd00::202:2:2:2");
+                    //responseJson.put("ipv6lpg", "[fd00::204:4:4:4]");
     
                     response = new Response(CoAP.ResponseCode.CREATED);
                     response.setPayload(responseJson.toJSONString());

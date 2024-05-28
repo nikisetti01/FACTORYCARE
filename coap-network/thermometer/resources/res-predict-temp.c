@@ -33,6 +33,7 @@ static void res_get_handler(coap_message_t *request, coap_message_t *response, u
        humidities[i] = samples[i].humidity;
    }
     float next_temperature = predict_next_temperature_from_values(temperatures, humidities);
+    printf("Next temperature: %.2f\n", next_temperature);
 
 
     
@@ -52,5 +53,6 @@ static void res_get_handler(coap_message_t *request, coap_message_t *response, u
 }
 
 static void res_event_handler(void) {
+    printf("mando notifica \n");
     coap_notify_observers(&res_predict_temp);
 }
