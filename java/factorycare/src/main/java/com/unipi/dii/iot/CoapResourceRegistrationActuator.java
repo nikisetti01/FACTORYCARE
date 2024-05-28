@@ -28,7 +28,7 @@ class CoapResourceRegistrationActuator extends CoapResource {
         //db setup
         IPv6DatabaseManager.createTableActuator();
         
-        System.out.println("POST request received");
+        System.out.println("POST actuator received");
     
         String payloadString = exchange.getRequestText();
         String ipAddress = exchange.getSourceAddress().getHostAddress();
@@ -46,7 +46,7 @@ class CoapResourceRegistrationActuator extends CoapResource {
                 // Insert the sensor IP in the database
                 try {
                     // Assuming we need to store the details in the database as well
-                    db.insertIPv6Address(addr.getHostAddress(), actuator);
+                    db.insertIPv6Address(addr.getHostAddress(), "actuator" ,actuator);
                     
                     //after parsing the payload we have to create the table for this actuator
                     IPv6DatabaseManager.createTableActuator();

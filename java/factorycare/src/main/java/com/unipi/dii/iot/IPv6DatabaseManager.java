@@ -43,7 +43,8 @@ public class IPv6DatabaseManager {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS ipv6_addresses (" +
                                 "id INT AUTO_INCREMENT PRIMARY KEY, " +
                                 "address VARCHAR(39) NOT NULL, " +
-                                "type VARCHAR(50) NOT NULL)";
+                                "type VARCHAR(50) NOT NULL," + 
+                                "name VARCHAR(50) NOT NULL)";
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
@@ -54,17 +55,17 @@ public class IPv6DatabaseManager {
         }
     }
 
-    public void insertIPv6Address(String address, String type) {
+    public void insertIPv6Address(String address, String type, String name) {
         createTableIPV6();
         
-        String insertSQL = "INSERT INTO ipv6_addresses (address, type) VALUES (?, ?)";
+        String insertSQL = "INSERT INTO ipv6_addresses (address, type, name) VALUES (?, ?, ?)";
 
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
             pstmt.setString(1, address);
             pstmt.setString(2, type);
+            pstmt.setString(3, name);
             pstmt.executeUpdate();
-            System.out.println("IPv6 address inserted successfully.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -111,13 +112,12 @@ public class IPv6DatabaseManager {
                 + "ipAddress VARCHAR(50) NOT NULL, "
                 + "actuatorType VARCHAR(50) NOT NULL, "
                 + "threshold FLOAT NOT NULL, "
-                + "state VARCHAR(10) NOT NULL CHECK (stato IN ('active', 'off')), "
+                + "state VARCHAR(10) NOT NULL, "
                 + "PRIMARY KEY (ipAddress, actuatorType))";
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
             stmt.execute(createTableSQL);
-            System.out.println("Table created successfully.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -125,7 +125,6 @@ public class IPv6DatabaseManager {
 
 
     public static void createTableSensor(String sensorName, String ip, JSONArray ss, Long timeSample) {
-        System.out.println("Creating table sensors");
         ip = ip.replace(":", "");
 
         String tableName = sensorName + "_" + ip;
@@ -145,7 +144,6 @@ public class IPv6DatabaseManager {
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
             stmt.execute(createTableSQL);
-            System.out.println("Table created successfully.");
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -28,28 +28,21 @@ class CoapResourceRegistrationSensor extends CoapResource {
     
     @Override
     public void handlePOST(CoapExchange exchange) {
-        System.out.println("POST request received");
+        System.out.println("POST sensor received");
         String payloadString = exchange.getRequestText();
         String ipAddress=exchange.getSourceAddress().getHostAddress();        
         JSONObject json = null;
         try {
         JSONParser parser = new JSONParser();
         json = (JSONObject) parser.parse(payloadString);
-        System.out.println("Parsed JSON: " + json);
         
         Response response=null;
         String sensor = (String) json.get("s");
         String ipv6 = ipAddress;
         JSONArray sensingType = (JSONArray) json.get("ss");
         Long timeSample = (Long) json.get("t");
-        
-        System.out.println("Sensor: " + sensor);
-        System.out.println("IPv6: " + ipv6);
-        System.out.println("Sensing Types: " + sensingType);
-        System.out.println("Time Sample: " + timeSample.toString());
         if (sensor != null && ipv6 != null && sensingType != null ) {
             InetAddress addr = exchange.getSourceAddress();         
-            System.out.println("Source address: " + addr);
                 // Insert the sensor IP in the database
                 //checking if ip
                 List<String> sensorIPs = db.getSensorIPs();
@@ -59,7 +52,7 @@ class CoapResourceRegistrationSensor extends CoapResource {
                     exchange.respond(response);
                     return;
                 }
-                db.insertIPv6Address(addr.getHostAddress(), sensor);
+                db.insertIPv6Address(addr.getHostAddress(), "sensor", sensor);
                 //insert sensor in the database
                 IPv6DatabaseManager.createTableSensor(sensor, ipv6, sensingType, timeSample);
                 response = new Response(CoAP.ResponseCode.CREATED);
