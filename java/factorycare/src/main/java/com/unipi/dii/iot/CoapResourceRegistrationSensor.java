@@ -1,6 +1,7 @@
 package com.unipi.dii.iot;
 
 import java.net.InetAddress;
+import java.util.List;
 
 import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.coap.CoAP;
@@ -32,7 +33,7 @@ class CoapResourceRegistrationSensor extends CoapResource {
         
         String payloadString = exchange.getRequestText();
         String ipAddress=exchange.getSourceAddress().getHostAddress();
-        System.out.println("Payload received: " + payloadString+ " \nlunghezza"+ payloadString.length());
+        System.out.println("Payload received: " + payloadString+ " \nlunghezza: "+ payloadString.length());
         System.out.println("IP address: " + ipAddress + "\n");
         
         JSONObject json = null;
@@ -49,15 +50,30 @@ class CoapResourceRegistrationSensor extends CoapResource {
             // Extracting and handling each element in the JSON payload
             if (json != null) {
                 String sensor = (String) json.get("s");
+                System.out.println("PROVA1\n");
                 String ipv6 = ipAddress;
+                System.out.println("PROVA2\n");
                 JSONArray sensingType = (JSONArray) json.get("ss");
-                int timeSample = (int) json.get("t");
-
+                System.out.println("PROVA3 \n");
+                if (json.containsKey("t") && json.get("t") instanceof String) {
+                    String temporary = (String) json.get("t");
+                    // il resto del tuo codice
+                } else {
+                    System.out.println("Il valore di 't' non è una stringa o 't' non esiste");
+                }
                 if (sensor != null && ipv6 != null && sensingType != null ) {
+                    System.out.println("PROVA5\n");
                     InetAddress addr = exchange.getSourceAddress();
+                    System.out.println("PROVA6\n");
                     System.out.println("Source address: " + addr);
                     try {
                         // Insert the sensor IP in the database
+                        //checking if ip
+                        List<String> sensorIPs = db.getSensorIPs();
+                        if (sensorIPs.contains(addr.getHostAddress())) {
+                            System.err.println("Sensor IP already registered");
+                            response = new Response(CoAP.ResponseCode.BAD_REQUEST);
+                        }
                         db.insertIPv6Address(addr.getHostAddress(), sensor);
                         System.out.println("Sensor: " + sensor);
                         System.out.println("IPv6: " + ipv6);
@@ -66,7 +82,7 @@ class CoapResourceRegistrationSensor extends CoapResource {
 
                         //insert sensor in the database
                         IPv6DatabaseManager.createTableSensor(sensor, ipv6, sensingType, timeSample);
-                        if(sensor.equals("lpgsensor")) {
+                        /*if(sensor.equals("lpgsensor")) {
                             db.insertSensorLPG(sensor, ipv6, sensingType, timeSample);
                         } else if(sensor.equals("thermometer")){
                             db.insertSensorTHERMOMETER(sensor, ipv6, sensingType, timeSample);
@@ -75,7 +91,7 @@ class CoapResourceRegistrationSensor extends CoapResource {
                         {
                             System.err.println("Missing required JSON keys");
                             response = new Response(CoAP.ResponseCode.BAD_REQUEST);
-                        }
+                        }*/
                         response = new Response(CoAP.ResponseCode.CREATED);
                         System.out.print(CoAP.ResponseCode.CREATED);
                     } catch (Exception e) {
