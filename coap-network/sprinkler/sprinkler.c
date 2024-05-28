@@ -25,8 +25,8 @@
 #define MAX_REGISTRATION_ENTRY 5
 static char ipv6temp[40];
 static char ipv6lpg[40];
-static char *service_url_temp= "predict-temp";
-static char *service_url_lpg= "res-danger";
+static char *service_url_temp= "/predict-temp";
+static char *service_url_lpg= "/res-danger";
 static float next_temperature=65;
 static int lpg_level;
 static int led_now = -1;
@@ -36,7 +36,7 @@ static float k_lpg=0.2;
 static float water=0;
 static int registered=0;
 static int registration_retry_count=0;
-
+static int wait=0;
 PROCESS(coap_client_process, "CoAP Client Process");
 AUTOSTART_PROCESSES(&coap_client_process);
 float update_water_production_temperature(float water, float last_temperature, float next_temperature) {
@@ -67,7 +67,7 @@ void registration_handler(coap_message_t* response){
     payload[len] = '\0';  // Ensure null-terminated string
     printf("payload code  : %i \n", response->code);
 
-    if (response->code == GOOD_ACK) {
+    if (response->code == GOOD_ACK && wait!=0) {
         printf("Registration successful\n");
         registered = 1;
         // recieved the payload back 
@@ -104,6 +104,7 @@ void registration_handler(coap_message_t* response){
         }
 
     } else {
+        wait++;
         printf("Registration failed\n");
     }
     

@@ -53,6 +53,7 @@ static void res_get_handler(coap_message_t *request, coap_message_t *response, u
 }
 
 static void res_event_handler(void) {
+    printf("mando notifica \n");
     coap_notify_observers(&res_predict_temp);
 }
 <<<<<<< HEAD
