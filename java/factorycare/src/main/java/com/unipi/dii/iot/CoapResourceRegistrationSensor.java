@@ -65,7 +65,7 @@ class CoapResourceRegistrationSensor extends CoapResource {
                         System.out.println("Time Sample: " + timeSample);
 
                         //insert sensor in the database
-                        IPv6DatabaseManager.createTableSensor();
+                        IPv6DatabaseManager.createTableSensor(sensor,ipv6,sensingType,timeSample);
                         if(sensor.equals("lpgsensor")) {
                             db.insertSensorLPG(sensor, ipv6, sensingType, timeSample);
                         } else if(sensor.equals("thermometer")){
