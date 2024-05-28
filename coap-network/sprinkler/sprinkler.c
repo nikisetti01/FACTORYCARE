@@ -17,7 +17,6 @@
 
 /* Log configuration */
 #include "coap-log.h"
-#include "global_variable/global_variables.h"
 #define LOG_MODULE "App"
 #define LOG_LEVEL LOG_LEVEL_APP
 #define STARTING_WATER 0.2

@@ -1,9 +1,8 @@
-CONTIKI_PROJECT = thermometer sprinkler
+CONTIKI_PROJECT = thermometer 
 # coap-example-observe-client is outdated but will be ported at a later point
 all: $(CONTIKI_PROJECT)
 # Aggiungi tutti i file sorgente necessari
-thermometer_SOURCES = thermometer_process.c resources/res-predict-temp.c global_variables.h
-sprinkler_SOURCES = sprinkler.c
+
 MODULES_REL=./resources
 MODULES_REL+=./resources/machine_learning
 MODULES_REL+=./global_variable
