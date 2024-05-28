@@ -203,8 +203,8 @@ PROCESS_THREAD(coap_client_process, ev, data)
         
 
 
-   // coap_endpoint_parse(addr_temp, strlen(addr_temp), &server_ep_temp);
-   // coap_endpoint_parse(addr_lpg, strlen(addr_lpg), &server_ep_lpg);
+    coap_endpoint_parse(addr_temp, strlen(addr_temp), &server_ep_temp);
+    coap_endpoint_parse(addr_lpg, strlen(addr_lpg), &server_ep_lpg);
 
     printf("Sending observation request to %s\n",addr_temp);
     coap_obs_request_registration(&server_ep_temp, service_url_temp, handle_notification_temp, NULL);

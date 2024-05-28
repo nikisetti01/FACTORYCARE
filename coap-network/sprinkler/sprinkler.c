@@ -27,7 +27,7 @@ static char ipv6temp[40];
 static char ipv6lpg[40];
 static char *service_url_temp= "predict-temp";
 static char *service_url_lpg= "res-danger";
-static float next_temperature=0;
+static float next_temperature=65;
 static int lpg_level;
 static int led_now = -1;
 static float last_temperature;
@@ -65,7 +65,7 @@ void registration_handler(coap_message_t* response){
     char payload[len + 1];
     memcpy(payload, chunk, len);
     payload[len] = '\0';  // Ensure null-terminated string
-    printf("payload : %s \n", payload);
+    printf("payload code  : %i \n", response->code);
 
     if (response->code == GOOD_ACK) {
         printf("Registration successful\n");
@@ -180,6 +180,7 @@ PROCESS_THREAD(coap_client_process, ev, data)
     while (registration_retry_count<MAX_REGISTRATION_ENTRY && registered==0)
     {
         coap_init_message(request,COAP_TYPE_CON, COAP_POST, 0);
+        //registrationActuator
         coap_set_header_uri_path(request, "/registrationActuator");
         char*payload="sprinkler";
         coap_set_payload(request,(uint8_t*)payload, strlen(payload));
