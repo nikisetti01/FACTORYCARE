@@ -77,18 +77,23 @@ PROCESS_THREAD(lpgSensorServer, ev, data)
 
 		/* -------------- REGISTRATION --------------*/
 		// Populate the coap_endpoint_t data structure
-		coap_endpoint_parse(SERVER_EP_JAVA, strlen(SERVER_EP_JAVA), &server_ep_java);
-		// Prepare the message
-		coap_init_message(request, COAP_TYPE_CON,COAP_POST, 0);
-		coap_set_header_uri_path(request,service_url_reg);
+    coap_endpoint_parse(SERVER_EP_JAVA, strlen(SERVER_EP_JAVA), &server_ep_java);
+    printf("Endpoint parsed: %s\n", SERVER_EP_JAVA);
+
+    coap_init_message(request, COAP_TYPE_CON, COAP_POST, 0 );
+    printf("Message initialized\n");
+
+    coap_set_header_uri_path(request, service_url_reg);
+    printf("Header URI path set to: %s\n", service_url_reg);
 
     // Create JSON payload
     cJSON *root = cJSON_CreateObject();
     if (root == NULL) {
-        LOG_ERR("Failed to create JSON object\n");
-        PROCESS_EXIT();
+      LOG_ERR("Failed to create JSON object\n");
+      PROCESS_EXIT();
     }
     cJSON_AddStringToObject(root, "s", "lpgSensor");
+    printf("JSON object created\n");
     //cJSON_AddStringToObject(root, "ipv6", "[fd00::202:2:2:2]");
     
      cJSON *string_array = cJSON_CreateArray();
@@ -106,10 +111,13 @@ PROCESS_THREAD(lpgSensorServer, ev, data)
 
     char *payload = cJSON_PrintUnformatted(root);
     if (payload == NULL) {
-        LOG_ERR("Failed to print JSON object\n");
-       
-        PROCESS_EXIT();
+      LOG_ERR("Failed to print JSON object\n");
+      PROCESS_EXIT();
     }
+    printf("Payload created: %s\n", payload);
+
+    coap_set_payload(request, (uint8_t *)payload, strlen(payload));
+    printf("Payload set\n");
     //printf("il payload %s  lenght  %ld \n",payload, strlen(payload));
 
 
