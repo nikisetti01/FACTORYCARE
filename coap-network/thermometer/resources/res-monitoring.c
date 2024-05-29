@@ -48,8 +48,12 @@ static void res_get_handler(coap_message_t *request, coap_message_t *response, u
     // Crea un json poi da mandare come richiesta coap
     cJSON *root = cJSON_CreateObject();
     cJSON_AddNumberToObject(root, "id", count);
-    cJSON_AddNumberToObject(root, "temperature", new_temperature);
-    cJSON_AddNumberToObject(root, "humidity", new_humidity);
+    cJSON *ss = cJSON_CreateArray();
+    cJSON_AddItemToObject(root, cJSON_CreateNumber(count));
+    cJSON_AddItemToArray(ss, cJSON_CreateNumber(new_temperature));
+    cJSON_AddItemToArray(ss, cJSON_CreateNumber(new_humidity));
+    cJSON_AddItemToObject(root,"ss", ss);
+
     char *json = cJSON_Print(root);
     printf("length %lo\n", strlen(json));
 
