@@ -89,16 +89,32 @@ public class IPv6DatabaseManager {
 
         return ipAddresses;
     }
+//utility class to store the name and ip of the sensor
+public class PairNameIp {
+    String ip;
+    String name;
 
-    public List<String> getIPs(String type) {
-        List<String> sensorIPs = new ArrayList<>();
-        String querySQL = "SELECT address FROM ipv6_addresses WHERE type = '" + type + "'";
+    public PairNameIp() {
+        this.ip = null;
+        this.name = null;
+    }
+
+    public PairNameIp(String ip, String name) {
+        this.ip = ip;
+        this.name = name;
+    }
+}
+    
+
+    public List<PairNameIp> getIPs(String type) {
+        List<PairNameIp> sensorIPs = new ArrayList<>();
+        String querySQL = "SELECT address, name FROM ipv6_addresses WHERE type = '" + type + "'";
 
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(querySQL);
              ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
-                sensorIPs.add(rs.getString("address"));
+                sensorIPs.add(new PairNameIp(rs.getString("address"),rs.getString("name")));
             }
         } catch (SQLException e) {
             e.printStackTrace();

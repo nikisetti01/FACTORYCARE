@@ -10,6 +10,7 @@ import org.eclipse.californium.core.server.resources.CoapExchange;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import com.unipi.dii.iot.IPv6DatabaseManager.PairNameIp;
 
 class CoapResourceRegistrationSensor extends CoapResource {
 
@@ -44,12 +45,14 @@ class CoapResourceRegistrationSensor extends CoapResource {
             InetAddress addr = exchange.getSourceAddress();         
                 // Insert the sensor IP in the database
                 //checking if ip
-                List<String> sensorIPs = db.getIPs("sensor");
-                if (sensorIPs.contains(ipv6)) {
-                    System.out.println("Sensor IP already registered");
-                    response = new Response(CoAP.ResponseCode.BAD_REQUEST);
-                    exchange.respond(response);
-                    return;
+                List<PairNameIp> sensorIPs = db.getIPs("sensor");
+                for (PairNameIp pair : sensorIPs) {
+                    if (pair.ip.equals(ipv6)) {
+                        System.out.println("Sensor IP already registered");
+                        response = new Response(CoAP.ResponseCode.BAD_REQUEST);
+                        exchange.respond(response);
+                        return;
+                    }
                 }
                 System.out.println("Inserting sensor IP in the "+ sensor);
                 db.insertIPv6Address(addr.getHostAddress(), "sensor", sensor);
