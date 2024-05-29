@@ -56,7 +56,7 @@
           <!-- Specifica la classe principale -->
           <archive>
             <manifest>
-              <mainClass>com.unipi.dii.iot.MyServer</mainClass>
+              <mainClass>com.unipi.dii.iot.main.java</mainClass>
             </manifest>
           </archive>
         </configuration>
