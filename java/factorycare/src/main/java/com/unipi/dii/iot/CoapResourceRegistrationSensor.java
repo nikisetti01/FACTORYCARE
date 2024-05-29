@@ -54,7 +54,7 @@ class CoapResourceRegistrationSensor extends CoapResource {
                 System.out.println("Inserting sensor IP in the "+ sensor);
                 db.insertIPv6Address(addr.getHostAddress(), "sensor", sensor);
                 //insert sensor in the database
-                IPv6DatabaseManager.createTableSensor(sensor, ipv6, sensingType, timeSample);
+                IPv6DatabaseManager.createTableSensor(sensor.toLowerCase(), ipv6, sensingType);
                 response = new Response(CoAP.ResponseCode.CREATED);
                 exchange.respond(response);
                 System.out.println("success\n");

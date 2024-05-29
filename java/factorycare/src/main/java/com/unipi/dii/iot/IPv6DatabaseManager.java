@@ -124,27 +124,30 @@ public class IPv6DatabaseManager {
     }
 
 
-    public static void createTableSensor(String sensorName, String ip, JSONArray ss, Long timeSample) {
+    public static void createTableSensor(String sensorName, String ip, JSONArray ss) {
         ip = ip.replace(":", "");
 
-        String tableName = sensorName + "_" + ip;
-
+        String tableName = sensorName.toLowerCase() + "_" + ip;
+        System.out.println("tableName: " + tableName);   
         String createTableColumns = "";
         for (int i = 0; i < ss.size(); i++) {
-            createTableColumns += ss.get(i).toString() + " FLOAT NOT NULL, ";
+            createTableColumns += ss.get(i).toString() + " LONG NOT NULL, ";
         }
         createTableColumns += "value INT NOT NULL";
 
         String createTableSQL = "CREATE TABLE IF NOT EXISTS " + tableName + " ("
-                + "sensorName VARCHAR(50) NOT NULL, "
-                + "ipAddress VARCHAR(50) NOT NULL, "
-                + createTableColumns + ", "
-                + "PRIMARY KEY (sensorName, ipAddress))";
+            + "id INT AUTO_INCREMENT, "
+            + "sensorName VARCHAR(50) NOT NULL, "
+            + createTableColumns + ", "
+            + "PRIMARY KEY (id), "
+            + "UNIQUE KEY (sensorName))";
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
             stmt.execute(createTableSQL);
+            System.out.println("Table created successfully.");
         } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -153,19 +156,18 @@ public class IPv6DatabaseManager {
         JSONArray valuesArray = new JSONArray();
         valuesArray.add("temperature");
         valuesArray.add("humidity");
-        createTableSensor(sensorName, ip, valuesArray, value);
+        sensorName = sensorName.toLowerCase();
+        createTableSensor(sensorName, ip, valuesArray);
 
         ip = ip.replace(":", "");
         String tableName = sensorName + "_" + ip;
-
-        String insertSQL = "INSERT INTO " + tableName + " (sensorName, temperature, humidity, value) VALUES (?, ?, ?, ?)";
+        String insertSQL = "INSERT INTO " + tableName + " (sensorName, temperature, humidity) VALUES (?, ?, ?)";
 
         try (Connection conn = connect();
             PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
             pstmt.setString(1, sensorName);
-            pstmt.setFloat(2, (Float)ss.get(0));
-            pstmt.setFloat(3, (Float)ss.get(1));
-            pstmt.setLong(4, value);
+            pstmt.setLong(2, (Long)ss.get(0));
+            pstmt.setLong(3, (Long)ss.get(1));       
             pstmt.executeUpdate();
             System.out.println("Sensor inserted successfully.");
         } catch (SQLException e) {
@@ -174,20 +176,30 @@ public class IPv6DatabaseManager {
     }
 
     public void insertSensorLPG(String sensorName, String ip, JSONArray ss,Long value) {
-        // tipo sensore | valore predetto | valore |
-        String tableName = sensorName + "_" + ip;
-        String insertSQL = "INSERT INTO " + tableName + " (sensorName, ts, co, humidity, light, motion, smoke, value) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        //checking if table exists, if not we create it
+        JSONArray valuesArray = new JSONArray();
+        valuesArray.add("co");
+        valuesArray.add("light");
+        valuesArray.add("smoke");
+        String sensorNameTable = sensorName.toLowerCase();
+        createTableSensor(sensorNameTable, ip, valuesArray);
+
+        ip = ip.replace(":", "");
+        String tableName = sensorNameTable + "_" + ip;
+        String insertSQL = "INSERT INTO " + tableName + " (sensorName, co, light, smoke) VALUES (?, ?, ?, ?)";
+
+        //converting the boolean value to Long
+        Long light = 0L;
+        if((Boolean)ss.get(2)){
+            light=1L;
+        }
 
         try (Connection conn = connect();
             PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
-            pstmt.setString(1, sensorName);
-            /*pstmt.setFL(2, ss.get(0).toString());
-            pstmt.setString(3, ss.get(1).toString()); DA METTERE I VALORI INTERI
-            pstmt.setString(4, ss.get(2).toString());
-            pstmt.setString(5, ss.get(3).toString());
-            pstmt.setString(6, ss.get(4).toString());
-            pstmt.setString(7, ss.get(5).toString());*/
-            pstmt.setLong(8, value);
+            pstmt.setString(1, sensorNameTable);
+            pstmt.setLong(2, (Long)ss.get(0));
+            pstmt.setLong(3, light);
+            pstmt.setLong(4, (Long)ss.get(1));       
             pstmt.executeUpdate();
             System.out.println("Sensor inserted successfully.");
         } catch (SQLException e) {

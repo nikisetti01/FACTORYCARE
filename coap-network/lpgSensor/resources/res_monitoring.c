@@ -38,7 +38,7 @@ static void res_get_handler(coap_message_t *request, coap_message_t *response, u
     new_light = sample.light;
     // crea il json
     cJSON *root = cJSON_CreateObject();
-    cJSON*ss=cJSON_CreareArray();
+    cJSON*ss=cJSON_CreateArray();
     cJSON_AddItemToObject(root,"id",cJSON_CreateNumber(count));
     cJSON_AddItemToArray(ss,cJSON_CreateNumber(new_co));
     cJSON_AddItemToArray(ss,cJSON_CreateNumber(new_smoke));

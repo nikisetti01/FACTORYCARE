@@ -48,13 +48,15 @@ public class CoapObserverTemp implements Runnable {
                    }
                    else if(name.equals("lpgSensor")) {
                     json = (JSONObject) parser.parse(content);
-                    long tiemeid=(long) json.get("id");
-                    JSONArray ssArray =(JSONArray) json.get("ss");
-                    System.out.println("ARRAY VALORI LPG:" + ssArray.toString());
-                    dbManger.insertSensorTHERMOMETER("lpgSensor", ipv6,ssArray, tiemeid);
-
-
-                   }
+                    if (json.containsKey("id") && json.containsKey("ss")) {
+                        long timeid = (long) json.get("id");
+                        JSONArray ssArray = (JSONArray) json.get("ss");
+                        System.out.println("ARRAY VALORI LPG:" + ssArray.toString());
+                        dbManger.insertSensorLPG("lpgSensor", ipv6,ssArray, timeid);
+                    } else {
+                        System.out.println("Il JSON non contiene i campi 'id' e/o 'ss'");
+                    }
+                }
 
                 } catch (Exception e) {
                     e.printStackTrace();
