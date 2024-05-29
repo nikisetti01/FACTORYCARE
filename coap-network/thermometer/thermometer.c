@@ -142,7 +142,7 @@ PROCESS_THREAD(thermometer_process, ev, data)
         
         // Activate resources
         coap_activate_resource(&res_predict_temp, "predict-temp");
-        coap_activate_resource(&res_monitoring_temp, "monitoring-temp");
+        coap_activate_resource(&res_monitoring_temp, "monitoring");
 
         printf("CoAP server started\n");
 

@@ -28,8 +28,8 @@
 #define REGISTRATION_ATTEMPTS 5
 #define REGISTRATION_DELAY 10 // in seconds
 
-static char* service_url_temp = "predict-temp";
-static char* service_url_lpg = "res_danger";
+static char* service_url_temp = "/predict-temp";
+static char* service_url_lpg = "/res-danger";
 static char* service_url_reg = "/registrationActuator";
 
 static char ipv6temp[50];

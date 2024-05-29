@@ -6,6 +6,7 @@ all: $(CONTIKI_PROJECT)
 MODULES_REL=./resources
 MODULES_REL+=./resources/machine_learning
 MODULES_REL+=./global_variable
+LDFLAGS += -lm
 # Do not try to build on Sky because of code size limitation
 PLATFORMS_EXCLUDE = sky z1
 

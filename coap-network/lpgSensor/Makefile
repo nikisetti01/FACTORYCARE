@@ -1,6 +1,10 @@
-CONTIKI_PROJECT = coap-example-client
+CONTIKI_PROJECT = lpgSensor
+
 # coap-example-observe-client is outdated but will be ported at a later point
 all: $(CONTIKI_PROJECT)
+MODULES_REL+=./resources/model
+MODULES_REL+=./resources
+MODULES_REL+=./global_variable
 
 # Do not try to build on Sky because of code size limitation
 PLATFORMS_EXCLUDE = sky z1
