@@ -42,9 +42,9 @@ public class IPv6DatabaseManager {
     public void createTableIPV6() {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS ipv6_addresses (" +
                                 "id INT AUTO_INCREMENT PRIMARY KEY, " +
-                                "address VARCHAR(39) NOT NULL, " +
-                                "type VARCHAR(50) NOT NULL," + 
-                                "name VARCHAR(50) NOT NULL)";
+                                "address VARCHAR(89) NOT NULL, " +
+                                "type VARCHAR(80) NOT NULL," + 
+                                "name VARCHAR(80) NOT NULL)";
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
