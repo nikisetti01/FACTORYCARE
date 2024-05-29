@@ -206,12 +206,12 @@ PROCESS_THREAD(coap_client_process, ev, data)
         }
     }
     if(registered==1){
-        char addr_temp[50] = "coap://";
-        char addr_lpg[50] = "coap://";
+        char addr_temp[50] = "coap://[";
+        char addr_lpg[50] = "coap://[";
         strcat(addr_temp,ipv6temp);
-        strcat(addr_temp,":5683");
+        strcat(addr_temp,"]:5683");
         strcat(addr_lpg,ipv6lpg);
-        strcat(addr_lpg,":5683"); 
+        strcat(addr_lpg,"]:5683"); 
         
 
 
