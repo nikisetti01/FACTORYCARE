@@ -90,9 +90,9 @@ public class IPv6DatabaseManager {
         return ipAddresses;
     }
 
-    public List<String> getSensorIPs() {
+    public List<String> getIPs(String type) {
         List<String> sensorIPs = new ArrayList<>();
-        String querySQL = "SELECT address FROM ipv6_addresses WHERE type = 'sensor'";
+        String querySQL = "SELECT address FROM ipv6_addresses WHERE type = '" + type + "'";
 
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(querySQL);
@@ -145,22 +145,26 @@ public class IPv6DatabaseManager {
              Statement stmt = conn.createStatement()) {
             stmt.execute(createTableSQL);
         } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
     public void insertSensorTHERMOMETER(String sensorName, String ip, JSONArray ss,Long value) {
-        // tipo sensore | valore predetto | valore |
+        //checking if table exists, if not we create it
+        JSONArray valuesArray = new JSONArray();
+        valuesArray.add("temperature");
+        valuesArray.add("humidity");
+        createTableSensor(sensorName, ip, valuesArray, value);
+
         ip = ip.replace(":", "");
         String tableName = sensorName + "_" + ip;
+
         String insertSQL = "INSERT INTO " + tableName + " (sensorName, temperature, humidity, value) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = connect();
             PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
             pstmt.setString(1, sensorName);
-            pstmt.setFloat(2, value);
-            pstmt.setFloat(3, value);
-            pstmt.setFloat(4, value);
+            pstmt.setFloat(2, (Float)ss.get(0));
+            pstmt.setFloat(3, (Float)ss.get(1));
             pstmt.setLong(4, value);
             pstmt.executeUpdate();
             System.out.println("Sensor inserted successfully.");

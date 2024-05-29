@@ -1,6 +1,5 @@
 package com.unipi.dii.iot;
 
-import java.awt.desktop.PrintFilesEvent;
 import java.net.InetAddress;
 import java.util.List;
 
@@ -45,14 +44,14 @@ class CoapResourceRegistrationSensor extends CoapResource {
             InetAddress addr = exchange.getSourceAddress();         
                 // Insert the sensor IP in the database
                 //checking if ip
-                List<String> sensorIPs = db.getSensorIPs();
+                List<String> sensorIPs = db.getIPs("sensor");
                 if (sensorIPs.contains(ipv6)) {
                     System.out.println("Sensor IP already registered");
                     response = new Response(CoAP.ResponseCode.BAD_REQUEST);
                     exchange.respond(response);
                     return;
                 }
-                System.out.println("Inserting sensor IP in the"+ sensor);
+                System.out.println("Inserting sensor IP in the "+ sensor);
                 db.insertIPv6Address(addr.getHostAddress(), "sensor", sensor);
                 //insert sensor in the database
                 IPv6DatabaseManager.createTableSensor(sensor, ipv6, sensingType, timeSample);
