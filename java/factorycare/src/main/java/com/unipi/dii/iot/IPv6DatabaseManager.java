@@ -157,9 +157,11 @@ public class PairNameIp {
         System.out.println("tableName: " + tableName);   
         String createTableColumns = "";
         for (int i = 0; i < ss.size(); i++) {
-            createTableColumns += ss.get(i).toString() + " LONG NOT NULL, ";
+            System.out.println("VALORI COLONNA: " + ss.get(i).toString());
+            if(!ss.get(i).toString().equals("value")){
+                createTableColumns += ss.get(i).toString() + " LONG NOT NULL, ";
+            }
         }
-        createTableColumns += "value INT NOT NULL";
 
         String createTableSQL = "CREATE TABLE IF NOT EXISTS " + tableName + " ("
             + "id INT AUTO_INCREMENT, "
@@ -177,7 +179,7 @@ public class PairNameIp {
         }
     }
 
-    public void insertSensorTHERMOMETER(String sensorName, String ip, JSONArray ss,Long value) {
+    public void insertSensorTHERMOMETER(String sensorName, String ip, JSONArray ss) {
         //checking if table exists, if not we create it
         JSONArray valuesArray = new JSONArray();
         valuesArray.add("temperature");

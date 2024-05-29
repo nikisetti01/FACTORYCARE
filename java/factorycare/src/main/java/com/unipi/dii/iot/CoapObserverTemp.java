@@ -43,10 +43,10 @@ public class CoapObserverTemp implements Runnable {
                    JSONParser parser = new JSONParser();
                    if(name.equals("thermometer")){
                     json = (JSONObject) parser.parse(content);
-                    long tiemeid=(long) json.get("id");
+                    long timeid=(long) json.get("id");
                     JSONArray ssArray =(JSONArray) json.get("ss");
                     System.out.println("ARRAY VALORI THERMOMETER:" + ssArray.toString());
-                    dbManger.insertSensorTHERMOMETER("thermometer", ipv6,ssArray, tiemeid);
+                    dbManger.insertSensorTHERMOMETER("thermometer", ipv6, ssArray);
                    }
                    else if(name.equals("lpgSensor")) {
                     json = (JSONObject) parser.parse(content);

@@ -8,6 +8,7 @@ import org.eclipse.californium.core.coap.CoAP;
 import org.eclipse.californium.core.coap.Response;
 import org.eclipse.californium.core.server.resources.CoapExchange;
 import org.json.simple.JSONObject;
+
 import com.unipi.dii.iot.IPv6DatabaseManager.PairNameIp;
 
     
@@ -71,14 +72,14 @@ class CoapResourceRegistrationActuator extends CoapResource {
                     for (PairNameIp ip : sensorIPs) {
                         if(ip.name.equals("lpgsensor"))
                         {
-                            responseJson.put("l", ip);
-                        }else if(ip.name.equals("lpgsensor"))
+                            responseJson.put("l", ip.ip);
+                        }else if(ip.name.equals("thermometer"))
                         {
-                            responseJson.put("t", ip);
+                            responseJson.put("t", ip.ip);
                         
                         }else
                         {
-                            responseJson.put("s", ip);
+                            responseJson.put("e", ip.ip);
                             System.out.println("ERROR PARSING SENSOR IP TO ACTUATOR JSON\n");
                         }
                     }
