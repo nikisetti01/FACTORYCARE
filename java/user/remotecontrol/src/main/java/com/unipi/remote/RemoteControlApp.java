@@ -2,7 +2,7 @@ package com.unipi.remote;
 
 import java.io.IOException;
 import java.util.Scanner;
-
+import com.unipi.remote.databaseHelper;
 import org.eclipse.californium.core.CoapClient;
 import org.eclipse.californium.core.CoapResponse;
 import org.eclipse.californium.elements.exception.ConnectorException;
@@ -10,14 +10,16 @@ import org.json.simple.JSONObject;
 
 public class RemoteControlApp {
 
-    private static final String COAP_ACTUATORS_URI = "coap://localhost/actuators";
-    private static final String COAP_SENSORS_URI = "coap://localhost/sensors";
+    static databaseHelper db = new databaseHelper();
+
+    private static String COAP_ACTUATORS_URI = null;
+    private static String COAP_SENSORS_URI = null;
 
     private static final String SOIL_RESOURCE_URI = "coap://[fd00::203:3:3:3]/soil";
 
-    private static final String CO2_RESOURCE_URI = "coap://[fd00::202:2:2:2]/co2";
-    private static final String LIGHT_RESOURCE_URI = "coap://[fd00::202:2:2:2]/light";
-    private static final String PHASE_RESOURCE_URI = "coap://[fd00::202:2:2:2]/phase";
+    private static final String RESOURCE_LPGLEVEL_ = "/res_danger";
+    private static final String RESROUCE_TEMP = "/res_temp";    
+    private static final String RESOURCE = "/phase";
 
 
     public static void main(String[] args) throws ConnectorException, IOException {
@@ -32,10 +34,12 @@ public class RemoteControlApp {
             System.out.println("2. Turn off a sensor");
             System.out.println("3. Turn on an actuator");
             System.out.println("4. Turn off an actuator");
-            System.out.println("5. Show status of sensors");
+            System.out.println("5. set the temperature threshold for the actuators");
             System.out.println("6. Show status of actuators");
             System.out.println("7. Set new sample timing");
-            System.out.print("\nScegli un'opzione: ");
+            System.out.println("8. Get the number of danger rows in the database");
+            System.out.println("9. exit");
+            System.out.print("\n chose and option: ");
 
             int choice = scanner.nextInt();
             scanner.nextLine();
@@ -67,7 +71,9 @@ public class RemoteControlApp {
                     break;
                 case 5:
                     // Show status of sensors
-                    getStatus(sensors);
+                    System.out.println("Insert the temperature threshold for the actuators: ");
+                    int tempThreshold = scanner.nextInt();
+                    setTemperatureThreshold(tempThreshold);
                     break;
                 case 6:
                     // Show status of actuators
@@ -115,10 +121,32 @@ public class RemoteControlApp {
                             System.out.println("Invalid resource");
                     }
                     break;
+
+                case 8:
+                    // Get the number of danger rows in the database
+                    int rows = db.getDangerRows();
+                    if (rows != 0) {
+                        System.out.println("Number of danger rows: " + rows);
+                    } else {
+                        System.out.println("No response from server.");
+                    }
+                    break;
+
+                case 9:
+                    // Exit
+                    System.out.println("Exiting...");
+                    System.exit(0);
+                    break;
+                    
                 default:
                     System.out.println("Invalid choice");
             }
         }
+    }
+
+    private static void setTemperatureThreshold(int tempThreshold) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setTemperatureThreshold'");
     }
 
     private static void sendCommand(CoapClient client, String device, String state) throws ConnectorException, IOException {
@@ -179,8 +207,11 @@ public class RemoteControlApp {
 
     }
 
-    private static void setTemperatureSampling(int co2sampling) {
-        CoapClient client = new CoapClient(SOIL_RESOURCE_URI);        
+    private static void setTemperatureSampling(int temperatureSampling) {
+        //get the ipv6 address of the actuator we want
+        String ipv6 = db.setActuatorTemperatureThreshold("fanActuator", temperatureSampling);
+       // CoapClient client = new CoapClient(SOIL_RESOURCE_URI);   
+       CoapClient client = new CoapClient("coap://[" + ipv6 + "]/temperature_threshold");     
  
     }
 }
