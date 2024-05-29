@@ -58,6 +58,13 @@ class CoapResourceRegistrationSensor extends CoapResource {
                 response = new Response(CoAP.ResponseCode.CREATED);
                 exchange.respond(response);
                 System.out.println("success\n");
+                // Start the CoAP observer client
+                String uri = "coap://[" + ipv6 + "]:5683/monitoring-temp"; // Adjust the URI as needed
+                System.out.println("Starting observer client for " + uri);  
+                final CoapObserverTemp observerClient = new CoapObserverTemp(uri);
+                Thread observertThread=new Thread(observerClient);
+                observertThread.start();
+               
         } else {
             System.err.println("Missing required JSON keys");
             response = new Response(CoAP.ResponseCode.BAD_REQUEST);

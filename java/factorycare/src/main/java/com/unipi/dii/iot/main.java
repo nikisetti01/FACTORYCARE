@@ -11,5 +11,9 @@ public class main {
         server.add(new CoapResourceRegistrationActuator("registrationActuator"));
         server.start();
         System.out.print("The server is Running!\n");
+        // altro thread per runnare il client observer
+       
+        // Aggiungi un hook di chiusura per arrestare il client observer
+    
     }
 }

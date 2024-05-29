@@ -65,7 +65,7 @@ void registration_handler(coap_message_t* response){
     char payload[len + 1];
     memcpy(payload, chunk, len);
     payload[len] = '\0';  // Ensure null-terminated string
-    printf("payload code  : %i \n", response->code);
+    printf("payload code  : %s \n", payload);
 
     if (response->code == GOOD_ACK && wait!=0) {
         printf("Registration successful\n");
