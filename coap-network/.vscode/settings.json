@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "temperature_prediction.h": "c",
+        "air_model.h": "c"
+    }
+}

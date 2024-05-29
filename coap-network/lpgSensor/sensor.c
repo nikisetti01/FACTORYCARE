@@ -3,7 +3,7 @@
 #include <string.h>
 #include "contiki.h"
 #include "coap-engine.h"
-#include "resources/res_danger.c"
+#include "random.h"
 //for ipv6
 #include "net/ipv6/uip-ds6.h"
 #include "net/ipv6/uip-ds6-route.h"
@@ -12,6 +12,7 @@
 #include "net/ipv6/uip-icmp6.h"
 #include "leds.h"
 #include "coap-blocking-api.h"
+#include "global_variable/global_variables.h"
 #include "../cJSON-master/cJSON.h"
 #define TIME_SAMPLE 5
 #define SERVER_EP_JAVA "coap://[fd00::1]:5683"
@@ -19,6 +20,7 @@
 
 #if PLATFORM_SUPPORTS_BUTTON_HAL
 #include "dev/button-hal.h"
+
 #else
 #include "dev/button-sensor.h"
 #endif
@@ -32,9 +34,16 @@ static int max_registration_retry = MAX_REGISTRATION_RETRY;
 
 static char* service_url_reg = "/registrationSensor";
 static int registered = 0;
-extern coap_resource_t
-  res_danger;
-
+extern coap_resource_t res_danger;
+extern coap_resource_t res_monitoring_lpg;
+ Sample sample;
+// scrittura del singolo sample con timeid co,smoke, light,humidity casuale ma sensato
+void write_sample() {
+    sample.co = random_rand() % 100;
+    sample.smoke = random_rand() % 100;
+    sample.light = random_rand() % 2;
+    sample.humidity = random_rand() % 100;
+}
 coap_message_t request[1];  
 static struct etimer sleep_timer;
 
@@ -139,7 +148,9 @@ PROCESS_THREAD(lpgSensorServer, ev, data)
 	}
   if(registered==1){
   printf("lpgSensorServer\n");
-  coap_activate_resource(&res_danger, "res_danger");
+  write_sample();
+  coap_activate_resource(&res_danger, "res-danger");
+  coap_activate_resource(&res_monitoring_lpg, "monitoring");
   //LOG_INFO("Risorsa avviata\n");
   printf("Risorsa avviata\n");
 
@@ -149,9 +160,10 @@ PROCESS_THREAD(lpgSensorServer, ev, data)
 
       PROCESS_WAIT_EVENT();
       if(etimer_expired(&timer)){
-        
+      res_monitoring_lpg.trigger();
       res_danger.trigger();
       printf("notifico il danger");
+      write_sample();
       etimer_reset(&timer);
       }
       

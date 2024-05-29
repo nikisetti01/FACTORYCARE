@@ -13,13 +13,17 @@ public class CoapObserverTemp implements Runnable {
 
     private CoapClient client;
   private  CoapObserveRelation relation;
+  private String name;
+  private String ipv6;
     
 
-    public CoapObserverTemp(String uri) {
+    public CoapObserverTemp(String ipv6,String name) {
        
         // Crea il client CoAP
-
+        String uri = "coap://[" + ipv6 + "]:5683/monitoring"; // Adjust the URI as needed
         client = new CoapClient(uri);
+        this.ipv6=ipv6;
+        this.name=name;
     
 
     }
@@ -35,10 +39,22 @@ public class CoapObserverTemp implements Runnable {
                 JSONObject json= null;
                 try{
                    JSONParser parser = new JSONParser();
+                   if(name.equals("thermometer")){
                     json = (JSONObject) parser.parse(content);
                     long tiemeid=(long) json.get("id");
                     JSONArray ssArray =(JSONArray) json.get("ss");
-                    dbManger.insertSensorTHERMOMETER("thermometer", "fd00:202:202",ssArray, tiemeid);
+                    System.out.println("ARRAY VALORI THERMOMETER:" + ssArray.toString());
+                    dbManger.insertSensorTHERMOMETER("thermometer", ipv6,ssArray, tiemeid);
+                   }
+                   else if(name.equals("lpgSensor")) {
+                    json = (JSONObject) parser.parse(content);
+                    long tiemeid=(long) json.get("id");
+                    JSONArray ssArray =(JSONArray) json.get("ss");
+                    System.out.println("ARRAY VALORI LPG:" + ssArray.toString());
+                    dbManger.insertSensorTHERMOMETER("lpgSensor", ipv6,ssArray, tiemeid);
+
+
+                   }
 
                 } catch (Exception e) {
                     e.printStackTrace();

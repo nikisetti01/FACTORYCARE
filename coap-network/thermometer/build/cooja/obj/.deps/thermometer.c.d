@@ -22,7 +22,7 @@ build/cooja/obj/thermometer.o: thermometer.c \
  ../../../../os/net/app-layer/coap/coap-endpoint.h \
  ../../../../os/net/ipv6/uip.h ../../../../os/net/ipv6/uipopt.h \
  ../../../../os/net/ipv6/uipbuf.h ../../../../os/net/linkaddr.h \
- ../../../../os/net/../contiki.h ../../../../os/net/ipv6/tcpip.h \
+ ../../../../os/net/ipv6/tcpip.h \
  ../../../../os/net/app-layer/coap/coap-timer.h \
  ../../../../os/net/app-layer/coap/coap-transactions.h \
  ../../../../os/net/app-layer/coap/coap-engine.h \
@@ -95,7 +95,6 @@ project-conf.h:
 ../../../../os/net/ipv6/uipopt.h:
 ../../../../os/net/ipv6/uipbuf.h:
 ../../../../os/net/linkaddr.h:
-../../../../os/net/../contiki.h:
 ../../../../os/net/ipv6/tcpip.h:
 ../../../../os/net/app-layer/coap/coap-timer.h:
 ../../../../os/net/app-layer/coap/coap-transactions.h:

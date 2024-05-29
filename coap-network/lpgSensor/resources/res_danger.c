@@ -2,13 +2,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include "coap-engine.h"
+
 #include <stdio.h>
+#include "../global_variable/global_variables.h"
+#include "model/functionsML.h"
 
 #define MAX_LINE_LENGTH 100
-
-static int prova = 0;
+extern Sample sample;
+static int prediction = 0;
 static void res_get_handler(coap_message_t *request, coap_message_t *response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset);
-int get_danger();
+
 static void res_event_handler(void);
 
 EVENT_RESOURCE(res_danger,
@@ -21,7 +24,15 @@ EVENT_RESOURCE(res_danger,
 
 static void res_get_handler(coap_message_t *request, coap_message_t *response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset) {
     printf("siamo in res_get_handler\n");
-    int val = get_danger();
+      printf("get_danger: predizione in corso\n");
+
+  // metti in array features gli elementi di sample
+  float features[4] = {sample.co, sample.smoke, sample.light, sample.humidity};
+  // usa la funzione predi
+  //  prediction = predict_class(features,4);
+  prediction=features[0];
+    
+    int val = prediction;
 
     printf("val %i\n", val);
     
@@ -49,17 +60,3 @@ static void res_event_handler(void) {
     coap_notify_observers(&res_danger);
 }
 
-int get_danger() {
-    printf("get_danger: predizione in corso\n");
-
-    int result = prova;
-    prova++;
-    if (prova > 2) prova = 0;
-    printf("result: %d\n", result);
-
-    if (result == -1) {
-        printf("Prediction error\n");
-    }
-
-    return result;
-}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, Swedish Institute of Computer Science.
+ * Copyright (c) 2013, Institute for Pervasive Computing, ETH Zurich
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,35 +27,19 @@
  * SUCH DAMAGE.
  *
  * This file is part of the Contiki operating system.
- *
  */
 
 /**
  * \file
- *         A very simple Contiki application showing how Contiki programs look
+ *      Erbium (Er) example project configuration.
  * \author
- *         Adam Dunkels <adam@sics.se>
+ *      Matthias Kovatsch <kovatsch@inf.ethz.ch>
  */
 
-#include "contiki.h"
+#ifndef PROJECT_CONF_H_
+#define PROJECT_CONF_H_
 
-#include "random.h"
+#define LOG_LEVEL_APP LOG_LEVEL_DBG
+#define COAP_OBSERVE_CLIENT 1
 
-//#include "airDetetionModel.h" // emlearn generated model
-
-#include "air_model.h"
-
-#include "eml_trees.h"
-
-#include "functionsML.h"
-int predict_class(float* features, int len) {
-
-      const int32_t predicted_class2 = eml_trees_predict(&air_model,features, len);
-
-      int value_predicted = (int)predicted_class2;
-
-      printf("prediction2 %i\n", value_predicted);
-
-    return value_predicted;
-}
-
+#endif /* PROJECT_CONF_H_ */

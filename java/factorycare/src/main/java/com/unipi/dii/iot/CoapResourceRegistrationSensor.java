@@ -1,6 +1,5 @@
 package com.unipi.dii.iot;
 
-import java.awt.desktop.PrintFilesEvent;
 import java.net.InetAddress;
 import java.util.List;
 
@@ -18,7 +17,7 @@ class CoapResourceRegistrationSensor extends CoapResource {
 
     public CoapResourceRegistrationSensor(String name) {
         super(name);
-        // setObservable(true);
+         setObservable(true);
     }
 
     @Override
@@ -45,13 +44,14 @@ class CoapResourceRegistrationSensor extends CoapResource {
             InetAddress addr = exchange.getSourceAddress();         
                 // Insert the sensor IP in the database
                 //checking if ip
-                List<String> sensorIPs = db.getSensorIPs();
+                List<String> sensorIPs = db.getIPs("sensor");
                 if (sensorIPs.contains(ipv6)) {
                     System.out.println("Sensor IP already registered");
                     response = new Response(CoAP.ResponseCode.BAD_REQUEST);
                     exchange.respond(response);
                     return;
                 }
+                System.out.println("Inserting sensor IP in the "+ sensor);
                 db.insertIPv6Address(addr.getHostAddress(), "sensor", sensor);
                 //insert sensor in the database
                 IPv6DatabaseManager.createTableSensor(sensor, ipv6, sensingType, timeSample);
@@ -59,9 +59,9 @@ class CoapResourceRegistrationSensor extends CoapResource {
                 exchange.respond(response);
                 System.out.println("success\n");
                 // Start the CoAP observer client
-                String uri = "coap://[" + ipv6 + "]:5683/monitoring-temp"; // Adjust the URI as needed
-                System.out.println("Starting observer client for " + uri);  
-                final CoapObserverTemp observerClient = new CoapObserverTemp(uri);
+                
+                //System.out.println("Starting observer client for " + uri);  
+                final CoapObserverTemp observerClient = new CoapObserverTemp(ipv6,sensor);
                 Thread observertThread=new Thread(observerClient);
                 observertThread.start();
                

@@ -41,11 +41,20 @@ class CoapResourceRegistrationActuator extends CoapResource {
     
             if (actuator != null && ipAddress != null) {
                 InetAddress addr = exchange.getSourceAddress();
-                System.out.println("Source address: " + addr);
+                System.out.println("Source address actautor: " + addr);
+                System.out.println("actuator:" + actuator);
     
                 // Insert the sensor IP in the database
                 try {
-                    // Assuming we need to store the details in the database as well
+                    // Checking for the ip of actuator
+                    List<String> actuatorIPs = db.getIPs("actuator");
+                    if (actuatorIPs.contains(addr)) {
+                        System.out.println("actuator IP already registered");
+                        response = new Response(CoAP.ResponseCode.BAD_REQUEST);
+                        exchange.respond(response);
+                        return;
+                    }
+                    System.out.println("Inserting ACTUATOR IP in db "+ addr);
                     db.insertIPv6Address(addr.getHostAddress(), "actuator" ,actuator);
                     
                     //after parsing the payload we have to create the table for this actuator
@@ -54,13 +63,13 @@ class CoapResourceRegistrationActuator extends CoapResource {
                     // Create response JSON object
                     JSONObject responseJson = new JSONObject();
                     // taking ips from database
-                    List<String> sensorIPs = db.getSensorIPs();
+                    List<String> sensorIPs = db.getIPs("sensor");
                     for (String ip : sensorIPs) {
                         responseJson.put("s", ip);
                     }
-                    System.out.println(responseJson);
-                    responseJson.put("t", "fd00::202:2:2:2");
-                    responseJson.put("l", "[fd00::204:4:4:4]");
+                    System.out.println("indirizzi ip sensori per l'attuatore " + responseJson.toString());
+                    //responseJson.put("t", "fd00::202:2:2:2");
+                    //responseJson.put("l", "[fd00::204:4:4:4]");
     
                     response = new Response(CoAP.ResponseCode.CREATED);
                     response.setPayload(responseJson.toJSONString());
