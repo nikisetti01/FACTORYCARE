@@ -152,7 +152,6 @@ public class PairNameIp {
                 createTableColumns += ss.get(i).toString() + " LONG NOT NULL, ";
             }
         }
-        createTableColumns += "value INT NOT NULL";
 
         String createTableSQL = "CREATE TABLE IF NOT EXISTS " + tableName + " ("
             + "id INT AUTO_INCREMENT, "
