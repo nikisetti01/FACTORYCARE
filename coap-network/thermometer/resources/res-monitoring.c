@@ -49,7 +49,6 @@ static void res_get_handler(coap_message_t *request, coap_message_t *response, u
     cJSON *root = cJSON_CreateObject();
     cJSON_AddNumberToObject(root, "id", count);
     cJSON *ss = cJSON_CreateArray();
-    cJSON_AddItemToObject(root, cJSON_CreateNumber(count));
     cJSON_AddItemToArray(ss, cJSON_CreateNumber(new_temperature));
     cJSON_AddItemToArray(ss, cJSON_CreateNumber(new_humidity));
     cJSON_AddItemToObject(root,"ss", ss);
