@@ -51,7 +51,7 @@ class CoapResourceRegistrationActuator extends CoapResource {
                 // Insert the sensor IP in the database
                 try {
                     // Checking for the ip of actuator
-                    List<PairNameIp> sensorIPs = db.getIPs("sensor");
+                    List<PairNameIp> sensorIPs = db.getIPs("actuator");
                     for (PairNameIp pair : sensorIPs) {
                         if (pair.ip.equals(addr)) {
                             System.out.println("Sensor IP already registered");
@@ -70,10 +70,11 @@ class CoapResourceRegistrationActuator extends CoapResource {
                     JSONObject responseJson = new JSONObject();
                     // taking ips from database
                     for (PairNameIp ip : sensorIPs) {
-                        if(ip.name.equals("lpgsensor"))
+                        if(ip.name.toLowerCase().equals("lpgsensor"))
                         {
                             responseJson.put("l", ip.ip);
-                        }else if(ip.name.equals("thermometer"))
+                        }
+                        else if(ip.name.toLowerCase().equals("thermometer"))
                         {
                             responseJson.put("t", ip.ip);
                         

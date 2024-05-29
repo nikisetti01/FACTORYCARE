@@ -158,11 +158,11 @@ public class PairNameIp {
         String createTableColumns = "";
         for (int i = 0; i < ss.size(); i++) {
             System.out.println("VALORI COLONNA: " + ss.get(i).toString());
-            if(!ss.get(i).toString().equals("value")){
+            if(!ss.get(i).toString().equals("value") && !ss.get(i).toString().equals("ts")){
+                System.out.println("VALORI COLONNA CREATI: " + ss.get(i).toString());
                 createTableColumns += ss.get(i).toString() + " LONG NOT NULL, ";
             }
         }
-
         String createTableSQL = "CREATE TABLE IF NOT EXISTS " + tableName + " ("
             + "id INT AUTO_INCREMENT, "
             + "sensorName VARCHAR(50) NOT NULL, "
