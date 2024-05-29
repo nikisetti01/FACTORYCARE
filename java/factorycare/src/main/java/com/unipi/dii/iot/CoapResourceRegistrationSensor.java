@@ -1,6 +1,5 @@
 package com.unipi.dii.iot;
 
-import java.awt.desktop.PrintFilesEvent;
 import java.net.InetAddress;
 import java.util.List;
 
@@ -11,6 +10,7 @@ import org.eclipse.californium.core.server.resources.CoapExchange;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import com.unipi.dii.iot.IPv6DatabaseManager.PairNameIp;
 
 class CoapResourceRegistrationSensor extends CoapResource {
 
@@ -45,17 +45,19 @@ class CoapResourceRegistrationSensor extends CoapResource {
             InetAddress addr = exchange.getSourceAddress();         
                 // Insert the sensor IP in the database
                 //checking if ip
-                List<String> sensorIPs = db.getSensorIPs();
-                if (sensorIPs.contains(ipv6)) {
-                    System.out.println("Sensor IP already registered");
-                    response = new Response(CoAP.ResponseCode.BAD_REQUEST);
-                    exchange.respond(response);
-                    return;
+                List<PairNameIp> sensorIPs = db.getIPs("sensor");
+                for (PairNameIp pair : sensorIPs) {
+                    if (pair.ip.equals(ipv6)) {
+                        System.out.println("Sensor IP already registered");
+                        response = new Response(CoAP.ResponseCode.BAD_REQUEST);
+                        exchange.respond(response);
+                        return;
+                    }
                 }
-                System.out.println("Inserting sensor IP in the"+ sensor);
+                System.out.println("Inserting sensor IP in the "+ sensor);
                 db.insertIPv6Address(addr.getHostAddress(), "sensor", sensor);
                 //insert sensor in the database
-                IPv6DatabaseManager.createTableSensor(sensor, ipv6, sensingType, timeSample);
+                IPv6DatabaseManager.createTableSensor(sensor.toLowerCase(), ipv6, sensingType);
                 response = new Response(CoAP.ResponseCode.CREATED);
                 exchange.respond(response);
                 System.out.println("success\n");

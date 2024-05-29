@@ -8,6 +8,9 @@ import org.eclipse.californium.core.coap.CoAP;
 import org.eclipse.californium.core.coap.Response;
 import org.eclipse.californium.core.server.resources.CoapExchange;
 import org.json.simple.JSONObject;
+import com.unipi.dii.iot.IPv6DatabaseManager.PairNameIp;
+
+    
 
 class CoapResourceRegistrationActuator extends CoapResource {
 
@@ -41,11 +44,22 @@ class CoapResourceRegistrationActuator extends CoapResource {
     
             if (actuator != null && ipAddress != null) {
                 InetAddress addr = exchange.getSourceAddress();
-                System.out.println("Source address: " + addr);
+                System.out.println("Source address actautor: " + addr);
+                System.out.println("actuator:" + actuator);
     
                 // Insert the sensor IP in the database
                 try {
-                    // Assuming we need to store the details in the database as well
+                    // Checking for the ip of actuator
+                    List<PairNameIp> sensorIPs = db.getIPs("sensor");
+                    for (PairNameIp pair : sensorIPs) {
+                        if (pair.ip.equals(addr)) {
+                            System.out.println("Sensor IP already registered");
+                            response = new Response(CoAP.ResponseCode.BAD_REQUEST);
+                            exchange.respond(response);
+                            return;
+                        }
+                    }
+                    System.out.println("Inserting ACTUATOR IP in db "+ addr);
                     db.insertIPv6Address(addr.getHostAddress(), "actuator" ,actuator);
                     
                     //after parsing the payload we have to create the table for this actuator
@@ -54,13 +68,21 @@ class CoapResourceRegistrationActuator extends CoapResource {
                     // Create response JSON object
                     JSONObject responseJson = new JSONObject();
                     // taking ips from database
-                    List<String> sensorIPs = db.getSensorIPs();
-                    for (String ip : sensorIPs) {
-                        responseJson.put("s", ip);
+                    for (PairNameIp ip : sensorIPs) {
+                        if(ip.name.equals("lpgsensor"))
+                        {
+                            responseJson.put("l", ip);
+                        }else if(ip.name.equals("lpgsensor"))
+                        {
+                            responseJson.put("t", ip);
+                        
+                        }else
+                        {
+                            responseJson.put("s", ip);
+                            System.out.println("ERROR PARSING SENSOR IP TO ACTUATOR JSON\n");
+                        }
                     }
-                    System.out.println(responseJson);
-                    responseJson.put("t", "fd00::202:2:2:2");
-                    responseJson.put("l", "[fd00::204:4:4:4]");
+                    System.out.println("indirizzi ip sensori per l'attuatore " + responseJson.toString());
     
                     response = new Response(CoAP.ResponseCode.CREATED);
                     response.setPayload(responseJson.toJSONString());
