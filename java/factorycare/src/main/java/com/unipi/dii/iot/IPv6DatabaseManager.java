@@ -166,9 +166,8 @@ public class PairNameIp {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS " + tableName + " ("
             + "id INT AUTO_INCREMENT, "
             + "sensorName VARCHAR(50) NOT NULL, "
-            + createTableColumns + ", "
-            + "PRIMARY KEY (id), "
-            + "UNIQUE KEY (sensorName))";
+            + createTableColumns 
+            + "PRIMARY KEY (id)) ";
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
