@@ -95,27 +95,27 @@ public class RemoteControlApp {
                         case 1:
                             System.out.print("Insert CO2 sample timing: ");
                             int co2sampling = scanner.nextInt();
-                            setCO2Sampling(co2sampling);
+                            //setCO2Sampling(co2sampling);
                             break;
                         case 2:
                             System.out.print("Insert Light sample timing: ");
                             int lightSampling = scanner.nextInt();
-                            setLightSampling(lightSampling);
+                            //setLightSampling(lightSampling);
                             break;
                         case 3:
                             System.out.print("Insert Farm Phase sample timing: ");
                             int phaseSampling = scanner.nextInt();
-                            setPhaseSampling(phaseSampling);
+                            //setPhaseSampling(phaseSampling);
                             break;
                         case 4:
                             System.out.print("Insert Moisture sample timing: ");
                             int moistureSampling = scanner.nextInt();
-                            setMoistureSampling(moistureSampling);
+                            //setMoistureSampling(moistureSampling);
                             break;
                         case 5:
                             System.out.print("Insert Temperature sample timing: ");
                             int temperatureSampling = scanner.nextInt();
-                            setTemperatureSampling(temperatureSampling);
+                            //setTemperatureSampling(temperatureSampling);
                             break;
                         default:
                             System.out.println("Invalid resource");
@@ -188,7 +188,7 @@ public class RemoteControlApp {
     }
 
 
-    private static void setCO2Sampling(int co2sampling) {
+    /*private static void setCO2Sampling(int co2sampling) {
         CoapClient client = new CoapClient(CO2_RESOURCE_URI);        
     }
 
@@ -205,7 +205,7 @@ public class RemoteControlApp {
     private static void setMoistureSampling(int co2sampling) {
         CoapClient client = new CoapClient(SOIL_RESOURCE_URI);        
 
-    }
+    }*/
 
     private static void setTemperatureSampling(int temperatureSampling) {
         //get the ipv6 address of the actuator we want
