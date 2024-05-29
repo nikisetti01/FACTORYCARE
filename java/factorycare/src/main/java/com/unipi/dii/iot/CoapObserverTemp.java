@@ -32,7 +32,9 @@ public class CoapObserverTemp implements Runnable {
         // Inizia l'osservazione della risorsa
         relation = client.observe(new CoapHandler() {
             @Override
-            public void onLoad(CoapResponse response) {
+            public void onLoad(CoapResponse response) 
+            {
+                System.out.println("Received notification");
                 IPv6DatabaseManager dbManger= new IPv6DatabaseManager();
                 String content = response.getResponseText();
                 System.out.println("Notification: " + content);

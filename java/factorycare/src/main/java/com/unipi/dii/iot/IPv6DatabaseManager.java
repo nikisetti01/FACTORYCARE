@@ -39,7 +39,7 @@ public class IPv6DatabaseManager {
         return DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
     }
 
-    public void createTableIPV6() {
+    public static void createTableIPV6() {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS ipv6_addresses (" +
                                 "id INT AUTO_INCREMENT PRIMARY KEY, " +
                                 "address VARCHAR(89) NOT NULL, " +
@@ -139,7 +139,17 @@ public class PairNameIp {
         }
     }
 
+    public static void deleteDB() {
+        String deleteDBSQL = "DROP DATABASE IF EXISTS iotdatabase";
 
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(deleteDBSQL);
+            System.out.println("Database deleted successfully.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     public static void createTableSensor(String sensorName, String ip, JSONArray ss) {
         ip = ip.replace(":", "");
 

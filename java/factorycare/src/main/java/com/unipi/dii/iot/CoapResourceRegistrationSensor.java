@@ -63,7 +63,7 @@ class CoapResourceRegistrationSensor extends CoapResource {
                 System.out.println("success\n");
                 // Start the CoAP observer client
                 
-                //System.out.println("Starting observer client for " + uri);  
+                System.out.println("Starting observer client for " );  
                 final CoapObserverTemp observerClient = new CoapObserverTemp(ipv6,sensor);
                 Thread observertThread=new Thread(observerClient);
                 observertThread.start();
