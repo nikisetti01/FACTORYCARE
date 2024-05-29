@@ -1,14 +1,19 @@
 # FACTORYCARE
 
-Fase 3:
-- Lore:
-- Scrivere il DB e la gestione classi DAO db con la nostra JavaApplication e MYSQL, simula dati per vedere se funziona roba casuale
-- Scheletro iscrizione chiavette -> attualmente non funziona la registrazione, java non riceve le richieste del server
-- Io:
-- Domani perchè so stanco fare le POST per mandare l'iscrizione al server e capire come mandare i dati al server
-- FASE 4:
--  JAVA User Application-> capire come da terminale mandare parametri al DB che poi dalla Cloud Application si mandano alla rete locale, così qunado gli attuatori fanno controlli pescano da lì la tresshold
-- Trhead per il terminale e thread per l'invio dei dati al DB e invio di monitoring > FASE 5: GRAFANA
+COSA RIMANE:
+- IO:
+- Risolvere problema notify dei C
+- Aggiungere il modulo client telemetria anche per lpgSensor
+- Inserimento Bottone per accendi e spengi software
+- Dare mano a lore per la JavaUserApp
+- LORE:
+- AGGIUNGERE AD ACTUATOR DUE CONTATORI CHE SI AGGIORNANO BOH VEDIAMO MAGARI SEMPLICE POLLING SIAMO STANCHI OGNI VOLTA CHE SI VERISCHIA RISCHIO MEDIO O RISCHIO ALTO
+- USER INTERFACE SI PUò VEDERE E ANDARE A MODIFICARE I PARAMETRI DEGLI ATTUATORI (SOLO QUELLI SENZA INTERAZIONE CON ALTRO SEMO STANCHI)
+- ATTACCARE IL DB A GRAFANA (MOLTO EASY)
+- LORE TI DEVO CHIEDERE DUE COSE:
+- LA NOTIFY FUNZIONA MA NON RIESCE A INSERIRE PERCHE' NON TROVA IL DB GIUSTO 5 MINUTI MI DAI UN OCCHIO
+- PER GLI ACTUATOR REG MANCA SOLO DA METTERE UNA FUNZIONE SQL PER I GIUSTI SENSORI PER ORA FACCIO A MANO (PUOI AGGIUNGERMELA O DIRMI COME FARE)
+- FASE 5: DOCUMENTAZIONE
 # Deferenti ossequi, sua illustrissima figura Niccolò Settimelli
 - come il savio di vostra stessa urbe un tempo iscrisse su carta e proferì parole per mano de' emanuensi scritti, oggi io m'accingo a scriver a voi com'egli al suo viandate fece:
 *O de li altri poeti onore e lume,*  
