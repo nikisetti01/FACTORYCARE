@@ -1,4 +1,4 @@
-build/cooja/obj/sprinkler.o: sprinkler.c \
+build/cooja/obj/tcpip.o: ../../../../os/net/ipv6/tcpip.c \
  ../../../../os/net/app-layer/coap/module-macros.h \
  ../../../../os/contiki.h \
  ../../../../arch/platform/cooja/./contiki-conf.h project-conf.h \
@@ -43,25 +43,8 @@ build/cooja/obj/sprinkler.o: sprinkler.c \
  ../../../../os/lib/memb.h ../../../../os/lib/random.h \
  ../../../../os/net/ipv6/udp-socket.h \
  ../../../../os/net/ipv6/tcp-socket.h ../../../../os/net/ipv6/uip.h \
- ../../../../os/net/netstack.h \
- ../../../../os/net/app-layer/coap/coap-engine.h \
- ../../../../os/net/app-layer/coap/coap.h \
- ../../../../os/net/app-layer/coap/coap-constants.h \
- ../../../../os/net/app-layer/coap/coap-conf.h \
- ../../../../os/net/app-layer/coap/coap-transport.h \
- ../../../../os/net/app-layer/coap/coap-endpoint.h \
- ../../../../os/net/app-layer/coap/coap-timer.h \
- ../../../../os/net/app-layer/coap/coap-transactions.h \
- ../../../../os/net/app-layer/coap/coap-engine.h \
- ../../../../os/net/app-layer/coap/coap-observe.h \
- ../../../../os/net/app-layer/coap/coap-separate.h \
- ../../../../os/net/app-layer/coap/coap-observe-client.h \
- ../../../../os/net/app-layer/coap/coap-blocking-api.h \
- ../../../../os/net/app-layer/coap/coap-request-state.h \
- ../../../../os/dev/leds.h ../../../../os/dev/gpio-hal.h \
- ../../../../arch/platform/cooja/./dev/gpio-hal-arch.h \
- ../cJSON-master/cJSON.h ../../../../os/dev/button-hal.h \
- ../../../../os/net/app-layer/coap/coap-log.h ../../../../os/sys/log.h \
+ ../../../../os/net/netstack.h ../../../../os/net/ipv6/uip-ds6.h \
+ ../../../../os/net/routing/routing.h ../../../../os/sys/log.h \
  ../../../../os/sys/log-conf.h
 ../../../../os/net/app-layer/coap/module-macros.h:
 ../../../../os/contiki.h:
@@ -133,25 +116,7 @@ project-conf.h:
 ../../../../os/net/ipv6/tcp-socket.h:
 ../../../../os/net/ipv6/uip.h:
 ../../../../os/net/netstack.h:
-../../../../os/net/app-layer/coap/coap-engine.h:
-../../../../os/net/app-layer/coap/coap.h:
-../../../../os/net/app-layer/coap/coap-constants.h:
-../../../../os/net/app-layer/coap/coap-conf.h:
-../../../../os/net/app-layer/coap/coap-transport.h:
-../../../../os/net/app-layer/coap/coap-endpoint.h:
-../../../../os/net/app-layer/coap/coap-timer.h:
-../../../../os/net/app-layer/coap/coap-transactions.h:
-../../../../os/net/app-layer/coap/coap-engine.h:
-../../../../os/net/app-layer/coap/coap-observe.h:
-../../../../os/net/app-layer/coap/coap-separate.h:
-../../../../os/net/app-layer/coap/coap-observe-client.h:
-../../../../os/net/app-layer/coap/coap-blocking-api.h:
-../../../../os/net/app-layer/coap/coap-request-state.h:
-../../../../os/dev/leds.h:
-../../../../os/dev/gpio-hal.h:
-../../../../arch/platform/cooja/./dev/gpio-hal-arch.h:
-../cJSON-master/cJSON.h:
-../../../../os/dev/button-hal.h:
-../../../../os/net/app-layer/coap/coap-log.h:
+../../../../os/net/ipv6/uip-ds6.h:
+../../../../os/net/routing/routing.h:
 ../../../../os/sys/log.h:
 ../../../../os/sys/log-conf.h:
