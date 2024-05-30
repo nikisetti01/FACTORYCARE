@@ -23,9 +23,9 @@ RESOURCE(res_tresh,
          NULL);
 static void res_get_handler(coap_message_t *request, coap_message_t *response, uint8_t *buffer,
                             uint16_t preferred_size, int32_t *offset) {
+    printf("GET ricevuta\n");
     // Create a JSON object
     cJSON *json=cJSON_CreateObject();
-  
     cJSON_AddNumberToObject(json, "rt", nRisktemp);
     cJSON_AddNumberToObject(json, "rl", nRisklpg);
 
@@ -51,6 +51,8 @@ static void res_get_handler(coap_message_t *request, coap_message_t *response, u
 
 static void res_post_handler(coap_message_t *request, coap_message_t *response, uint8_t *buffer,
                              uint16_t preferred_size, int32_t *offset) {
+    // Declare a temporary variable to store the new threshold
+    printf("POST ricevuta\n");
     nRisklpg=0;
     nRisktemp=0;
     const uint8_t *payload = NULL;

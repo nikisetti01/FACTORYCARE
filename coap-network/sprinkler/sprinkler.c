@@ -231,7 +231,7 @@ PROCESS_THREAD(coap_client_process, ev, data)
 
     etimer_set(&ledtimer, 2 * CLOCK_SECOND); // Imposta il timer del LED a 2 secondi per iniziare
     // attivo risorsa
-    coap_activate_resource(&res_tresh, "thresshold");
+    coap_activate_resource(&res_tresh, "threshold");
 
     while (1)
     {
