@@ -38,7 +38,7 @@ static float water=0;
 static int registered=0;
 static int registration_retry_count=0;
 static int wait=0;
-float temp_tresh=0;
+float temp_tresh=25;
 int nRisktemp=0;
 int nRisklpg=0;
 extern coap_resource_t res_tresh;
@@ -228,10 +228,10 @@ PROCESS_THREAD(coap_client_process, ev, data)
 
     printf("Sending observation request to %s\n", ipv6lpg);
     coap_obs_request_registration(&server_ep_lpg, service_url_lpg, handle_notification_lpg, NULL);
-
+coap_activate_resource(&res_tresh, "threshold");
     etimer_set(&ledtimer, 2 * CLOCK_SECOND); // Imposta il timer del LED a 2 secondi per iniziare
-    // attivo risorsa
-    coap_activate_resource(&res_tresh, "threshold");
+    
+    
 
     while (1)
     {
@@ -259,7 +259,7 @@ PROCESS_THREAD(coap_client_process, ev, data)
         // Gestione delle notifiche
         if (ev == PROCESS_EVENT_POLL) {
             // Logica basata sulla temperatura e sul livello LPG
-            if (next_temperature < 20 && lpg_level != 2) {
+            if (next_temperature < temp_tresh && lpg_level != 2) {
                 leds_single_off(led_now);
                 led_now = LEDS_GREEN;
                 leds_single_on(led_now);

@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include "sys/log.h"
 #include "coap-blocking-api.h"
+#include "os/dev/button-hal.h"
 #include "../cJSON-master/cJSON.h"
 #include <stdlib.h>
 #include <string.h>
@@ -24,6 +25,7 @@ extern coap_resource_t res_monitoring_temp;
 
 static int registration_retry_count = 0;
 static int registered = 0;
+static turn_off=0;
 
 // Array to store the samples
 static int sample_count = 0; // Number of samples stored
@@ -80,13 +82,19 @@ void client_chunk_handler(coap_message_t *response) {
 
 PROCESS_THREAD(thermometer_process, ev, data)
 {
+    //button_hal_button_t *btn;
     static coap_endpoint_t server_ep;
     static coap_message_t request[1];
+   // btn= button_hal_get_by_index(0);
+    int pressed=0;
 
     PROCESS_BEGIN();
 
     random_init(0); // Initialize random number generator
-
+    while(ev != button_hal_press_event || pressed==0) {
+        pressed=1;
+        PROCESS_YIELD();
+    
     coap_endpoint_parse(SERVER_EP, strlen(SERVER_EP), &server_ep);
     while (registration_retry_count < MAX_REGISTRATION_RETRY && registered == 0) {
         // Initialize POST request
@@ -150,7 +158,7 @@ PROCESS_THREAD(thermometer_process, ev, data)
         etimer_set(&prediction_timer, CLOCK_SECOND * 10);
         etimer_set(&monitoring_timer, CLOCK_SECOND * 2);
 
-        while (1) {
+        while (turn_off==0) {
             PROCESS_YIELD();
             if (etimer_expired(&monitoring_timer)) {
                 res_monitoring_temp.trigger();
@@ -163,9 +171,19 @@ PROCESS_THREAD(thermometer_process, ev, data)
                 etimer_reset(&prediction_timer);
             }
         }
+        // mando notifica a tutti di spegnere
+        coap_init_message(request, COAP_TYPE_CON, COAP_GET, 0);
+        coap_set_header_uri_path(request, "/turnOff");
+        COAP_BLOCKING_REQUEST(&server_ep, request, NULL);
+
+        
+
     } else {
         printf("Reached maximum number of registration attempts\n");
     }
+
+} 
+
 
     PROCESS_END();
 }

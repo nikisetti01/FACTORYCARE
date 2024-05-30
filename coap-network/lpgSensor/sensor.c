@@ -14,6 +14,7 @@
 #include "coap-blocking-api.h"
 #include "global_variable/global_variables.h"
 #include "../cJSON-master/cJSON.h"
+#include "os/dev/button-hal.h"
 #define TIME_SAMPLE 5
 #define SERVER_EP_JAVA "coap://[fd00::1]:5683"
 #define GOOD_ACK 65
@@ -77,9 +78,12 @@ PROCESS_THREAD(lpgSensorServer, ev, data)
 {
   static struct etimer timer;
   static coap_endpoint_t server_ep_java;
+   int pressed=0;
 
   PROCESS_BEGIN();
-
+while(ev != button_hal_press_event || pressed==0) {
+        pressed=1;
+        PROCESS_YIELD();
   while(max_registration_retry!=0 && registered==0){
     leds_on(LEDS_RED);
     leds_single_on(LEDS_YELLOW);
@@ -169,6 +173,7 @@ PROCESS_THREAD(lpgSensorServer, ev, data)
       
     }
   }
-
+}
     PROCESS_END();
+
 }

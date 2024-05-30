@@ -60,6 +60,8 @@ build/cooja/obj/thermometer.o: thermometer.c \
  ../../../../os/sys/log-conf.h \
  ../../../../os/net/app-layer/coap/coap-blocking-api.h \
  ../../../../os/net/app-layer/coap/coap-request-state.h \
+ ../../../../os/dev/button-hal.h ../../../../os/dev/gpio-hal.h \
+ ../../../../arch/platform/cooja/./dev/gpio-hal-arch.h \
  ../cJSON-master/cJSON.h global_variable/global_variables.h
 ../../../../os/net/app-layer/coap/module-macros.h:
 ../../../../os/contiki.h:
@@ -149,5 +151,8 @@ project-conf.h:
 ../../../../os/sys/log-conf.h:
 ../../../../os/net/app-layer/coap/coap-blocking-api.h:
 ../../../../os/net/app-layer/coap/coap-request-state.h:
+../../../../os/dev/button-hal.h:
+../../../../os/dev/gpio-hal.h:
+../../../../arch/platform/cooja/./dev/gpio-hal-arch.h:
 ../cJSON-master/cJSON.h:
 global_variable/global_variables.h:
