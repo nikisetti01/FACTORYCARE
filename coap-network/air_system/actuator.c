@@ -31,12 +31,15 @@
 static char* service_url_temp = "/predict-temp";
 static char* service_url_lpg = "/res-danger";
 static char* service_url_reg = "/registrationActuator";
-
+extern coap_resource_t res_tresh;
 static char ipv6temp[50];
+
 static char ipv6lpg[50];
 static int registration_attempts = 0;
 static int registered = 0;
-
+float temp_tresh=25;
+int nRisktemp=0;
+int nRisklpg=0;
 PROCESS(coap_client_process, "CoAP Client Process");
 AUTOSTART_PROCESSES(&coap_client_process);
 
@@ -56,9 +59,11 @@ void response_handler_LPG(coap_message_t *response) {
     const uint8_t *chunk;
     int len = coap_get_payload(response, &chunk);
     printf("|%.*s\n", len, (char *)chunk);
+   
 
     int value = atoi((char *)chunk);
     lpgValue = value;
+     printf("lpg valore: %i \n",value);
     if(lpgValue == 0) {
         printf("lpg is normal\n");
         leds_single_on(LEDS_GREEN);
@@ -66,6 +71,7 @@ void response_handler_LPG(coap_message_t *response) {
         printf("lpg is dangerous\n");
         leds_single_on(LEDS_RED);
     } else if(lpgValue == 2) {
+        nRisklpg++;
         printf("lpg is critical\n");
         leds_single_on(LEDS_RED);
     } else {
@@ -179,12 +185,12 @@ PROCESS_THREAD(coap_client_process, ev, data) {
         static coap_endpoint_t server_ep_temp;
         static coap_endpoint_t server_ep_lpg;
 
-        char addr_temp[50] = "coap://";
-        char addr_lpg[50] = "coap://";
+        char addr_temp[50] = "coap://[";
+        char addr_lpg[50] = "coap://[";
         strcat(addr_temp, ipv6temp);
-        strcat(addr_temp, ":5683");
+        strcat(addr_temp, "]:5683");
         strcat(addr_lpg, ipv6lpg);
-        strcat(addr_lpg, ":5683");
+        strcat(addr_lpg, "]:5683");
 
         coap_endpoint_parse(addr_temp, strlen(addr_temp), &server_ep_temp);
         coap_endpoint_parse(addr_lpg, strlen(addr_lpg), &server_ep_lpg);
@@ -194,6 +200,7 @@ PROCESS_THREAD(coap_client_process, ev, data) {
 
         printf("Sending observation request to %s\n", addr_lpg);
         coap_obs_request_registration(&server_ep_lpg, service_url_lpg, handle_notification_lpg, NULL);
+        coap_activate_resource(&res_tresh, "threshold");
 
         etimer_set(&main_timer, CLOCK_SECOND * 2);
         while (1) {
