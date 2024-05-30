@@ -30,7 +30,7 @@ class CoapResourceRegistrationActuator extends CoapResource {
     @Override
     public void handlePOST(CoapExchange exchange) {
         //db setup
-        IPv6DatabaseManager.createTableActuator();
+        //IPv6DatabaseManager.createTableActuator();
         
         System.out.println("POST actuator received");
     
