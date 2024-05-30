@@ -1,4 +1,4 @@
-build/cooja/obj/sprinkler.o: sprinkler.c \
+build/cooja/obj/res-thresshold.o: resources/res-thresshold.c \
  ../../../../os/net/app-layer/coap/module-macros.h \
  ../../../../os/contiki.h \
  ../../../../arch/platform/cooja/./contiki-conf.h project-conf.h \
@@ -56,14 +56,8 @@ build/cooja/obj/sprinkler.o: sprinkler.c \
  ../../../../os/net/app-layer/coap/coap-observe.h \
  ../../../../os/net/app-layer/coap/coap-separate.h \
  ../../../../os/net/app-layer/coap/coap-observe-client.h \
- ../../../../os/net/app-layer/coap/coap-blocking-api.h \
- ../../../../os/net/app-layer/coap/coap-request-state.h \
- ../../../../os/dev/leds.h ../../../../os/dev/gpio-hal.h \
- ../../../../arch/platform/cooja/./dev/gpio-hal-arch.h \
- ../cJSON-master/cJSON.h global_variable/global_variables.h \
- ../../../../os/dev/button-hal.h \
- ../../../../os/net/app-layer/coap/coap-log.h ../../../../os/sys/log.h \
- ../../../../os/sys/log-conf.h
+ resources/../../cJSON-master/cJSON.h \
+ resources/../global_variable/global_variables.h
 ../../../../os/net/app-layer/coap/module-macros.h:
 ../../../../os/contiki.h:
 ../../../../arch/platform/cooja/./contiki-conf.h:
@@ -147,14 +141,5 @@ project-conf.h:
 ../../../../os/net/app-layer/coap/coap-observe.h:
 ../../../../os/net/app-layer/coap/coap-separate.h:
 ../../../../os/net/app-layer/coap/coap-observe-client.h:
-../../../../os/net/app-layer/coap/coap-blocking-api.h:
-../../../../os/net/app-layer/coap/coap-request-state.h:
-../../../../os/dev/leds.h:
-../../../../os/dev/gpio-hal.h:
-../../../../arch/platform/cooja/./dev/gpio-hal-arch.h:
-../cJSON-master/cJSON.h:
-global_variable/global_variables.h:
-../../../../os/dev/button-hal.h:
-../../../../os/net/app-layer/coap/coap-log.h:
-../../../../os/sys/log.h:
-../../../../os/sys/log-conf.h:
+resources/../../cJSON-master/cJSON.h:
+resources/../global_variable/global_variables.h:
