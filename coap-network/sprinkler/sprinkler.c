@@ -8,6 +8,7 @@
 #include "sys/etimer.h"
 #include "os/dev/leds.h"
 #include "../cJSON-master/cJSON.h"
+#include "global_variable/global_variables.h"
 #define GOOD_ACK 65
 #if PLATFORM_SUPPORTS_BUTTON_HAL
 #include "dev/button-hal.h"
@@ -37,6 +38,10 @@ static float water=0;
 static int registered=0;
 static int registration_retry_count=0;
 static int wait=0;
+float temp_tresh=0;
+int nRisktemp=0;
+int nRisklpg=0;
+extern coap_resource_t res_tresh;
 PROCESS(coap_client_process, "CoAP Client Process");
 AUTOSTART_PROCESSES(&coap_client_process);
 float update_water_production_temperature(float water, float last_temperature, float next_temperature) {
@@ -206,17 +211,17 @@ PROCESS_THREAD(coap_client_process, ev, data)
         }
     }
     if(registered==1){
-        char addr_temp[50] = "coap://";
-        char addr_lpg[50] = "coap://";
+        char addr_temp[50] = "coap://[";
+        char addr_lpg[50] = "coap://[";
         strcat(addr_temp,ipv6temp);
-        strcat(addr_temp,":5683");
+        strcat(addr_temp,"]:5683");
         strcat(addr_lpg,ipv6lpg);
-        strcat(addr_lpg,":5683"); 
+        strcat(addr_lpg,"]:5683"); 
         
 
 
-   // coap_endpoint_parse(addr_temp, strlen(addr_temp), &server_ep_temp);
-   // coap_endpoint_parse(addr_lpg, strlen(addr_lpg), &server_ep_lpg);
+    coap_endpoint_parse(addr_temp, strlen(addr_temp), &server_ep_temp);
+    coap_endpoint_parse(addr_lpg, strlen(addr_lpg), &server_ep_lpg);
 
     printf("Sending observation request to %s\n",addr_temp);
     coap_obs_request_registration(&server_ep_temp, service_url_temp, handle_notification_temp, NULL);
@@ -225,6 +230,8 @@ PROCESS_THREAD(coap_client_process, ev, data)
     coap_obs_request_registration(&server_ep_lpg, service_url_lpg, handle_notification_lpg, NULL);
 
     etimer_set(&ledtimer, 2 * CLOCK_SECOND); // Imposta il timer del LED a 2 secondi per iniziare
+    // attivo risorsa
+    coap_activate_resource(&res_tresh, "threshold");
 
     while (1)
     {
@@ -234,6 +241,7 @@ PROCESS_THREAD(coap_client_process, ev, data)
         if (ev == PROCESS_EVENT_TIMER && etimer_expired(&ledtimer))
         {
             if (lpg_level == 2) {
+                nRisklpg++;
                 water=update_water_production_lpg();
                 printf("on for lpg\n");
                 printf("Rilascio %f di acqua\n", water);
@@ -257,6 +265,7 @@ PROCESS_THREAD(coap_client_process, ev, data)
                 leds_single_on(led_now);
                 printf("Sprinkler off\n");
             } else if (next_temperature >= 20 && lpg_level != 2) {
+                nRisktemp++;
                 leds_single_off(led_now);
                 led_now = LEDS_BLUE;
                 leds_single_on(led_now);
