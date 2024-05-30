@@ -11,7 +11,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import com.unipi.dii.iot.IPv6DatabaseManager.PairNameIp;
-import com.unipi.dii.iot.observer.CoapObserverTemp;
+import com.unipi.dii.iot.CoapObserver;
 
 class CoapResourceRegistrationSensor extends CoapResource {
 
@@ -65,7 +65,7 @@ class CoapResourceRegistrationSensor extends CoapResource {
                 // Start the CoAP observer client
                 
                 System.out.println("Starting observer client for " );  
-                final CoapObserverTemp observerClient = new CoapObserverTemp(ipv6,sensor);
+                final CoapObserver observerClient = new CoapObserver(ipv6,sensor);
                 Thread observertThread=new Thread(observerClient);
                 observertThread.start();
                

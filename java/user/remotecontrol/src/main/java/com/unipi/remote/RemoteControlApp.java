@@ -187,7 +187,7 @@ public class RemoteControlApp {
             }
         }
     }
-
+/* 
     private static void setTemperatureThreshold(int tempThreshold) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setTemperatureThreshold'");
