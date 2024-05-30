@@ -8,6 +8,7 @@ import com.unipi.remote.databaseHelper.PairNameIp;
 
 import org.eclipse.californium.core.CoapClient;
 import org.eclipse.californium.core.CoapResponse;
+import org.eclipse.californium.core.coap.MediaTypeRegistry;
 import org.eclipse.californium.elements.exception.ConnectorException;
 import org.json.simple.JSONObject;
 
@@ -36,9 +37,9 @@ public class RemoteControlApp {
 
         while (true) {
             System.out.println("Remote Control Application");
-            System.out.println("1. set the temperature threshold for the actuators");
-            System.out.println("2. Show status of actuators");
-            System.out.println("3. Get the number of danger events");
+            System.out.println("1. set the temperature threshold for the actuators"); //DONE
+            System.out.println("2. Show status of actuators"); //DONE
+            System.out.println("3. Get the number of danger events"); //done?
             System.out.println("4. exit");
             System.out.print("\n chose and option: ");
 
@@ -59,15 +60,13 @@ public class RemoteControlApp {
 
                     String uri = "coap://[" + ipv6 + "]:5683/threshold";
                     CoapClient client = new CoapClient(uri);
-                    JSONObject json = new JSONObject();
-                    json.put("t", Sprinklerthr);
-                    CoapResponse response = client.post(json.toString(), 0);
+                    String payload = Integer.toString(Sprinklerthr);
+                    CoapResponse response = client.post(payload, MediaTypeRegistry.TEXT_PLAIN);
 
                     String uriAir = "coap://[" + ipv6AirSystem + "]:5683/threshold";
                     CoapClient client2 = new CoapClient(uriAir);
-                    JSONObject json2 = new JSONObject();
-                    json.put("t", AirSistemthr);
-                    CoapResponse response2 = client2.post(json2.toString(), 0);
+                    String payload2 = Integer.toString(AirSistemthr);
+                    CoapResponse response2 = client2.post(payload2, MediaTypeRegistry.TEXT_PLAIN);
 
                     if (response != null) {
                         System.out.println("Response sprinkler: " + response.getResponseText());
@@ -83,9 +82,28 @@ public class RemoteControlApp {
 
                 case 2:
                     // show status of actuators
-                    System.out.print("Insert sensor to turn off: ");
-                    String sensorOff = scanner.nextLine();
-                    sendCommand(sensors, sensorOff, "off");
+                    System.out.print("Enter the name of the actuator to check: ");
+                    String actuatorName = scanner.nextLine();
+
+                    List<PairNameIp> ipsToContact = db.getIPs(actuatorName.toString());
+
+                    String ipcont = null;
+
+                    for (PairNameIp pair : ipsToContact) {
+                        if(pair.name.equals("actuator"))
+                        {
+                            ipcont = pair.ip;
+                        }
+                    }
+
+                    CoapClient client3 = new CoapClient("coap://[" + ipcont + "]");
+                    boolean response3 = client3.ping();
+
+                    if (response3) {
+                        System.out.println("Server is up");
+                    } else {
+                        System.out.println("Server is down or not responding");
+                    }
                     break;
 
                 case 3:
@@ -181,11 +199,11 @@ public class RemoteControlApp {
 
     }*/
 
-    private static void setTemperatureSampling(int temperatureSampling) {
+    /*private static void setTemperatureSampling(int temperatureSampling) {
         //get the ipv6 address of the actuator we want
         String ipv6 = db.setActuatorTemperatureThreshold("fanActuator", temperatureSampling);
        // CoapClient client = new CoapClient(SOIL_RESOURCE_URI);   
        CoapClient client = new CoapClient("coap://[" + ipv6 + "]/temperature_threshold");     
  
-    }
+    }*/
 }
