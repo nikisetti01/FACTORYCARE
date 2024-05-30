@@ -41,53 +41,56 @@ class CoapResourceRegistrationActuator extends CoapResource {
     
         Response response;
     
-        String actuator =payloadString;
+        String actuator = payloadString;
     
             if (actuator != null && ipAddress != null) {
                 InetAddress addr = exchange.getSourceAddress();
+                
                 System.out.println("Source address actautor: " + addr);
-                System.out.println("actuator:" + actuator);
-    
+                System.out.println("actuator: " + actuator);
+
+                // Remove the initial '/' from addr
+                String addrWithoutSlash = addr.getHostAddress().substring(1);
+
                 // Insert the sensor IP in the database
                 try {
                     // Checking for the ip of actuator
-                    List<PairNameIp> sensorIPs = db.getIPs("sensor");
-                    for (PairNameIp pair : sensorIPs) {
-                        if (pair.ip.equals(addr)) {
-                            System.out.println("Sensor IP already registered");
+                    List<PairNameIp> actautorIPs = db.getIPs("actuator");
+                    for (PairNameIp pair : actautorIPs) {
+                        if (pair.ip.equals(addrWithoutSlash)) {
+                            System.out.println("actuator IP already registered");
                             response = new Response(CoAP.ResponseCode.BAD_REQUEST);
                             exchange.respond(response);
                             return;
                         }
                     }
-                    System.out.println("Inserting ACTUATOR IP in db "+ addr);
-                    db.insertIPv6Address(addr.getHostAddress(), "actuator" ,actuator);
-                    
+                    System.out.println("Inserting ACTUATOR IP in db " + addrWithoutSlash);
+                    db.insertIPv6Address(addrWithoutSlash, "actuator", actuator);
+
+                    System.out.println("actuator IP REGISTERED!");
+
                     //after parsing the payload we have to create the table for this actuator
-                    IPv6DatabaseManager.createTableActuator();
-    
+                    //IPv6DatabaseManager.createTableActuator();
+
                     // Create response JSON object
                     JSONObject responseJson = new JSONObject();
                     // taking ips from database
+                    List<PairNameIp> sensorIPs = db.getIPs("sensor");
                     for (PairNameIp ip : sensorIPs) {
                         System.out.println("actuator: " + ip.name + " ip: " + ip.ip);
-                        if(ip.name.toLowerCase().equals("lpgsensor"))
-                        {
+                        if (ip.name.toLowerCase().equals("lpgsensor")) {
                             responseJson.put("l", ip.ip);
-                        }
-                        else if(ip.name.toLowerCase().equals("thermometer"))
-                        {
+                        } else if (ip.name.toLowerCase().equals("thermometer")) {
 
                             responseJson.put("t", ip.ip);
-                        
-                        }else
-                        {
+
+                        } else {
                             responseJson.put("e", ip.ip);
                             System.out.println("ERROR PARSING SENSOR IP TO ACTUATOR JSON\n");
                         }
                     }
                     System.out.println("indirizzi ip sensori per l'attuatore " + responseJson.toString());
-    
+
                     response = new Response(CoAP.ResponseCode.CREATED);
                     response.setPayload(responseJson.toJSONString());
                     System.out.print(CoAP.ResponseCode.CREATED);

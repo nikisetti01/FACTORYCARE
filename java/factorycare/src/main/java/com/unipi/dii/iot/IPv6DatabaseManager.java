@@ -123,7 +123,7 @@ public class PairNameIp {
         return sensorIPs;
     }
 
-    public static void createTableActuator(){
+    /*public static void createTableActuator(){
         String createTableSQL = "CREATE TABLE IF NOT EXISTS actuators ("
                 + "ipAddress VARCHAR(50) NOT NULL, "
                 + "actuatorType VARCHAR(50) NOT NULL, "
@@ -137,7 +137,7 @@ public class PairNameIp {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     public static void deleteDB() {
         String deleteDBSQL = "DROP DATABASE IF EXISTS iotdatabase";
@@ -157,9 +157,7 @@ public class PairNameIp {
         System.out.println("tableName: " + tableName);   
         String createTableColumns = "";
         for (int i = 0; i < ss.size(); i++) {
-            System.out.println("VALORI COLONNA: " + ss.get(i).toString());
             if(!ss.get(i).toString().equals("value") && !ss.get(i).toString().equals("ts")){
-                System.out.println("VALORI COLONNA CREATI: " + ss.get(i).toString());
                 createTableColumns += ss.get(i).toString() + " LONG NOT NULL, ";
             }
         }
@@ -172,7 +170,6 @@ public class PairNameIp {
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
             stmt.execute(createTableSQL);
-            System.out.println("Table created successfully.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
