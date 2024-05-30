@@ -29,8 +29,8 @@ static void res_get_handler(coap_message_t *request, coap_message_t *response, u
   // metti in array features gli elementi di sample
   float features[4] = {sample.co, sample.smoke, sample.light, sample.humidity};
   // usa la funzione predi
-  //  prediction = predict_class(features,4);
-  prediction=features[0];
+    prediction = predict_class(features,4);
+  //prediction=features[0];
     
     int val = prediction;
 

@@ -270,6 +270,16 @@ public class PairNameIp {
         }
     }
 
+    public Boolean checkAllSensorsRegistered() {
+        List<PairNameIp> sensorIPs = getIPs("sensor");
+
+        if (sensorIPs.size() < 2) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     /*
     public static void main(String[] args) {
         IPv6DatabaseManager dbManager = new IPv6DatabaseManager();
