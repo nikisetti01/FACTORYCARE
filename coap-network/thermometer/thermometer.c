@@ -26,7 +26,7 @@ extern coap_resource_t res_shutdown;
 
 static int registration_retry_count = 0;
 static int registered = 0;
- int shutdown=0;
+int shutdown=0;
 
 // Array to store the samples
 static int sample_count = 0; // Number of samples stored

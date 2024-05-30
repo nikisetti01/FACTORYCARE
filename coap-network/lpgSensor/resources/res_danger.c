@@ -23,8 +23,7 @@ EVENT_RESOURCE(res_danger,
          res_event_handler);
 
 static void res_get_handler(coap_message_t *request, coap_message_t *response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset) {
-    printf("siamo in res_get_handler\n");
-      printf("get_danger: predizione in corso\n");
+    printf("get_danger: predizione in corso\n");
 
   // metti in array features gli elementi di sample
   float features[4] = {sample.co, sample.smoke, sample.light, sample.humidity};
