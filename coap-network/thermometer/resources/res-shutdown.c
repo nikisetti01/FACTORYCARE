@@ -24,7 +24,7 @@ static void res_shutdown_get_handler(coap_message_t *request, coap_message_t *re
 
 { 
     printf("Shutdown incremented\n");
-    shutdown=1; // Increment the shutdown variable
+    shutdown=0; // Increment the shutdown variable
 
     /* Set the response payload */
     coap_set_payload(response, "Shutdown incremented", 19);

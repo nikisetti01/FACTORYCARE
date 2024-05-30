@@ -66,6 +66,7 @@ public class CoapObserverTemp implements Runnable {
             @Override
             public void onError() {
                 System.err.println("Failed to receive notification");
+                
             }
         });
     }

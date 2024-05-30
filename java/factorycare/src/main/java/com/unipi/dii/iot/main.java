@@ -8,7 +8,6 @@ public class main {
         IPv6DatabaseManager.createDatabase();
         IPv6DatabaseManager.createTableIPV6();
         MyServer server = new MyServer();
-        server.add(new CoAPResourceExample("hello"));
         server.add(new CoapResourceRegistrationSensor("registrationSensor"));
         server.add(new CoapResourceRegistrationActuator("registrationActuator"));
         server.start();

@@ -144,10 +144,11 @@ PROCESS_THREAD(thermometer_process, ev, data)
     }
 
     if (registered == 1) {
+        //shutdown=0;
         write_samples();
         printf(" a sample %f \n", samples[0].temperature);
         printf("Activate server term\n");
-        LOG_INFO("Starting Erbium Example Server\n");
+        //LOG_INFO("Starting Erbium Example Server\n");
         
         // Activate resources
         coap_activate_resource(&res_predict_temp, "predict-temp");

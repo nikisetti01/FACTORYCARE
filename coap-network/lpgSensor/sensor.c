@@ -153,6 +153,7 @@ while(ev != button_hal_press_event || pressed==0) {
 		}
 	}
   if(registered==1){
+            //shutdown=0;
   printf("lpgSensorServer\n");
   write_sample();
   coap_activate_resource(&res_danger, "res-danger");

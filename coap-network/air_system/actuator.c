@@ -205,6 +205,7 @@ PROCESS_THREAD(coap_client_process, ev, data) {
         coap_activate_resource(&res_shutdown, "shutdown");
 
         etimer_set(&main_timer, CLOCK_SECOND * 2);
+        //shutdown=0;
         while (shutdown==0) {
             PROCESS_WAIT_EVENT();
             if (ev == PROCESS_EVENT_TIMER && etimer_expired(&main_timer)) {
