@@ -20,7 +20,7 @@ public class CoapObserverTemp implements Runnable {
     public CoapObserverTemp(String ipv6,String name) {
        
         // Crea il client CoAP
-        String uri = "coap://[" + ipv6 + "]:5683/monitoring"; // Adjust the URI as needed
+        String uri = "coap://[" + ipv6 + "]:5683/monitoring";
         client = new CoapClient(uri);
         this.ipv6=ipv6;
         this.name=name;

@@ -1,12 +1,17 @@
 package com.unipi.remote;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 import com.unipi.remote.databaseHelper;
+import com.unipi.remote.databaseHelper.PairNameIp;
+
 import org.eclipse.californium.core.CoapClient;
 import org.eclipse.californium.core.CoapResponse;
 import org.eclipse.californium.elements.exception.ConnectorException;
 import org.json.simple.JSONObject;
+
+
 
 public class RemoteControlApp {
 
@@ -22,6 +27,7 @@ public class RemoteControlApp {
     private static final String RESOURCE = "/phase";
 
 
+
     public static void main(String[] args) throws ConnectorException, IOException {
         Scanner scanner = new Scanner(System.in);
 
@@ -30,15 +36,10 @@ public class RemoteControlApp {
 
         while (true) {
             System.out.println("Remote Control Application");
-            System.out.println("1. Turn on a sensor");
-            System.out.println("2. Turn off a sensor");
-            System.out.println("3. Turn on an actuator");
-            System.out.println("4. Turn off an actuator");
-            System.out.println("5. set the temperature threshold for the actuators");
-            System.out.println("6. Show status of actuators");
-            System.out.println("7. Set new sample timing");
-            System.out.println("8. Get the number of danger rows in the database");
-            System.out.println("9. exit");
+            System.out.println("1. set the temperature threshold for the actuators");
+            System.out.println("2. Show status of actuators");
+            System.out.println("3. Get the number of danger events");
+            System.out.println("4. exit");
             System.out.print("\n chose and option: ");
 
             int choice = scanner.nextInt();
@@ -46,93 +47,66 @@ public class RemoteControlApp {
 
             switch (choice) {
                 case 1:
-                    // Turn on sensor
-                    System.out.print("Insert sensor to turn on: ");
-                    String sensorOn = scanner.nextLine();
-                    sendCommand(sensors, sensorOn, "on");
+                    System.out.print("Set the threshold for the sprinkler: ");
+                    int Sprinklerthr = scanner.nextInt();
+
+                    System.out.print("Set the threshold for the air system: ");
+                    int AirSistemthr = scanner.nextInt();
+
+
+                    String ipv6 =db.setActuatorTemperatureThreshold("sprinkler");
+                    String ipv6AirSystem =db.setActuatorTemperatureThreshold("actuator");
+
+                    String uri = "coap://[" + ipv6 + "]:5683/threshold";
+                    CoapClient client = new CoapClient(uri);
+                    JSONObject json = new JSONObject();
+                    json.put("t", Sprinklerthr);
+                    CoapResponse response = client.post(json.toString(), 0);
+
+                    String uriAir = "coap://[" + ipv6AirSystem + "]:5683/threshold";
+                    CoapClient client2 = new CoapClient(uriAir);
+                    JSONObject json2 = new JSONObject();
+                    json.put("t", AirSistemthr);
+                    CoapResponse response2 = client2.post(json2.toString(), 0);
+
+                    if (response != null) {
+                        System.out.println("Response sprinkler: " + response.getResponseText());
+                    } else {
+                        System.out.println("No response from sprinkler.");
+                    }
+                    if (response2 != null) {
+                        System.out.println("Response air system: " + response2.getResponseText());
+                    } else {
+                        System.out.println("No response from air system.");
+                    }
                     break;
+
                 case 2:
-                    // Turn off a sensor
+                    // show status of actuators
                     System.out.print("Insert sensor to turn off: ");
                     String sensorOff = scanner.nextLine();
                     sendCommand(sensors, sensorOff, "off");
                     break;
+
                 case 3:
-                    // Turn on actuator
-                    System.out.print("Insert actuator to turn on: ");
-                    String actuatorOn = scanner.nextLine();
-                    sendCommand(actuators, actuatorOn, "on");
-                    break;
-                case 4:
-                    // Turn off a actuator
-                    System.out.print("Insert actuator to turn off: ");
-                    String actuatorOff = scanner.nextLine();
-                    sendCommand(actuators, actuatorOff, "off");
-                    break;
-                case 5:
-                    // Show status of sensors
-                    System.out.println("Insert the temperature threshold for the actuators: ");
-                    int tempThreshold = scanner.nextInt();
-                    setTemperatureThreshold(tempThreshold);
-                    break;
-                case 6:
-                    // Show status of actuators
-                    getStatus(actuators);
-                    break;
-                case 7:
-                    // Choose resource
-                    System.out.println("Choose a resource:");
-                    System.out.println("1. CO2");
-                    System.out.println("2. Light");
-                    System.out.println("3. Phase");
-                    System.out.println("4. Moisture");
-                    System.out.println("5. Temperature");
-
-                    int resource = scanner.nextInt();
-                    scanner.nextLine();
-
-                    switch (resource) {
-                        case 1:
-                            System.out.print("Insert CO2 sample timing: ");
-                            int co2sampling = scanner.nextInt();
-                            //setCO2Sampling(co2sampling);
-                            break;
-                        case 2:
-                            System.out.print("Insert Light sample timing: ");
-                            int lightSampling = scanner.nextInt();
-                            //setLightSampling(lightSampling);
-                            break;
-                        case 3:
-                            System.out.print("Insert Farm Phase sample timing: ");
-                            int phaseSampling = scanner.nextInt();
-                            //setPhaseSampling(phaseSampling);
-                            break;
-                        case 4:
-                            System.out.print("Insert Moisture sample timing: ");
-                            int moistureSampling = scanner.nextInt();
-                            //setMoistureSampling(moistureSampling);
-                            break;
-                        case 5:
-                            System.out.print("Insert Temperature sample timing: ");
-                            int temperatureSampling = scanner.nextInt();
-                            //setTemperatureSampling(temperatureSampling);
-                            break;
-                        default:
-                            System.out.println("Invalid resource");
+                    List<PairNameIp> ips = db.getIPs("actuator");
+                    String ip = null;
+                    for (PairNameIp pair : ips) {
+                        if(pair.name.equals("actuator"))
+                        {
+                            ip = pair.ip;
+                        }
                     }
-                    break;
-
-                case 8:
-                    // Get the number of danger rows in the database
-                    int rows = db.getDangerRows();
-                    if (rows != 0) {
-                        System.out.println("Number of danger rows: " + rows);
+                    CoapClient clientDanger = new CoapClient("coap://[" + ip  + "]/threshold");
+                    CoapResponse responseDanger = clientDanger.get();
+                    if (responseDanger != null) {
+                        System.out.println("number of danger events : " + responseDanger.getResponseText());
                     } else {
                         System.out.println("No response from server.");
                     }
-                    break;
+                    break;             
 
-                case 9:
+                case 4:
                     // Exit
                     System.out.println("Exiting...");
                     System.exit(0);
