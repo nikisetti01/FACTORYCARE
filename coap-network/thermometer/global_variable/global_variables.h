@@ -7,7 +7,7 @@ typedef struct {
     float humidity;
 } Sample;
 
-
+extern int shutdown; // Variable to shutdown the device
  extern Sample samples[10]; // Array to store the samples    
 
 #endif /* GLOBAL_VARIABLES_H */

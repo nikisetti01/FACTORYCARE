@@ -37,7 +37,9 @@ static char* service_url_reg = "/registrationSensor";
 static int registered = 0;
 extern coap_resource_t res_danger;
 extern coap_resource_t res_monitoring_lpg;
+extern coap_resource_t res_shutdown;
  Sample sample;
+ int shutdown=0;
 // scrittura del singolo sample con timeid co,smoke, light,humidity casuale ma sensato
 void write_sample() {
     sample.co = random_rand() % 100;
@@ -155,12 +157,13 @@ while(ev != button_hal_press_event || pressed==0) {
   write_sample();
   coap_activate_resource(&res_danger, "res-danger");
   coap_activate_resource(&res_monitoring_lpg, "monitoring");
+  coap_activate_resource(&res_shutdown, "shutdown");
   //LOG_INFO("Risorsa avviata\n");
   printf("Risorsa avviata\n");
 
     etimer_set(&timer, CLOCK_SECOND * 10);
 
-    while(1) {
+    while(shutdown==0) {
 
       PROCESS_WAIT_EVENT();
       if(etimer_expired(&timer)){
@@ -172,6 +175,7 @@ while(ev != button_hal_press_event || pressed==0) {
       }
       
     }
+    printf("shutdown\n");
   }
 }
     PROCESS_END();

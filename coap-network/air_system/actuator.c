@@ -32,8 +32,9 @@ static char* service_url_temp = "/predict-temp";
 static char* service_url_lpg = "/res-danger";
 static char* service_url_reg = "/registrationActuator";
 extern coap_resource_t res_tresh;
+extern coap_resource_t res_shutdown;
 static char ipv6temp[50];
-
+int shutdown=0; 
 static char ipv6lpg[50];
 static int registration_attempts = 0;
 static int registered = 0;
@@ -201,15 +202,17 @@ PROCESS_THREAD(coap_client_process, ev, data) {
         printf("Sending observation request to %s\n", addr_lpg);
         coap_obs_request_registration(&server_ep_lpg, service_url_lpg, handle_notification_lpg, NULL);
         coap_activate_resource(&res_tresh, "threshold");
+        coap_activate_resource(&res_shutdown, "shutdown");
 
         etimer_set(&main_timer, CLOCK_SECOND * 2);
-        while (1) {
+        while (shutdown==0) {
             PROCESS_WAIT_EVENT();
             if (ev == PROCESS_EVENT_TIMER && etimer_expired(&main_timer)) {
                 process_poll(&coap_client_process);
                 etimer_reset(&main_timer);
             }
         }
+        printf("Shutdown incremented\n");
     } else {
         printf("Failed to register after %d attempts\n", REGISTRATION_ATTEMPTS);
     }

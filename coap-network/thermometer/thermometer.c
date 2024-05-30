@@ -22,10 +22,11 @@
 
 extern coap_resource_t res_predict_temp;
 extern coap_resource_t res_monitoring_temp;
+extern coap_resource_t res_shutdown;
 
 static int registration_retry_count = 0;
 static int registered = 0;
-static turn_off=0;
+ int shutdown=0;
 
 // Array to store the samples
 static int sample_count = 0; // Number of samples stored
@@ -151,6 +152,7 @@ PROCESS_THREAD(thermometer_process, ev, data)
         // Activate resources
         coap_activate_resource(&res_predict_temp, "predict-temp");
         coap_activate_resource(&res_monitoring_temp, "monitoring");
+        coap_activate_resource(&res_shutdown, "shutdown");
 
         printf("CoAP server started\n");
 
@@ -158,7 +160,7 @@ PROCESS_THREAD(thermometer_process, ev, data)
         etimer_set(&prediction_timer, CLOCK_SECOND * 10);
         etimer_set(&monitoring_timer, CLOCK_SECOND * 2);
 
-        while (turn_off==0) {
+        while (shutdown==0) {
             PROCESS_YIELD();
             if (etimer_expired(&monitoring_timer)) {
                 res_monitoring_temp.trigger();
@@ -172,9 +174,7 @@ PROCESS_THREAD(thermometer_process, ev, data)
             }
         }
         // mando notifica a tutti di spegnere
-        coap_init_message(request, COAP_TYPE_CON, COAP_GET, 0);
-        coap_set_header_uri_path(request, "/turnOff");
-        COAP_BLOCKING_REQUEST(&server_ep, request, NULL);
+        printf("shutdown \n");
 
         
 

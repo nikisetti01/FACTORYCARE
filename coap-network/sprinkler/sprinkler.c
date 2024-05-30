@@ -41,7 +41,9 @@ static int wait=0;
 float temp_tresh=25;
 int nRisktemp=0;
 int nRisklpg=0;
+int shutdown=0;
 extern coap_resource_t res_tresh;
+extern coap_resource_t res_shutdown;
 PROCESS(coap_client_process, "CoAP Client Process");
 AUTOSTART_PROCESSES(&coap_client_process);
 float update_water_production_temperature(float water, float last_temperature, float next_temperature) {
@@ -229,11 +231,12 @@ PROCESS_THREAD(coap_client_process, ev, data)
     printf("Sending observation request to %s\n", ipv6lpg);
     coap_obs_request_registration(&server_ep_lpg, service_url_lpg, handle_notification_lpg, NULL);
 coap_activate_resource(&res_tresh, "threshold");
+coap_activate_resource(&res_shutdown, "shutdown");
     etimer_set(&ledtimer, 2 * CLOCK_SECOND); // Imposta il timer del LED a 2 secondi per iniziare
     
     
 
-    while (1)
+    while (shutdown==0)
     {
         PROCESS_WAIT_EVENT(); // Attendiamo un evento
 
@@ -275,7 +278,10 @@ coap_activate_resource(&res_tresh, "threshold");
             }
         }
     }
-    } else {
+    printf("shutdown\n");
+    }
+    
+     else {
         printf("Problem for registration");
     }
 
