@@ -46,12 +46,18 @@ public class RemoteControlApp {
                     String ipv6 =db.setActuatorTemperatureThreshold("sprinkler");
                     String ipv6AirSystem =db.setActuatorTemperatureThreshold("actuator");
 
-                    String uri = "coap://[" + ipv6 + "]:5683/threshold";
+                    if(ipv6 == null || ipv6AirSystem == null)
+                    {
+                        System.out.println("No actuator found: " + ipv6 + " " + ipv6AirSystem);
+                        break;
+                    }
+
+                    String uri = "coap://[" +'f'+ ipv6 + "]:5683/threshold";
                     CoapClient client = new CoapClient(uri);
                     String payload = Integer.toString(Sprinklerthr);
                     CoapResponse response = client.post(payload, MediaTypeRegistry.TEXT_PLAIN);
 
-                    String uriAir = "coap://[" + ipv6AirSystem + "]:5683/threshold";
+                    String uriAir = "coap://[" + 'f' + ipv6AirSystem + "]:5683/threshold";
                     CoapClient client2 = new CoapClient(uriAir);
                     String payload2 = Integer.toString(AirSistemthr);
                     CoapResponse response2 = client2.post(payload2, MediaTypeRegistry.TEXT_PLAIN);
@@ -72,18 +78,23 @@ public class RemoteControlApp {
                     // show status of actuators
                     System.out.print("Enter the name of the actuator to check: ");
                     String actuatorName = scanner.nextLine();
-
+                    System.out.println("Actuator: " + actuatorName);
                     List<PairNameIp> ipsToContact = db.getIPs(actuatorName.toString());
 
                     String ipcont = null;
 
                     for (PairNameIp pair : ipsToContact) {
+                        System.out.println(pair.name + " " + pair.ip);
                         if(pair.name.equals("actuator"))
                         {
                             ipcont = pair.ip;
                         }
                     }
-
+                    if(ipcont == null)
+                    {
+                        System.out.println("No actuator found");
+                        break;
+                    }
                     CoapClient client3 = new CoapClient("coap://[" + ipcont + "]");
                     boolean response3 = client3.ping();
 
@@ -105,10 +116,17 @@ public class RemoteControlApp {
                             ip = pair.ip;
                         }
                     }
-                    CoapClient clientDanger = new CoapClient("coap://[" + ip  + "]/threshold");
+                    if(ip==null)
+                    {
+                        System.out.println("No actuator found\n");
+                        break;
+                    }
+                    
+                    CoapClient clientDanger = new CoapClient("coap://[" + 'f'+ ip  + "]:5683/threshold");
+                    System.out.println("RICHIEDO DANGER A coap://[" + 'f'+ip  + "]:5683/threshold");
                     CoapResponse responseDanger = clientDanger.get();
                     if (responseDanger != null) {
-                        System.out.println("number of danger events : " + responseDanger.getResponseText());
+                        System.out.println("number of danger events : " + responseDanger.getResponseText() + "\n");
                     } else {
                         System.out.println("No response from server.");
                     }
@@ -120,7 +138,7 @@ public class RemoteControlApp {
                     String nodeName = null;
 
                     //asking the user for the name of the node to turn off
-                    while(checkDevice){
+                    while(!checkDevice){
                         System.out.print("Enter the name of the node to turn off: ");
                         nodeName = scanner.nextLine();
                         //checking of the device is a valid one
@@ -142,7 +160,7 @@ public class RemoteControlApp {
                             ipcont2 = pair.ip;
                         }
                     }
-                    CoapClient client4 = new CoapClient("coap://[" + ipcont2 + "]/shutdown");
+                    CoapClient client4 = new CoapClient("coap://[" + 'f'+ipcont2 + "]/shutdown");
                     CoapResponse response4 = client4.get();
 
                     if (response4 != null) {
