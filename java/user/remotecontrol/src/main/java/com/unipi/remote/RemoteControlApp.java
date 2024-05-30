@@ -25,8 +25,8 @@ public class RemoteControlApp {
             System.out.println("Remote Control Application");
             System.out.println("1. set the temperature threshold for the actuators"); //DONE
             System.out.println("2. Show status of actuators"); //DONE
-            System.out.println("3. Get the number of danger events"); //done?
-            System.out.println("4. Turn off a node"); //TODO 
+            System.out.println("3. Get the number of danger events"); //DONE
+            System.out.println("4. Turn off a node"); //DONE 
             System.out.println("5. exit"); //DONE
             System.out.print("\n chose and option: ");
 
