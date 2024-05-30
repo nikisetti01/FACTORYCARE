@@ -64,14 +64,14 @@ void response_handler_LPG(coap_message_t *response) {
 
     int value = atoi((char *)chunk);
     lpgValue = value;
-     printf("lpg valore: %i \n",value);
-    if(lpgValue == 0) {
+    printf("lpg valore: %d \n",value);
+    if(lpgValue == 1) {
         printf("lpg is normal\n");
         leds_single_on(LEDS_GREEN);
-    } else if(lpgValue == 1) {
+    } else if(lpgValue == 2) {
         printf("lpg is dangerous\n");
         leds_single_on(LEDS_RED);
-    } else if(lpgValue == 2) {
+    } else if(lpgValue == 3) {
         nRisklpg++;
         printf("lpg is critical\n");
         leds_single_on(LEDS_RED);

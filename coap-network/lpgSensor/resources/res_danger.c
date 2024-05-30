@@ -32,8 +32,10 @@ static void res_get_handler(coap_message_t *request, coap_message_t *response, u
   //prediction=features[0];
     
     int val = prediction;
+    if(val < 0)
+        val = val * -1;
 
-    printf("val %i\n", val);
+    printf("VALORE PREDETTO DA RES_DANGER IN LPGSENSOR %i\n", val);
     
     // Formatta il valore come stringa
     int length = snprintf((char *)buffer, preferred_size, "%d", val);

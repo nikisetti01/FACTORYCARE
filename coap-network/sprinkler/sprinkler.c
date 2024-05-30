@@ -74,7 +74,7 @@ void registration_handler(coap_message_t* response){
     payload[len] = '\0';  // Ensure null-terminated string
     printf("payload code  : %s \n", payload);
 
-    if (response->code == GOOD_ACK && wait!=0) {
+    if (response->code == GOOD_ACK ) {
         printf("Registration successful\n");
         
         // recieved the payload back 
@@ -234,9 +234,6 @@ coap_activate_resource(&res_tresh, "threshold");
 coap_activate_resource(&res_shutdown, "shutdown");
     etimer_set(&ledtimer, 2 * CLOCK_SECOND); // Imposta il timer del LED a 2 secondi per iniziare
     int shutdown=0;
-    
-    
-    //shutdown=0;
     while (shutdown==0)
     {
         PROCESS_WAIT_EVENT(); // Attendiamo un evento

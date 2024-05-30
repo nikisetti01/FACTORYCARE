@@ -159,8 +159,6 @@ while(ev != button_hal_press_event || pressed==0) {
   coap_activate_resource(&res_danger, "res-danger");
   coap_activate_resource(&res_monitoring_lpg, "monitoring");
   coap_activate_resource(&res_shutdown, "shutdown");
-  //LOG_INFO("Risorsa avviata\n");
-  printf("Risorsa avviata\n");
 
     etimer_set(&timer, CLOCK_SECOND * 10);
     int shutdown=0;
