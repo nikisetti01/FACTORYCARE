@@ -18,29 +18,16 @@ public class RemoteControlApp {
 
     static databaseHelper db = new databaseHelper();
 
-    private static String COAP_ACTUATORS_URI = null;
-    private static String COAP_SENSORS_URI = null;
-
-    private static final String SOIL_RESOURCE_URI = "coap://[fd00::203:3:3:3]/soil";
-
-    private static final String RESOURCE_LPGLEVEL_ = "/res_danger";
-    private static final String RESROUCE_TEMP = "/res_temp";    
-    private static final String RESOURCE = "/phase";
-
-
-
     public static void main(String[] args) throws ConnectorException, IOException {
         Scanner scanner = new Scanner(System.in);
-
-        CoapClient sensors = new CoapClient(COAP_SENSORS_URI);
-        CoapClient actuators = new CoapClient(COAP_ACTUATORS_URI);
 
         while (true) {
             System.out.println("Remote Control Application");
             System.out.println("1. set the temperature threshold for the actuators"); //DONE
             System.out.println("2. Show status of actuators"); //DONE
             System.out.println("3. Get the number of danger events"); //done?
-            System.out.println("4. exit");
+            System.out.println("4. Turn off a node"); //TODO 
+            System.out.println("5. exit"); //DONE
             System.out.print("\n chose and option: ");
 
             int choice = scanner.nextInt();
@@ -48,6 +35,7 @@ public class RemoteControlApp {
 
             switch (choice) {
                 case 1:
+                    // set the temperature threshold for the actuators
                     System.out.print("Set the threshold for the sprinkler: ");
                     int Sprinklerthr = scanner.nextInt();
 
@@ -106,7 +94,9 @@ public class RemoteControlApp {
                     }
                     break;
 
+
                 case 3:
+                    // get the number of danger events
                     List<PairNameIp> ips = db.getIPs("actuator");
                     String ip = null;
                     for (PairNameIp pair : ips) {
@@ -125,6 +115,46 @@ public class RemoteControlApp {
                     break;             
 
                 case 4:
+                    // Turn off a node
+                    Boolean checkDevice = false;
+                    String nodeName = null;
+
+                    //asking the user for the name of the node to turn off
+                    while(checkDevice){
+                        System.out.print("Enter the name of the node to turn off: ");
+                        nodeName = scanner.nextLine();
+                        //checking of the device is a valid one
+                        if (nodeName.equals("actuator") || nodeName.equals("sprinkler") || nodeName.equals("lpgsensor") || nodeName.equals("thermometer")) {
+                            checkDevice = true;
+                        }
+                        else{
+                            System.out.println("Invalid device name");
+                        }
+                    }
+                    //taking the ip of the actuator
+                    List<PairNameIp> ipsToContact2 = db.getIPs(nodeName.toString());
+
+                    String ipcont2 = null;
+
+                    for (PairNameIp pair : ipsToContact2) {
+                        if(pair.name.equals(nodeName))
+                        {
+                            ipcont2 = pair.ip;
+                        }
+                    }
+                    CoapClient client4 = new CoapClient("coap://[" + ipcont2 + "]/shutdown");
+                    CoapResponse response4 = client4.get();
+
+                    if (response4 != null) {
+                        System.out.println(nodeName + " is shutted");
+                        //remove from ipv6_addresses the device ip
+                        db.removeIp(ipcont2);
+                    } else {
+                        System.out.println("Server is down or not responding");
+                    }
+                    break;
+
+                case 5:
                     // Exit
                     System.out.println("Exiting...");
                     System.exit(0);

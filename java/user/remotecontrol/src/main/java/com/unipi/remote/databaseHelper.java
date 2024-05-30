@@ -70,4 +70,15 @@ public class PairNameIp {
 
         return sensorIPs;
     }
+
+    public void removeIp(String ipcont2) {
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+            String query = "DELETE FROM ipv6_addresses WHERE address = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, ipcont2);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
