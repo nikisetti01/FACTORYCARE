@@ -41,7 +41,7 @@ static int wait=0;
 float temp_tresh=25;
 int nRisktemp=0;
 int nRisklpg=0;
-int shutdown=0;
+
 extern coap_resource_t res_tresh;
 extern coap_resource_t res_shutdown;
 PROCESS(coap_client_process, "CoAP Client Process");
@@ -233,6 +233,7 @@ PROCESS_THREAD(coap_client_process, ev, data)
 coap_activate_resource(&res_tresh, "threshold");
 coap_activate_resource(&res_shutdown, "shutdown");
     etimer_set(&ledtimer, 2 * CLOCK_SECOND); // Imposta il timer del LED a 2 secondi per iniziare
+    int shutdown=0;
     
     
     //shutdown=0;

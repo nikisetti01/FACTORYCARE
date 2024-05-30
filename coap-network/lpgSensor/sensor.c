@@ -39,7 +39,7 @@ extern coap_resource_t res_danger;
 extern coap_resource_t res_monitoring_lpg;
 extern coap_resource_t res_shutdown;
  Sample sample;
- int shutdown=0;
+
 // scrittura del singolo sample con timeid co,smoke, light,humidity casuale ma sensato
 void write_sample() {
     sample.co = random_rand() % 100;
@@ -163,6 +163,7 @@ while(ev != button_hal_press_event || pressed==0) {
   printf("Risorsa avviata\n");
 
     etimer_set(&timer, CLOCK_SECOND * 10);
+    int shutdown=0;
 
     while(shutdown==0) {
 

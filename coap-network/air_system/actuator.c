@@ -34,7 +34,7 @@ static char* service_url_reg = "/registrationActuator";
 extern coap_resource_t res_tresh;
 extern coap_resource_t res_shutdown;
 static char ipv6temp[50];
-int shutdown=0; 
+
 static char ipv6lpg[50];
 static int registration_attempts = 0;
 static int registered = 0;
@@ -203,6 +203,7 @@ PROCESS_THREAD(coap_client_process, ev, data) {
         coap_obs_request_registration(&server_ep_lpg, service_url_lpg, handle_notification_lpg, NULL);
         coap_activate_resource(&res_tresh, "threshold");
         coap_activate_resource(&res_shutdown, "shutdown");
+        int shutdown=0;
 
         etimer_set(&main_timer, CLOCK_SECOND * 2);
         //shutdown=0;
