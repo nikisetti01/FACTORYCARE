@@ -29,8 +29,14 @@ class CoapResourceRegistrationActuator extends CoapResource {
     
     @Override
     public void handlePOST(CoapExchange exchange) {
-        //db setup
-        //IPv6DatabaseManager.createTableActuator();
+        //checking if all sensors are registered
+        if(!db.checkAllSensorsRegistered())
+        {
+            System.out.println("NOT ALL SENSORS REGISTERED YET!");
+            Response response = new Response(CoAP.ResponseCode.BAD_REQUEST);
+            exchange.respond(response);
+            return;
+        }        
         
         System.out.println("POST actuator received");
     

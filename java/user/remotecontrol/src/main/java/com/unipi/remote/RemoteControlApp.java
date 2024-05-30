@@ -84,8 +84,7 @@ public class RemoteControlApp {
                     String ipcont = null;
 
                     for (PairNameIp pair : ipsToContact) {
-                        System.out.println(pair.name + " " + pair.ip);
-                        if(pair.name.equals("actuator"))
+                        if(pair.name.equals(actuatorName))
                         {
                             ipcont = pair.ip;
                         }
@@ -149,8 +148,13 @@ public class RemoteControlApp {
                             System.out.println("Invalid device name");
                         }
                     }
-                    //taking the ip of the actuator
-                    List<PairNameIp> ipsToContact2 = db.getIPs(nodeName.toString());
+                    String filterDb = "sensor";
+                    if(nodeName.equals("actuator") || nodeName.equals("sprinkler"))
+                    {
+                        filterDb = "actuator";
+                    }
+                    //taking the ip of the node
+                    List<PairNameIp> ipsToContact2 = db.getIPs(filterDb);
 
                     String ipcont2 = null;
 
