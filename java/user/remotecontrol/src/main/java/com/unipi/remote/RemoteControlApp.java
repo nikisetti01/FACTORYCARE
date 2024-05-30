@@ -1,8 +1,13 @@
 package com.unipi.remote;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.List;
 import java.util.Scanner;
+
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 
 import org.eclipse.californium.core.CoapClient;
 import org.eclipse.californium.core.CoapResponse;
@@ -78,7 +83,7 @@ public class RemoteControlApp {
                     System.out.print("Enter the name of the actuator to check: ");
                     String actuatorName = scanner.nextLine();
                     System.out.println("Actuator: " + actuatorName);
-                    List<PairNameIp> ipsToContact = db.getIPs(actuatorName.toString());
+                    List<PairNameIp> ipsToContact = db.getIPs("actuator");
 
                     String ipcont = null;
 
@@ -93,7 +98,7 @@ public class RemoteControlApp {
                         System.out.println("No actuator found");
                         break;
                     }
-                    CoapClient client3 = new CoapClient("coap://[" + ipcont + "]");
+                    CoapClient client3 = new CoapClient("coap://[" + ipcont + "]:5683");
                     boolean response3 = client3.ping();
 
                     if (response3) {
@@ -123,11 +128,15 @@ public class RemoteControlApp {
                     CoapClient clientDanger = new CoapClient("coap://[" + 'f'+ ip  + "]:5683/threshold");
                     System.out.println("RICHIEDO DANGER A coap://[" + 'f'+ip  + "]:5683/threshold");
                     CoapResponse responseDanger = clientDanger.get();
-                    if (responseDanger != null) {
-                        System.out.println("number of danger events : " + responseDanger.getResponseText() + "\n");
-                    } else {
-                        System.out.println("No response from server.");
-                    }
+                    String jsonText = responseDanger.getResponseText();
+                    JsonReader jsonReader = Json.createReader(new StringReader(jsonText));
+                    JsonObject jsonObject = jsonReader.readObject();
+                    
+                    int rt = jsonObject.getInt("rt");
+                    int rl = jsonObject.getInt("rl");
+                    
+                    System.out.println("rt: " + rt);
+                    System.out.println("rl: " + rl);
                     break;             
 
                 case 4:
@@ -158,12 +167,13 @@ public class RemoteControlApp {
                     String ipcont2 = null;
 
                     for (PairNameIp pair : ipsToContact2) {
+                        System.out.println("name e ip: " + pair.name + " " + pair.ip);
                         if(pair.name.equals(nodeName))
                         {
                             ipcont2 = pair.ip;
                         }
                     }
-                    CoapClient client4 = new CoapClient("coap://[" + 'f'+ipcont2 + "]/shutdown");
+                    CoapClient client4 = new CoapClient("coap://[" +ipcont2 + "]/shutdown");
                     CoapResponse response4 = client4.get();
 
                     if (response4 != null) {
@@ -186,78 +196,4 @@ public class RemoteControlApp {
             }
         }
     }
-<<<<<<< HEAD
-=======
-/* 
-    private static void setTemperatureThreshold(int tempThreshold) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setTemperatureThreshold'");
-    }
-
-    private static void sendCommand(CoapClient client, String device, String state) throws ConnectorException, IOException {
-        JSONObject json = new JSONObject();
-
-        if (client.getURI().equals(COAP_SENSORS_URI)) {
-            json.put("sensor", device);
-        } else if (client.getURI().equals(COAP_ACTUATORS_URI)) {
-            json.put("actuator", device);
-        }
-        json.put("state", state);
-
-        CoapResponse response = client.post(json.toString(), 0);
-        if (response != null) {
-            System.out.println("Response: " + response.getResponseText());
-        } else {
-            System.out.println("No response from server.");
-        }
-    }
-
-
-    private static void getStatus(CoapClient client) throws ConnectorException, IOException {
-        CoapResponse response = client.get();
-        if (client.getURI().equals(COAP_SENSORS_URI)) {
-            if (response != null) {
-                System.out.println("Sensors overview" + response.getResponseText());
-            } else {
-                System.out.println("No response from server.");
-            }            
-        } else if (client.getURI().equals(COAP_ACTUATORS_URI)) {
-            if (response != null) {
-                System.out.println("Actuators overview: " + response.getResponseText());
-            } else {
-                System.out.println("No response from server.");
-            }
-        } else {
-            System.out.println("No response from server.");
-        }
-    }
-
-
-    /*private static void setCO2Sampling(int co2sampling) {
-        CoapClient client = new CoapClient(CO2_RESOURCE_URI);        
-    }
-
-    private static void setLightSampling(int co2sampling) {
-        CoapClient client = new CoapClient(LIGHT_RESOURCE_URI);        
-
-    }
-
-    private static void setPhaseSampling(int co2sampling) {
-        CoapClient client = new CoapClient(PHASE_RESOURCE_URI);        
-
-    }
-
-    private static void setMoistureSampling(int co2sampling) {
-        CoapClient client = new CoapClient(SOIL_RESOURCE_URI);        
-
-    }*/
-
-    /*private static void setTemperatureSampling(int temperatureSampling) {
-        //get the ipv6 address of the actuator we want
-        String ipv6 = db.setActuatorTemperatureThreshold("fanActuator", temperatureSampling);
-       // CoapClient client = new CoapClient(SOIL_RESOURCE_URI);   
-       CoapClient client = new CoapClient("coap://[" + ipv6 + "]/temperature_threshold");     
- 
-    }*/
->>>>>>> main
 }

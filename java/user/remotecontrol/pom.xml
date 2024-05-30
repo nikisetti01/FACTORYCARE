@@ -40,7 +40,23 @@
     <artifactId>json-simple</artifactId>
     <version>1.1.1</version>
 </dependency>
+      <dependency>
+        <groupId>javax.json</groupId>
+        <artifactId>javax.json-api</artifactId>
+        <version>1.1.4</version>
+    </dependency>
 
+    <dependency>
+        <groupId>org.glassfish</groupId>
+        <artifactId>javax.json</artifactId>
+        <version>1.1.4</version>
+        <scope>runtime</scope>
+    </dependency>
+        <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-nop</artifactId>
+        <version>1.7.32</version> <!-- usa la versione che corrisponde alla tua versione di slf4j-api -->
+    </dependency>
   </dependencies>
 
 
