@@ -10,8 +10,8 @@ import org.eclipse.californium.core.server.resources.CoapExchange;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+
 import com.unipi.dii.iot.IPv6DatabaseManager.PairNameIp;
-import com.unipi.dii.iot.CoapObserver;
 
 class CoapResourceRegistrationSensor extends CoapResource {
 
@@ -68,6 +68,7 @@ class CoapResourceRegistrationSensor extends CoapResource {
                 final CoapObserver observerClient = new CoapObserver(ipv6,sensor);
                 Thread observertThread=new Thread(observerClient);
                 observertThread.start();
+                
                
         } else {
             System.err.println("Missing required JSON keys");
