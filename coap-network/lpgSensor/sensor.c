@@ -67,13 +67,9 @@ static struct etimer sleep_timer;
 
 
 void client_chunk_handler(coap_message_t *response) {
-<<<<<<< HEAD
     printf("client_chunk_handler\n");
     const uint8_t *chunk;
 
-=======
-        const uint8_t *chunk;
->>>>>>> mencotest
     if (response == NULL) {
         LOG_ERR("Request timed out\n");
         printf("Request timed out\n");
@@ -83,11 +79,7 @@ void client_chunk_handler(coap_message_t *response) {
     char payload[len + 1];
     memcpy(payload, chunk, len);
     payload[len] = '\0';  // Ensure null-terminated string
-<<<<<<< HEAD
     printf("Response: %s\n", payload);
-=======
-    printf("Response: %i\n", response->code);
->>>>>>> mencotest
     if (response->code == GOOD_ACK) {
         printf("Registration successful\n");
         registered = 1;

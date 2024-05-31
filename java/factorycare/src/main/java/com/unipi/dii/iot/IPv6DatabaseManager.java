@@ -157,7 +157,7 @@ public class PairNameIp {
         System.out.println("tableName: " + tableName);   
         String createTableColumns = "";
         for (int i = 0; i < ss.size(); i++) {
-            System.out.println("ss.get(i).toString(): " + ss.get(i).toString());
+            System.out.println("ss.get( "+ i+ ").toString(): " + ss.get(i).toString());
             if(!ss.get(i).toString().equals("value") && !ss.get(i).toString().equals("ts")){
                 createTableColumns += ss.get(i).toString() + " LONG NOT NULL, ";
             }
@@ -212,21 +212,21 @@ public class PairNameIp {
 
         ip = ip.replace(":", "");
         String tableName = sensorNameTable + "_" + ip;
-        String insertSQL = "INSERT INTO " + tableName + " (sensorName, co, light, smoke, pr) VALUES (?, ?, ?, ?, ?)";
+        String insertSQL = "INSERT INTO " + tableName + " (sensorName, co, smoke, light, pr) VALUES (?, ?, ?, ?, ?)";
 
         //converting the boolean value to Long
         Long light = 0L;
-        if((Boolean)ss.get(2)){
+        if(!ss.get(2).toString().equals("0L")){
             light=1L;
         }
 
         try (Connection conn = connect();
             PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
-            pstmt.setString(1, sensorNameTable);
+            pstmt.setString(1, sensorName);
             pstmt.setLong(2, (Long)ss.get(0));
-            pstmt.setLong(3, light);
-            pstmt.setLong(4, (Long)ss.get(1));   
-            pstmt.setLong(5, (Long)ss.get(2));           
+            pstmt.setLong(3, (Long)ss.get(1));
+            pstmt.setLong(4,  light);
+            pstmt.setLong(5, (Long)ss.get(3));           
             pstmt.executeUpdate();
             System.out.println("Sensor inserted successfully.");
         } catch (SQLException e) {
@@ -276,10 +276,6 @@ public class PairNameIp {
     public Boolean checkAllSensorsRegistered() {
         List<PairNameIp> sensorIPs = getIPs("sensor");
 
-        if (sensorIPs.size() < 2) {
-            return false;
-        } else {
-            return true;
-        }
+        return sensorIPs.size() >= 2;
     }
 }
