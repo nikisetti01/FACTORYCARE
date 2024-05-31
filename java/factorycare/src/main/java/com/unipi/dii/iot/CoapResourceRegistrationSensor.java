@@ -69,6 +69,7 @@ class CoapResourceRegistrationSensor extends CoapResource {
                 final CoapObserver observerClient = new CoapObserver(ipv6,sensor);
                 Thread observertThread=new Thread(observerClient);
                 observertThread.start();
+                
                
         } else {
             System.err.println("Missing required JSON keys");

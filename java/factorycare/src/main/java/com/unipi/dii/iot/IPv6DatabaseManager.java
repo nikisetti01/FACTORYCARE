@@ -157,6 +157,7 @@ public class PairNameIp {
         System.out.println("tableName: " + tableName);   
         String createTableColumns = "";
         for (int i = 0; i < ss.size(); i++) {
+            System.out.println("ss.get(i).toString(): " + ss.get(i).toString());
             if(!ss.get(i).toString().equals("value") && !ss.get(i).toString().equals("ts")){
                 createTableColumns += ss.get(i).toString() + " LONG NOT NULL, ";
             }
@@ -205,13 +206,13 @@ public class PairNameIp {
         valuesArray.add("co");
         valuesArray.add("light");
         valuesArray.add("smoke");
-        valuesArray.add("prediction");
+        valuesArray.add("pr");
         String sensorNameTable = sensorName.toLowerCase();
         createTableSensor(sensorNameTable, ip, valuesArray);
 
         ip = ip.replace(":", "");
         String tableName = sensorNameTable + "_" + ip;
-        String insertSQL = "INSERT INTO " + tableName + " (sensorName, co, light, smoke, prediction) VALUES (?, ?, ?, ?, ?)";
+        String insertSQL = "INSERT INTO " + tableName + " (sensorName, co, light, smoke, pr) VALUES (?, ?, ?, ?, ?)";
 
         //converting the boolean value to Long
         Long light = 0L;
@@ -225,7 +226,7 @@ public class PairNameIp {
             pstmt.setLong(2, (Long)ss.get(0));
             pstmt.setLong(3, light);
             pstmt.setLong(4, (Long)ss.get(1));   
-            pstmt.setLong(5, (Long)ss.get(2)); //prediction    
+            pstmt.setLong(5, (Long)ss.get(2));           
             pstmt.executeUpdate();
             System.out.println("Sensor inserted successfully.");
         } catch (SQLException e) {

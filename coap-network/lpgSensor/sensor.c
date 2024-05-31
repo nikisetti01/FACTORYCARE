@@ -67,20 +67,27 @@ static struct etimer sleep_timer;
 
 
 void client_chunk_handler(coap_message_t *response) {
+<<<<<<< HEAD
     printf("client_chunk_handler\n");
     const uint8_t *chunk;
 
+=======
+        const uint8_t *chunk;
+>>>>>>> mencotest
     if (response == NULL) {
         LOG_ERR("Request timed out\n");
         printf("Request timed out\n");
         return;
     }
-
     int len = coap_get_payload(response, &chunk);
     char payload[len + 1];
     memcpy(payload, chunk, len);
     payload[len] = '\0';  // Ensure null-terminated string
+<<<<<<< HEAD
     printf("Response: %s\n", payload);
+=======
+    printf("Response: %i\n", response->code);
+>>>>>>> mencotest
     if (response->code == GOOD_ACK) {
         printf("Registration successful\n");
         registered = 1;
@@ -88,6 +95,7 @@ void client_chunk_handler(coap_message_t *response) {
         printf("Registration failed\n");
     }
 }
+
 PROCESS(lpgSensorServer, "lpgSensor Server");
 AUTOSTART_PROCESSES(&lpgSensorServer);
 
@@ -101,6 +109,7 @@ PROCESS_THREAD(lpgSensorServer, ev, data)
 while(ev != button_hal_press_event || pressed==0) {
         pressed=1;
         PROCESS_YIELD();
+
   while(max_registration_retry!=0 && registered==0){
     leds_on(LEDS_RED);
     leds_single_on(LEDS_YELLOW);
@@ -145,10 +154,8 @@ while(ev != button_hal_press_event || pressed==0) {
       LOG_ERR("Failed to print JSON object\n");
       PROCESS_EXIT();
     }
-    printf("Payload created: %s\n", payload);
-
+    printf("Payload: %s, Length: %ld\n", payload, strlen(payload));
     coap_set_payload(request, (uint8_t *)payload, strlen(payload));
-    printf("Payload set\n");
     //printf("il payload %s  lenght  %ld \n",payload, strlen(payload));
 
 
@@ -169,6 +176,8 @@ while(ev != button_hal_press_event || pressed==0) {
 		}
 	}
   if(registered==1){
+    printf("Registration successful\n");
+    
             //shutdown=0;
   printf("lpgSensorServer\n");
   write_sample();
@@ -176,14 +185,14 @@ while(ev != button_hal_press_event || pressed==0) {
   coap_activate_resource(&res_monitoring_lpg, "monitoring");
   coap_activate_resource(&res_shutdown, "shutdown");
 
+
     etimer_set(&timer, CLOCK_SECOND * 10);
-    shutdown=0;
 
     while(shutdown!=1) {
 
       PROCESS_WAIT_EVENT();
       if(etimer_expired(&timer)){
-      //res_monitoring_lpg.trigger();
+      res_monitoring_lpg.trigger();
       res_danger.trigger();
       printf("notifico il danger");
       write_sample();

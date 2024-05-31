@@ -8,6 +8,7 @@
 #include "../global_variable/global_variables.h"
 #include "model/functionsML.h"
 
+int new_pred = 0;
 
 static float new_co = 0.0;
 static float new_smoke = 0.0;
@@ -30,15 +31,13 @@ EVENT_RESOURCE(res_monitoring_lpg,
 
 static void res_get_handler(coap_message_t *request, coap_message_t *response, uint8_t *buffer,
                              uint16_t preferred_size, int32_t *offset) {
-
-
-    count++;
-
+    printf("GET HANDLER MONITORING\n");
  // new variable prendano elementi della struct sample
     new_co = sample.co;
     new_smoke = sample.smoke;
     new_light = sample.light;
 
+<<<<<<< HEAD
     float features[4] = {sample.co, sample.smoke, sample.light, sample.humidity};
     new_pred = predict_class(features,4);
 
@@ -47,6 +46,13 @@ static void res_get_handler(coap_message_t *request, coap_message_t *response, u
     printf("Light: %d\n", new_light);
     printf("Prediction: %d\n", new_pred);
 
+=======
+    //NEW
+    float features[4] = {sample.co, sample.smoke, sample.light, sample.humidity};
+    new_pred = predict_class(features,4);
+    if(new_pred<0)  new_pred = new_pred * -1;
+    
+>>>>>>> mencotest
     // crea il json
     cJSON *root = cJSON_CreateObject();
     cJSON*ss=cJSON_CreateArray();
@@ -54,10 +60,19 @@ static void res_get_handler(coap_message_t *request, coap_message_t *response, u
     cJSON_AddItemToArray(ss,cJSON_CreateNumber(new_co));
     cJSON_AddItemToArray(ss,cJSON_CreateNumber(new_smoke));
     cJSON_AddItemToArray(ss,cJSON_CreateBool(new_light));
+<<<<<<< HEAD
     cJSON_AddItemToArray(ss,cJSON_CreateNumber(new_pred)); //prediction
+=======
+    cJSON_AddItemToArray(ss,cJSON_CreateNumber(new_pred));
+>>>>>>> mencotest
     cJSON_AddItemToObject(root,"ss",ss);
     char *json = cJSON_Print(root);
     printf("length %lo\n", strlen(json));
+
+    if (json == NULL) {
+        coap_set_status_code(response, BAD_REQUEST_4_00);
+        return;
+    }
 
     int length = snprintf((char *)buffer, preferred_size, "%s", json);
 
@@ -74,5 +89,6 @@ static void res_get_handler(coap_message_t *request, coap_message_t *response, u
 }
 
 static void res_event_handler(void)  {
+    printf("Sending notification\n");
     coap_notify_observers(&res_monitoring_lpg);
 }
