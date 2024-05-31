@@ -21,8 +21,9 @@ static void res_shutdown_get_handler(coap_message_t *request, coap_message_t *re
                                      uint8_t *buffer, uint16_t preferred_size, int32_t *offset)
 
 { 
-    printf("Shutdown incremented\n");
-    shutdown=0; // Increment the shutdown variable
+    shutdown=1; // Increment the shutdown variable
+
+    printf("Shutdown incremented RES SHUTDOWN LPGSENSOR:%d\n",shutdown);
 
     /* Set the response payload */
     coap_set_payload(response, "Shutdown incremented", 19);

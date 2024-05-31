@@ -173,7 +173,8 @@ public class RemoteControlApp {
                             ipcont2 = pair.ip;
                         }
                     }
-                    CoapClient client4 = new CoapClient("coap://[" +ipcont2 + "]/shutdown");
+                    CoapClient client4 = new CoapClient("coap://[" +'f'+ ipcont2 + "]/shutdown");
+                    System.out.println("RICHIEDO SHUTDOWN A coap://[" +'f'+ ipcont2 + "]/shutdown");
                     CoapResponse response4 = client4.get();
 
                     if (response4 != null) {
