@@ -26,7 +26,8 @@ static void res_get_handler(coap_message_t *request, coap_message_t *response, u
     printf("get_danger: predizione in corso\n");
 
   // metti in array features gli elementi di sample
-  float features[4] = {sample.co, sample.smoke, sample.light, sample.humidity};
+  //float features[4] = {sample.co, sample.smoke, sample.light, sample.humidity};
+  float features[4] = {1595168837.3956487, 0.0056366107165569 ,55.3 ,0 ,0 ,0.0225454753328223,22.2}
   // usa la funzione predi
     prediction = predict_class(features,4);
   //prediction=features[0];
