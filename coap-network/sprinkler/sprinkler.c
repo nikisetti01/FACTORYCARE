@@ -281,7 +281,6 @@ coap_activate_resource(&res_shutdown, "shutdown");
             }
         }
     }
-
     }
     
      else {
