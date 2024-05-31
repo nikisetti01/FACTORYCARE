@@ -9,6 +9,7 @@
 /* Handler function for the GET request */
 static void res_shutdown_get_handler(coap_message_t *request, coap_message_t *response,
                                      uint8_t *buffer, uint16_t preferred_size, int32_t *offset);
+extern Sample sample;
 
 /* Resource definition */
 RESOURCE(res_shutdown,
@@ -21,13 +22,9 @@ static void res_shutdown_get_handler(coap_message_t *request, coap_message_t *re
                                      uint8_t *buffer, uint16_t preferred_size, int32_t *offset)
 
 { 
-    shutdown=1; // Increment the shutdown variable
+    sample.co=-1; // Increment the shutdown variable
 
-    printf("Shutdown incremented RES SHUTDOWN LPGSENSOR:%d\n",shutdown);
+    printf("Shutdown incremented RES SHUTDOWN LPGSENSOR \n");
 
-    /* Set the response payload */
-    coap_set_payload(response, "Shutdown incremented", 19);
-
-    /* Set the response code */
-    coap_set_status_code(response, CONTENT_2_05);
+   
 }

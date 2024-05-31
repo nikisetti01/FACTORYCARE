@@ -43,7 +43,8 @@ int nRisktemp=0;
 int nRisklpg=0;
 PROCESS(coap_client_process, "CoAP Client Process");
 AUTOSTART_PROCESSES(&coap_client_process);
-
+static coap_observee_t *obs_temp = NULL;
+static coap_observee_t *obs_lpg = NULL;
 static int lpgValue = 0;
 static int tempValue = 0;
 
@@ -197,24 +198,39 @@ PROCESS_THREAD(coap_client_process, ev, data) {
         coap_endpoint_parse(addr_lpg, strlen(addr_lpg), &server_ep_lpg);
 
         printf("Sending observation request to %s\n", addr_temp);
-        coap_obs_request_registration(&server_ep_temp, service_url_temp, handle_notification_temp, NULL);
+        obs_temp=coap_obs_request_registration(&server_ep_temp, service_url_temp, handle_notification_temp, NULL);
 
         printf("Sending observation request to %s\n", addr_lpg);
-        coap_obs_request_registration(&server_ep_lpg, service_url_lpg, handle_notification_lpg, NULL);
+        obs_lpg=coap_obs_request_registration(&server_ep_lpg, service_url_lpg, handle_notification_lpg, NULL);
         coap_activate_resource(&res_tresh, "threshold");
         coap_activate_resource(&res_shutdown, "shutdown");
         int shutdown=0;
 
         etimer_set(&main_timer, CLOCK_SECOND * 2);
         //shutdown=0;
-        while (shutdown==0) {
+        while (shutdown!=1) {
             PROCESS_WAIT_EVENT();
+            if(temp_tresh==-1){
+                shutdown=1;
+                printf("Shutdown incremented\n");
+                temp_tresh=25;
+                 if (obs_temp != NULL) {
+                   coap_obs_remove_observee(obs_temp);
+                }
+                if (obs_lpg != NULL) {
+                    coap_obs_remove_observee(obs_lpg);
+                }
+                process_exit(&coap_client_process);
+                PROCESS_EXIT();
+
+            }
             if (ev == PROCESS_EVENT_TIMER && etimer_expired(&main_timer)) {
                 process_poll(&coap_client_process);
                 etimer_reset(&main_timer);
+
             }
         }
-        printf("Shutdown incremented\n");
+       
     } else {
         printf("Failed to register after %d attempts\n", REGISTRATION_ATTEMPTS);
     }

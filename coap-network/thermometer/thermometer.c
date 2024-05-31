@@ -26,7 +26,7 @@ extern coap_resource_t res_shutdown;
 
 static int registration_retry_count = 0;
 static int registered = 0;
- 
+ static int shutdown=0;
 // Array to store the samples
 static int sample_count = 0; // Number of samples stored
 Sample samples[MAX_SAMPLES];
@@ -159,10 +159,19 @@ PROCESS_THREAD(thermometer_process, ev, data)
         // Main loop
         etimer_set(&prediction_timer, CLOCK_SECOND * 10);
         etimer_set(&monitoring_timer, CLOCK_SECOND * 2);
-        int shutdown=0;
+   
 
         while (shutdown!=1) {
+
             PROCESS_YIELD();
+            if(samples[0].humidity==-1){
+                shutdown=1;
+                printf("Shutdown incremented\n");
+            
+                process_exit(&thermometer_process);
+                PROCESS_EXIT();
+
+            }
             if (etimer_expired(&monitoring_timer)) {
                 res_monitoring_temp.trigger();
                 etimer_reset(&monitoring_timer);

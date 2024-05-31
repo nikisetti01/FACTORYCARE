@@ -17,8 +17,8 @@ build/cooja/obj/res-shutdown.o: resources/res-shutdown.c \
  ../../../../os/contiki.h ../../../../os/net/ipv6/tcpip.h \
  ../../../../os/net/ipv6/uip.h ../../../../os/net/ipv6/uipopt.h \
  ../../../../os/net/ipv6/uipbuf.h ../../../../os/net/linkaddr.h \
- ../../../../os/net/ipv6/tcpip.h ../../../../os/net/ipv6/uip.h \
- ../../../../os/net/ipv6/uiplib.h \
+ ../../../../os/net/../contiki.h ../../../../os/net/ipv6/tcpip.h \
+ ../../../../os/net/ipv6/uip.h ../../../../os/net/ipv6/uiplib.h \
  ../../../../os/net/ipv6/uip-udp-packet.h \
  ../../../../os/net/ipv6/simple-udp.h \
  ../../../../os/net/ipv6/uip-nameserver.h \
@@ -56,7 +56,7 @@ build/cooja/obj/res-shutdown.o: resources/res-shutdown.c \
  ../../../../os/net/app-layer/coap/coap-observe.h \
  ../../../../os/net/app-layer/coap/coap-separate.h \
  ../../../../os/net/app-layer/coap/coap-observe-client.h \
- global_variable/global_variables.h
+ resources/../global_variable/global_variables.h
 ../../../../os/net/app-layer/coap/module-macros.h:
 ../../../../os/contiki.h:
 ../../../../arch/platform/cooja/./contiki-conf.h:
@@ -88,6 +88,7 @@ project-conf.h:
 ../../../../os/net/ipv6/uipopt.h:
 ../../../../os/net/ipv6/uipbuf.h:
 ../../../../os/net/linkaddr.h:
+../../../../os/net/../contiki.h:
 ../../../../os/net/ipv6/tcpip.h:
 ../../../../os/net/ipv6/uip.h:
 ../../../../os/net/ipv6/uiplib.h:
@@ -139,4 +140,4 @@ project-conf.h:
 ../../../../os/net/app-layer/coap/coap-observe.h:
 ../../../../os/net/app-layer/coap/coap-separate.h:
 ../../../../os/net/app-layer/coap/coap-observe-client.h:
-global_variable/global_variables.h:
+resources/../global_variable/global_variables.h:

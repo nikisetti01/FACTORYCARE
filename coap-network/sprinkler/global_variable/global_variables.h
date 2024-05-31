@@ -3,7 +3,6 @@
     //modifica samples con un array di 10 elementi struttura {timeid, temperature, humidity}
 extern float temp_tresh;
 extern int  nRisktemp;
-extern int shutdown;
 extern int nRisklpg;// Array to store the samples    
-
+extern int shutdown;
 #endif /* GLOBAL_VARIABLES_H */

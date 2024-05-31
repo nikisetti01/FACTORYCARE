@@ -40,7 +40,7 @@ extern coap_resource_t res_monitoring_lpg;
 extern coap_resource_t res_shutdown;
  Sample sample;
 
-int shutdown=0;
+static int shutdown=0;
 
 // scrittura del singolo sample con timeid co,smoke, light,humidity casuale ma sensato
 void write_sample() {
@@ -163,11 +163,20 @@ while(ev != button_hal_press_event || pressed==0) {
   coap_activate_resource(&res_shutdown, "shutdown");
 
     etimer_set(&timer, CLOCK_SECOND * 10);
-    shutdown=0;
+   
 
     while(shutdown!=1) {
 
+
       PROCESS_WAIT_EVENT();
+       if(sample.co>-1){
+                shutdown=1;
+                printf("Shutdown incremented\n");
+          
+                process_exit(&lpgSensorServer);
+                PROCESS_EXIT();
+
+            }
       if(etimer_expired(&timer)){
       res_monitoring_lpg.trigger();
       res_danger.trigger();

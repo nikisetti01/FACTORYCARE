@@ -4,5 +4,5 @@
 extern float temp_tresh;
 extern int  nRisktemp;
 extern int nRisklpg;// Array to store the samples    
-extern int shutdown; // Variable to shutdown the device
+
 #endif /* GLOBAL_VARIABLES_H */
