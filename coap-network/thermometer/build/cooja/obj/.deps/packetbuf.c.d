@@ -16,8 +16,13 @@ build/cooja/obj/packetbuf.o: ../../../../os/net/packetbuf.c \
  ../../../../os/sys/clock.h ../../../../os/net/ipv6/tcpip.h \
  ../../../../os/net/ipv6/uip.h ../../../../os/net/ipv6/uipopt.h \
  ../../../../os/net/ipv6/uipbuf.h ../../../../os/net/linkaddr.h \
+<<<<<<< HEAD
  ../../../../os/net/ipv6/tcpip.h ../../../../os/net/ipv6/uip.h \
  ../../../../os/net/ipv6/uiplib.h \
+=======
+ ../../../../os/net/../contiki.h ../../../../os/net/ipv6/tcpip.h \
+ ../../../../os/net/ipv6/uip.h ../../../../os/net/ipv6/uiplib.h \
+>>>>>>> main
  ../../../../os/net/ipv6/uip-udp-packet.h \
  ../../../../os/net/ipv6/simple-udp.h \
  ../../../../os/net/ipv6/uip-nameserver.h \
@@ -78,6 +83,10 @@ project-conf.h:
 ../../../../os/net/ipv6/uipopt.h:
 ../../../../os/net/ipv6/uipbuf.h:
 ../../../../os/net/linkaddr.h:
+<<<<<<< HEAD
+=======
+../../../../os/net/../contiki.h:
+>>>>>>> main
 ../../../../os/net/ipv6/tcpip.h:
 ../../../../os/net/ipv6/uip.h:
 ../../../../os/net/ipv6/uiplib.h:

@@ -16,8 +16,13 @@ build/cooja/obj/coap-uip.o: ../../../../os/net/app-layer/coap/coap-uip.c \
  ../../../../os/sys/clock.h ../../../../os/net/ipv6/uip-udp-packet.h \
  ../../../../os/net/ipv6/uip.h ../../../../os/net/ipv6/uipopt.h \
  ../../../../os/net/ipv6/uipbuf.h ../../../../os/net/linkaddr.h \
+<<<<<<< HEAD
  ../../../../os/net/ipv6/tcpip.h ../../../../os/net/ipv6/uiplib.h \
  ../../../../os/net/routing/routing.h \
+=======
+ ../../../../os/net/../contiki.h ../../../../os/net/ipv6/tcpip.h \
+ ../../../../os/net/ipv6/uiplib.h ../../../../os/net/routing/routing.h \
+>>>>>>> main
  ../../../../os/net/ipv6/uip-ds6-nbr.h ../../../../os/net/ipv6/uip-nd6.h \
  ../../../../os/sys/stimer.h ../../../../os/net/nbr-table.h \
  ../../../../os/net/netstack.h ../../../../os/net/mac/mac.h \
@@ -69,6 +74,10 @@ project-conf.h:
 ../../../../os/net/ipv6/uipopt.h:
 ../../../../os/net/ipv6/uipbuf.h:
 ../../../../os/net/linkaddr.h:
+<<<<<<< HEAD
+=======
+../../../../os/net/../contiki.h:
+>>>>>>> main
 ../../../../os/net/ipv6/tcpip.h:
 ../../../../os/net/ipv6/uiplib.h:
 ../../../../os/net/routing/routing.h:

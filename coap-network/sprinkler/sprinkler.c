@@ -234,9 +234,14 @@ coap_activate_resource(&res_tresh, "threshold");
 coap_activate_resource(&res_shutdown, "shutdown");
     etimer_set(&ledtimer, 2 * CLOCK_SECOND); // Imposta il timer del LED a 2 secondi per iniziare
     int shutdown=0;
-    while (shutdown==0)
+    while (1)
     {
-        PROCESS_WAIT_EVENT(); // Attendiamo un evento
+        PROCESS_WAIT_EVENT();
+        if(shutdown==1){
+            printf("shutdown comunication \n");
+            continue;
+        }
+         
 
         // Gestione del timer del LED
         if (ev == PROCESS_EVENT_TIMER && etimer_expired(&ledtimer))
@@ -276,7 +281,7 @@ coap_activate_resource(&res_shutdown, "shutdown");
             }
         }
     }
-    printf("shutdown\n");
+
     }
     
      else {

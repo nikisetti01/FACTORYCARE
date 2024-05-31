@@ -24,11 +24,18 @@ static void res_shutdown_get_handler(coap_message_t *request, coap_message_t *re
 
 { 
     printf("Shutdown incremented\n");
+<<<<<<< HEAD
     shutdown=1; // Increment the shutdown variable
+=======
+    //shutdown=1; // Increment the shutdown variable
+>>>>>>> main
 
-    /* Set the response payload */
-    coap_set_payload(response, "Shutdown incremented", 19);
-
-    /* Set the response code */
+    //coap_set_payload(response, "Shutdown incremented", 19);
+    /*int length=19;
+    memcpy(buffer,"Shutdown incremented" , length);
     coap_set_status_code(response, CONTENT_2_05);
+
+    coap_set_header_content_format(response, APPLICATION_JSON);
+    coap_set_header_etag(response, (uint8_t *)&length, 1);
+    coap_set_payload(response, buffer, length);*/
 }
