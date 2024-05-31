@@ -44,16 +44,30 @@ int shutdown=0;
 
 // scrittura del singolo sample con timeid co,smoke, light,humidity casuale ma sensato
 void write_sample() {
+    printf("WRITE SAMPLE\n");
     sample.co = random_rand() % 100;
     sample.smoke = random_rand() % 100;
     sample.light = random_rand() % 2;
     sample.humidity = random_rand() % 100;
+    
+    cJSON *root = cJSON_CreateObject();
+    cJSON*ss=cJSON_CreateArray();
+    // cJSON_AddItemToObject(root,"id",cJSON_CreateNumber(count));
+    cJSON_AddItemToArray(ss,cJSON_CreateNumber(sample.co));
+    cJSON_AddItemToArray(ss,cJSON_CreateNumber(sample.smoke));
+    cJSON_AddItemToArray(ss,cJSON_CreateBool(sample.light));
+    cJSON_AddItemToArray(ss,cJSON_CreateNumber(3)); //prediction
+    cJSON_AddItemToObject(root,"ss",ss);
+    char *json = cJSON_Print(root);
+    printf("length %lo\n", strlen(json));
+
 }
 coap_message_t request[1];  
 static struct etimer sleep_timer;
 
 
 void client_chunk_handler(coap_message_t *response) {
+    printf("client_chunk_handler\n");
     const uint8_t *chunk;
 
     if (response == NULL) {
@@ -67,7 +81,6 @@ void client_chunk_handler(coap_message_t *response) {
     memcpy(payload, chunk, len);
     payload[len] = '\0';  // Ensure null-terminated string
     printf("Response: %s\n", payload);
-
     if (response->code == GOOD_ACK) {
         printf("Registration successful\n");
         registered = 1;
@@ -123,6 +136,7 @@ while(ev != button_hal_press_event || pressed==0) {
     cJSON_AddItemToArray(string_array, cJSON_CreateString("co"));
     cJSON_AddItemToArray(string_array, cJSON_CreateString("smoke"));
     cJSON_AddItemToArray(string_array, cJSON_CreateString("light"));
+    cJSON_AddItemToArray(string_array, cJSON_CreateString("pr")); //prediction
     cJSON_AddItemToObject(root, "ss", string_array);
     cJSON_AddNumberToObject(root, "t", TIME_SAMPLE);
 
@@ -169,7 +183,7 @@ while(ev != button_hal_press_event || pressed==0) {
 
       PROCESS_WAIT_EVENT();
       if(etimer_expired(&timer)){
-      res_monitoring_lpg.trigger();
+      //res_monitoring_lpg.trigger();
       res_danger.trigger();
       printf("notifico il danger");
       write_sample();

@@ -38,7 +38,7 @@ class CoapResourceRegistrationActuator extends CoapResource {
             return;
         }        
         
-        System.out.println("POST actuator received");
+        System.out.println("POST ACTUATOR received");
     
         String payloadString = exchange.getRequestText();
         String ipAddress = exchange.getSourceAddress().getHostAddress();
@@ -74,9 +74,6 @@ class CoapResourceRegistrationActuator extends CoapResource {
                     db.insertIPv6Address(addrWithoutSlash, "actuator", actuator);
 
                     System.out.println("actuator IP REGISTERED!");
-
-                    //after parsing the payload we have to create the table for this actuator
-                    //IPv6DatabaseManager.createTableActuator();
 
                     // Create response JSON object
                     JSONObject responseJson = new JSONObject();

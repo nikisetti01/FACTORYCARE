@@ -228,7 +228,7 @@ PROCESS_THREAD(coap_client_process, ev, data)
     printf("Sending observation request to %s\n",addr_temp);
     coap_obs_request_registration(&server_ep_temp, service_url_temp, handle_notification_temp, NULL);
 
-    printf("Sending observation request to %s\n", ipv6lpg);
+    printf("Sending observation request to %s\n", addr_lpg);
     coap_obs_request_registration(&server_ep_lpg, service_url_lpg, handle_notification_lpg, NULL);
 coap_activate_resource(&res_tresh, "threshold");
 coap_activate_resource(&res_shutdown, "shutdown");

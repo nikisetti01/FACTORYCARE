@@ -56,7 +56,8 @@ build/cooja/obj/res_monitoring.o: resources/res_monitoring.c \
  ../../../../os/net/app-layer/coap/coap-observe.h \
  ../../../../os/net/app-layer/coap/coap-separate.h \
  ../../../../os/net/app-layer/coap/coap-observe-client.h \
- ../cJSON-master/cJSON.h resources/../global_variable/global_variables.h
+ ../cJSON-master/cJSON.h resources/../global_variable/global_variables.h \
+ resources/model/functionsML.h
 ../../../../os/net/app-layer/coap/module-macros.h:
 ../../../../os/contiki.h:
 ../../../../arch/platform/cooja/./contiki-conf.h:
@@ -141,3 +142,4 @@ project-conf.h:
 ../../../../os/net/app-layer/coap/coap-observe-client.h:
 ../cJSON-master/cJSON.h:
 resources/../global_variable/global_variables.h:
+resources/model/functionsML.h:

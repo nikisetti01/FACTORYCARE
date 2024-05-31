@@ -205,12 +205,13 @@ public class PairNameIp {
         valuesArray.add("co");
         valuesArray.add("light");
         valuesArray.add("smoke");
+        valuesArray.add("prediction");
         String sensorNameTable = sensorName.toLowerCase();
         createTableSensor(sensorNameTable, ip, valuesArray);
 
         ip = ip.replace(":", "");
         String tableName = sensorNameTable + "_" + ip;
-        String insertSQL = "INSERT INTO " + tableName + " (sensorName, co, light, smoke) VALUES (?, ?, ?, ?)";
+        String insertSQL = "INSERT INTO " + tableName + " (sensorName, co, light, smoke, prediction) VALUES (?, ?, ?, ?, ?)";
 
         //converting the boolean value to Long
         Long light = 0L;
@@ -223,7 +224,8 @@ public class PairNameIp {
             pstmt.setString(1, sensorNameTable);
             pstmt.setLong(2, (Long)ss.get(0));
             pstmt.setLong(3, light);
-            pstmt.setLong(4, (Long)ss.get(1));       
+            pstmt.setLong(4, (Long)ss.get(1));   
+            pstmt.setLong(5, (Long)ss.get(2)); //prediction    
             pstmt.executeUpdate();
             System.out.println("Sensor inserted successfully.");
         } catch (SQLException e) {
@@ -279,18 +281,4 @@ public class PairNameIp {
             return true;
         }
     }
-
-    /*
-    public static void main(String[] args) {
-        IPv6DatabaseManager dbManager = new IPv6DatabaseManager();
-        dbManager.createTable();
-
-        // Inserisci qualche esempio di indirizzo IPv6
-        dbManager.insertIPv6Address("2001:0db8:85a3:0000:0000:8a2e:0370:7334", "ExampleType1");
-        dbManager.insertIPv6Address("2001:0db8:85a3:0000:0000:8a2e:0370:7335", "ExampleType2");
-
-        // Recupera e stampa gli indirizzi IPv6
-        dbManager.fetchIPv6Addresses();
-    }
-    */
 }
