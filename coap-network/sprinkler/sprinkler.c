@@ -54,7 +54,7 @@ static coap_observee_t *obs_lpg = NULL;
 
 float update_water_production_temperature(float water, float last_temperature, float next_temperature) {
     float diff;
-    if (last_temperature < 20)
+    if (last_temperature < temp_tresh)
         water = STARTING_WATER;
     else
         diff = next_temperature - last_temperature;
@@ -269,7 +269,7 @@ PROCESS_THREAD(coap_client_process, ev, data) {
                     led_now = LEDS_GREEN;
                     leds_single_on(led_now);
                     printf("Sprinkler off\n");
-                } else if (next_temperature >= 20 && lpg_level != 2) {
+                } else if (next_temperature >= temp_tresh && lpg_level != 2) {
                     nRisktemp++;
                     leds_single_off(led_now);
                     led_now = LEDS_BLUE;
