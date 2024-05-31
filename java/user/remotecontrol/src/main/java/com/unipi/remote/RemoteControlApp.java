@@ -178,7 +178,7 @@ public class RemoteControlApp {
                     CoapResponse response4 = client4.get();
 
                     if (response4 != null) {
-                        System.out.println(nodeName + " is shutted");
+                        System.out.println(nodeName + " is shutted\n");
                         //remove from ipv6_addresses the device ip
                         db.removeIp(ipcont2);
                     } else {
