@@ -42,6 +42,7 @@ public class IPv6DatabaseManager {
     public static void createTableIPV6() {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS ipv6_addresses (" +
                                 "id INT AUTO_INCREMENT PRIMARY KEY, " +
+                                "time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
                                 "address VARCHAR(89) NOT NULL, " +
                                 "type VARCHAR(80) NOT NULL," + 
                                 "name VARCHAR(80) NOT NULL)";
@@ -49,7 +50,6 @@ public class IPv6DatabaseManager {
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
             stmt.execute(createTableSQL);
-            System.out.println("Table created successfully.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -123,22 +123,6 @@ public class PairNameIp {
         return sensorIPs;
     }
 
-    /*public static void createTableActuator(){
-        String createTableSQL = "CREATE TABLE IF NOT EXISTS actuators ("
-                + "ipAddress VARCHAR(50) NOT NULL, "
-                + "actuatorType VARCHAR(50) NOT NULL, "
-                + "threshold FLOAT NOT NULL, "
-                + "state VARCHAR(10) NOT NULL, "
-                + "PRIMARY KEY (ipAddress, actuatorType))";
-
-        try (Connection conn = connect();
-             Statement stmt = conn.createStatement()) {
-            stmt.execute(createTableSQL);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }*/
-
     public static void deleteDB() {
         String deleteDBSQL = "DROP DATABASE IF EXISTS iotdatabase";
 
@@ -153,17 +137,17 @@ public class PairNameIp {
     public static void createTableSensor(String sensorName, String ip, JSONArray ss) {
         ip = ip.replace(":", "");
 
-        String tableName = sensorName.toLowerCase() + "_" + ip;
-        System.out.println("tableName: " + tableName);   
+        String tableName = sensorName.toLowerCase() + "_" + ip; 
         String createTableColumns = "";
         for (int i = 0; i < ss.size(); i++) {
             System.out.println("ss.get( "+ i+ ").toString(): " + ss.get(i).toString());
             if(!ss.get(i).toString().equals("value") && !ss.get(i).toString().equals("ts")){
-                createTableColumns += ss.get(i).toString() + " LONG NOT NULL, ";
+                createTableColumns += ss.get(i).toString() + " INT NOT NULL, ";
             }
         }
         String createTableSQL = "CREATE TABLE IF NOT EXISTS " + tableName + " ("
-            + "id INT AUTO_INCREMENT, "
+            + "id INT AUTO_INCREMENT, " 
+            + "time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
             + "sensorName VARCHAR(50) NOT NULL, "
             + createTableColumns 
             + "PRIMARY KEY (id)) ";
@@ -191,10 +175,12 @@ public class PairNameIp {
         try (Connection conn = connect();
             PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
             pstmt.setString(1, sensorName);
-            pstmt.setLong(2, (Long)ss.get(0));
-            pstmt.setLong(3, (Long)ss.get(1));       
+            //casting value from jSon to int
+            Long longValue = (Long) ss.get(0);
+            pstmt.setInt(2, longValue.intValue());
+            longValue = (Long) ss.get(1);
+            pstmt.setInt(3, longValue.intValue());       
             pstmt.executeUpdate();
-            System.out.println("Sensor inserted successfully.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -223,10 +209,18 @@ public class PairNameIp {
         try (Connection conn = connect();
             PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
             pstmt.setString(1, sensorName);
-            pstmt.setLong(2, (Long)ss.get(0));
-            pstmt.setLong(3, (Long)ss.get(1));
+
+            Long longValue = (Long) ss.get(0);
+            pstmt.setInt(2, longValue.intValue());
+
+            longValue = (Long) ss.get(1);
+            pstmt.setInt(3, longValue.intValue());
+
             pstmt.setLong(4,  light);
-            pstmt.setLong(5, (Long)ss.get(3));           
+
+            longValue = (long) (Math.random() * 3) + 1;
+            System.out.println("PREDICTION: " + longValue);
+            pstmt.setInt(5, longValue.intValue());           
             pstmt.executeUpdate();
             System.out.println("Sensor inserted successfully.");
         } catch (SQLException e) {
@@ -267,7 +261,6 @@ public class PairNameIp {
             pstmt.setString(4, state);
             pstmt.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
             pstmt.executeUpdate();
-            System.out.println("Actuator inserted successfully.");
         } catch (SQLException e) {
             e.printStackTrace();
         }

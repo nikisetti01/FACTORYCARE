@@ -34,7 +34,7 @@ static void res_get_handler(coap_message_t *request, coap_message_t *response, u
     
     int val = prediction + 1; //bias for staying in 1 2 3 classification
     if(val < 0)
-        val = val * -1;
+        printf("error model\n");
 
     printf("VALORE PREDETTO DA RES_DANGER IN LPGSENSOR %i\n", val);
     

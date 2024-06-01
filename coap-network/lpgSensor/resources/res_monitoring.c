@@ -51,7 +51,6 @@ static void res_get_handler(coap_message_t *request, coap_message_t *response, u
     cJSON_AddItemToArray(ss,cJSON_CreateNumber(new_pred));
     cJSON_AddItemToObject(root,"ss",ss);
     char *json = cJSON_Print(root);
-    printf("length %lo\n", strlen(json));
 
     if (json == NULL) {
         coap_set_status_code(response, BAD_REQUEST_4_00);
