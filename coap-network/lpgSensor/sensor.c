@@ -44,16 +44,30 @@ static int shutdown=0;
 
 // scrittura del singolo sample con timeid co,smoke, light,humidity casuale ma sensato
 void write_sample() {
+    printf("WRITE SAMPLE\n");
     sample.co = random_rand() % 100;
     sample.smoke = random_rand() % 100;
     sample.light = random_rand() % 2;
     sample.humidity = random_rand() % 100;
+    
+    cJSON *root = cJSON_CreateObject();
+    cJSON*ss=cJSON_CreateArray();
+    // cJSON_AddItemToObject(root,"id",cJSON_CreateNumber(count));
+    cJSON_AddItemToArray(ss,cJSON_CreateNumber(sample.co));
+    cJSON_AddItemToArray(ss,cJSON_CreateNumber(sample.smoke));
+    cJSON_AddItemToArray(ss,cJSON_CreateBool(sample.light));
+    cJSON_AddItemToArray(ss,cJSON_CreateNumber(3)); //prediction
+    cJSON_AddItemToObject(root,"ss",ss);
+    char *json = cJSON_Print(root);
+    printf("length %o\n", strlen(json));
+
 }
 coap_message_t request[1];  
 static struct etimer sleep_timer;
 
 
 void client_chunk_handler(coap_message_t *response) {
+    printf("client_chunk_handler\n");
     const uint8_t *chunk;
 
     if (response == NULL) {
@@ -61,13 +75,11 @@ void client_chunk_handler(coap_message_t *response) {
         printf("Request timed out\n");
         return;
     }
-
     int len = coap_get_payload(response, &chunk);
     char payload[len + 1];
     memcpy(payload, chunk, len);
     payload[len] = '\0';  // Ensure null-terminated string
     printf("Response: %s\n", payload);
-
     if (response->code == GOOD_ACK) {
         printf("Registration successful\n");
         registered = 1;
@@ -75,6 +87,7 @@ void client_chunk_handler(coap_message_t *response) {
         printf("Registration failed\n");
     }
 }
+
 PROCESS(lpgSensorServer, "lpgSensor Server");
 AUTOSTART_PROCESSES(&lpgSensorServer);
 
@@ -88,6 +101,7 @@ PROCESS_THREAD(lpgSensorServer, ev, data)
 while(ev != button_hal_press_event || pressed==0) {
         pressed=1;
         PROCESS_YIELD();
+
   while(max_registration_retry!=0 && registered==0){
     leds_on(LEDS_RED);
     leds_single_on(LEDS_YELLOW);
@@ -123,6 +137,7 @@ while(ev != button_hal_press_event || pressed==0) {
     cJSON_AddItemToArray(string_array, cJSON_CreateString("co"));
     cJSON_AddItemToArray(string_array, cJSON_CreateString("smoke"));
     cJSON_AddItemToArray(string_array, cJSON_CreateString("light"));
+    cJSON_AddItemToArray(string_array, cJSON_CreateString("pr")); //prediction
     cJSON_AddItemToObject(root, "ss", string_array);
     cJSON_AddNumberToObject(root, "t", TIME_SAMPLE);
 
@@ -131,10 +146,8 @@ while(ev != button_hal_press_event || pressed==0) {
       LOG_ERR("Failed to print JSON object\n");
       PROCESS_EXIT();
     }
-    printf("Payload created: %s\n", payload);
-
+    printf("Payload: %s, Length: %u\n", payload, strlen(payload));
     coap_set_payload(request, (uint8_t *)payload, strlen(payload));
-    printf("Payload set\n");
     //printf("il payload %s  lenght  %ld \n",payload, strlen(payload));
 
 
@@ -142,7 +155,7 @@ while(ev != button_hal_press_event || pressed==0) {
 		//coap_set_payload(request, (uint8_t *)"sensor", sizeof("sensor") - 1);
 	
     printf("Tentativo di registrazione a %s\n",SERVER_EP_JAVA);
-    printf("il payload %s  lenght  %ld \n",payload, strlen(payload));
+    printf("il payload %s  lenght  %u \n",payload, strlen(payload));
     coap_set_payload(request, (uint8_t *)payload, strlen(payload));
     printf("Sending the registration request\n");
 		COAP_BLOCKING_REQUEST(&server_ep_java, request, client_chunk_handler);
@@ -155,6 +168,10 @@ while(ev != button_hal_press_event || pressed==0) {
 		}
 	}
   if(registered==1){
+    printf("Registration successful\n");
+    leds_off(LEDS_RED);
+    leds_single_off(LEDS_YELLOW);
+    
             //shutdown=0;
   printf("lpgSensorServer\n");
   write_sample();
@@ -162,9 +179,8 @@ while(ev != button_hal_press_event || pressed==0) {
   coap_activate_resource(&res_monitoring_lpg, "monitoring");
   coap_activate_resource(&res_shutdown, "shutdown");
 
-    etimer_set(&timer, CLOCK_SECOND * 10);
-   
 
+    etimer_set(&timer, CLOCK_SECOND * 10);
     while(shutdown!=1) {
 
 

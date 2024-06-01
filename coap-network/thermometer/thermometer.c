@@ -6,6 +6,7 @@
 #include "sys/log.h"
 #include "coap-blocking-api.h"
 #include "os/dev/button-hal.h"
+#include "leds.h"
 #include "../cJSON-master/cJSON.h"
 #include <stdlib.h>
 #include <string.h>
@@ -98,6 +99,9 @@ PROCESS_THREAD(thermometer_process, ev, data)
     coap_endpoint_parse(SERVER_EP, strlen(SERVER_EP), &server_ep);
     while (registration_retry_count < MAX_REGISTRATION_RETRY && registered == 0) {
         // Initialize POST request
+            leds_on(LEDS_RED);
+        leds_single_on(LEDS_YELLOW);
+
         coap_init_message(request, COAP_TYPE_CON, COAP_POST, 0);
         coap_set_header_uri_path(request, "/registrationSensor");
         
@@ -126,7 +130,7 @@ PROCESS_THREAD(thermometer_process, ev, data)
             cJSON_Delete(root);
             PROCESS_EXIT();
         }
-        printf("Payload: %s, Length: %ld\n", payload, strlen(payload));
+        printf("Payload: %s, Length: %o\n", payload, strlen(payload));
         coap_set_payload(request, (uint8_t *)payload, strlen(payload));
         
 
@@ -144,6 +148,8 @@ PROCESS_THREAD(thermometer_process, ev, data)
 
     if (registered == 1) {
         //shutdown=0;
+        leds_off(LEDS_RED);
+        leds_single_off(LEDS_YELLOW);
         write_samples();
         printf(" a sample %f \n", samples[0].temperature);
         printf("Activate server term\n");

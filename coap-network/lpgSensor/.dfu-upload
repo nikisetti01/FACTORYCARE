@@ -1,0 +1,5 @@
+  CC        ./resources/res_monitoring.c
+  CC        ./resources/res-shutdown.c
+  CC        ./resources/model/ml-example.c
+  LD        build/nrf52840/dongle/sensor.nrf52840
+  CP        build/nrf52840/dongle/sensor.nrf52840 --> sensor.nrf52840

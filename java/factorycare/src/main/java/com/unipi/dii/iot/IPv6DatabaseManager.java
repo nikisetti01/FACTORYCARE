@@ -42,6 +42,7 @@ public class IPv6DatabaseManager {
     public static void createTableIPV6() {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS ipv6_addresses (" +
                                 "id INT AUTO_INCREMENT PRIMARY KEY, " +
+                                "time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
                                 "address VARCHAR(89) NOT NULL, " +
                                 "type VARCHAR(80) NOT NULL," + 
                                 "name VARCHAR(80) NOT NULL)";
@@ -49,7 +50,6 @@ public class IPv6DatabaseManager {
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
             stmt.execute(createTableSQL);
-            System.out.println("Table created successfully.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -123,22 +123,6 @@ public class PairNameIp {
         return sensorIPs;
     }
 
-    /*public static void createTableActuator(){
-        String createTableSQL = "CREATE TABLE IF NOT EXISTS actuators ("
-                + "ipAddress VARCHAR(50) NOT NULL, "
-                + "actuatorType VARCHAR(50) NOT NULL, "
-                + "threshold FLOAT NOT NULL, "
-                + "state VARCHAR(10) NOT NULL, "
-                + "PRIMARY KEY (ipAddress, actuatorType))";
-
-        try (Connection conn = connect();
-             Statement stmt = conn.createStatement()) {
-            stmt.execute(createTableSQL);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }*/
-
     public static void deleteDB() {
         String deleteDBSQL = "DROP DATABASE IF EXISTS iotdatabase";
 
@@ -153,16 +137,17 @@ public class PairNameIp {
     public static void createTableSensor(String sensorName, String ip, JSONArray ss) {
         ip = ip.replace(":", "");
 
-        String tableName = sensorName.toLowerCase() + "_" + ip;
-        System.out.println("tableName: " + tableName);   
+        String tableName = sensorName.toLowerCase() + "_" + ip; 
         String createTableColumns = "";
         for (int i = 0; i < ss.size(); i++) {
+            System.out.println("ss.get( "+ i+ ").toString(): " + ss.get(i).toString());
             if(!ss.get(i).toString().equals("value") && !ss.get(i).toString().equals("ts")){
-                createTableColumns += ss.get(i).toString() + " LONG NOT NULL, ";
+                createTableColumns += ss.get(i).toString() + " INT NOT NULL, ";
             }
         }
         String createTableSQL = "CREATE TABLE IF NOT EXISTS " + tableName + " ("
-            + "id INT AUTO_INCREMENT, "
+            + "id INT AUTO_INCREMENT, " 
+            + "time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
             + "sensorName VARCHAR(50) NOT NULL, "
             + createTableColumns 
             + "PRIMARY KEY (id)) ";
@@ -190,10 +175,12 @@ public class PairNameIp {
         try (Connection conn = connect();
             PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
             pstmt.setString(1, sensorName);
-            pstmt.setLong(2, (Long)ss.get(0));
-            pstmt.setLong(3, (Long)ss.get(1));       
+            //casting value from jSon to int
+            Long longValue = (Long) ss.get(0);
+            pstmt.setInt(2, longValue.intValue());
+            longValue = (Long) ss.get(1);
+            pstmt.setInt(3, longValue.intValue());       
             pstmt.executeUpdate();
-            System.out.println("Sensor inserted successfully.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -205,25 +192,35 @@ public class PairNameIp {
         valuesArray.add("co");
         valuesArray.add("light");
         valuesArray.add("smoke");
+        valuesArray.add("pr");
         String sensorNameTable = sensorName.toLowerCase();
         createTableSensor(sensorNameTable, ip, valuesArray);
 
         ip = ip.replace(":", "");
         String tableName = sensorNameTable + "_" + ip;
-        String insertSQL = "INSERT INTO " + tableName + " (sensorName, co, light, smoke) VALUES (?, ?, ?, ?)";
+        String insertSQL = "INSERT INTO " + tableName + " (sensorName, co, smoke, light, pr) VALUES (?, ?, ?, ?, ?)";
 
         //converting the boolean value to Long
         Long light = 0L;
-        if((Boolean)ss.get(2)){
+        if(!ss.get(2).toString().equals("0L")){
             light=1L;
         }
 
         try (Connection conn = connect();
             PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
-            pstmt.setString(1, sensorNameTable);
-            pstmt.setLong(2, (Long)ss.get(0));
-            pstmt.setLong(3, light);
-            pstmt.setLong(4, (Long)ss.get(1));       
+            pstmt.setString(1, sensorName);
+
+            Long longValue = (Long) ss.get(0);
+            pstmt.setInt(2, longValue.intValue());
+
+            longValue = (Long) ss.get(1);
+            pstmt.setInt(3, longValue.intValue());
+
+            pstmt.setLong(4,  light);
+
+            longValue = (long) (Math.random() * 3) + 1;
+            System.out.println("PREDICTION: " + longValue);
+            pstmt.setInt(5, longValue.intValue());           
             pstmt.executeUpdate();
             System.out.println("Sensor inserted successfully.");
         } catch (SQLException e) {
@@ -264,7 +261,6 @@ public class PairNameIp {
             pstmt.setString(4, state);
             pstmt.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
             pstmt.executeUpdate();
-            System.out.println("Actuator inserted successfully.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -273,24 +269,6 @@ public class PairNameIp {
     public Boolean checkAllSensorsRegistered() {
         List<PairNameIp> sensorIPs = getIPs("sensor");
 
-        if (sensorIPs.size() < 2) {
-            return false;
-        } else {
-            return true;
-        }
+        return sensorIPs.size() >= 2;
     }
-
-    /*
-    public static void main(String[] args) {
-        IPv6DatabaseManager dbManager = new IPv6DatabaseManager();
-        dbManager.createTable();
-
-        // Inserisci qualche esempio di indirizzo IPv6
-        dbManager.insertIPv6Address("2001:0db8:85a3:0000:0000:8a2e:0370:7334", "ExampleType1");
-        dbManager.insertIPv6Address("2001:0db8:85a3:0000:0000:8a2e:0370:7335", "ExampleType2");
-
-        // Recupera e stampa gli indirizzi IPv6
-        dbManager.fetchIPv6Addresses();
-    }
-    */
 }

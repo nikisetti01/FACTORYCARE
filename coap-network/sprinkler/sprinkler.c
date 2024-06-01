@@ -53,7 +53,7 @@ static coap_observee_t *obs_temp = NULL;
 static coap_observee_t *obs_lpg = NULL;
 
 float update_water_production_temperature(float water, float last_temperature, float next_temperature) {
-    float diff;
+    float diff = 0;
     if (last_temperature < temp_tresh)
         water = STARTING_WATER;
     else
@@ -97,8 +97,8 @@ void registration_handler(coap_message_t* response) {
         // Extract the IPv6 addresses
         cJSON *ipv6temp_item_test = cJSON_GetObjectItemCaseSensitive(json, "t");
         cJSON *ipv6lpg_item_test = cJSON_GetObjectItemCaseSensitive(json, "l");
-        cJSON *ipv6temp_item;
-        cJSON *ipv6lpg_item;
+        cJSON *ipv6temp_item = NULL;
+        cJSON *ipv6lpg_item = NULL;
 
         if (cJSON_IsString(ipv6temp_item_test) || cJSON_IsString(ipv6lpg_item_test)) {
             if (cJSON_IsString(ipv6temp_item_test))

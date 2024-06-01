@@ -27,13 +27,14 @@ static void res_get_handler(coap_message_t *request, coap_message_t *response, u
 
   // metti in array features gli elementi di sample
   float features[4] = {sample.co, sample.smoke, sample.light, sample.humidity};
+  //float features[4] = {1595168837.3956487, 0.0056366107165569 ,55.3 ,0 ,0 ,0.0225454753328223,22.2}
   // usa la funzione predi
     prediction = predict_class(features,4);
   //prediction=features[0];
     
-    int val = prediction;
+    int val = prediction + 1; //bias for staying in 1 2 3 classification
     if(val < 0)
-        val = val * -1;
+        printf("error model\n");
 
     printf("VALORE PREDETTO DA RES_DANGER IN LPGSENSOR %i\n", val);
     

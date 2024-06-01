@@ -38,7 +38,7 @@ class CoapResourceRegistrationActuator extends CoapResource {
             return;
         }        
         
-        System.out.println("POST actuator received");
+        System.out.println("POST ACTUATOR received");
     
         String payloadString = exchange.getRequestText();
         String ipAddress = exchange.getSourceAddress().getHostAddress();
@@ -75,13 +75,29 @@ class CoapResourceRegistrationActuator extends CoapResource {
 
                     System.out.println("actuator IP REGISTERED!");
 
-                    //after parsing the payload we have to create the table for this actuator
-                    //IPv6DatabaseManager.createTableActuator();
-
                     // Create response JSON object
                     JSONObject responseJson = new JSONObject();
                     // taking ips from database
                     List<PairNameIp> sensorIPs = db.getIPs("sensor");
+                    for (PairNameIp ip : sensorIPs) {
+                        int index = ip.ip.lastIndexOf("0:") + 2;
+                        String ipAddress1 = ip.ip.substring(index);
+                        System.out.println("actuator: " + ip.name + " ip: " + ipAddress1);
+                        if (ip.name.toLowerCase().equals("lpgsensor")) {
+                            responseJson.put("l", ipAddress1);
+                        } else if (ip.name.toLowerCase().equals("thermometer")) {
+                            responseJson.put("t", ipAddress1);
+                        } else {
+                            responseJson.put("e", ipAddress1);
+                            System.out.println("ERROR PARSING SENSOR IP TO ACTUATOR JSON\n");
+                        }
+                    }
+                    System.out.println("indirizzi ip sensori per l'attuatore " + responseJson.toString());
+
+                    response = new Response(CoAP.ResponseCode.CREATED);
+                    response.setPayload(responseJson.toJSONString());
+                    System.out.print(CoAP.ResponseCode.CREATED);
+                    exchange.respond(response);
                     for (PairNameIp ip : sensorIPs) {
                         System.out.println("actuator: " + ip.name + " ip: " + ip.ip);
                         if (ip.name.toLowerCase().equals("lpgsensor")) {

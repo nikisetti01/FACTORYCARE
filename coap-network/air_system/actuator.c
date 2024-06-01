@@ -53,10 +53,6 @@ void response_handler_LPG(coap_message_t *response) {
         printf("No response received.\n");
         return;
     }
-    leds_single_off(LEDS_GREEN);
-    leds_single_off(LEDS_RED);
-    leds_single_off(LEDS_YELLOW);
-    leds_single_off(LEDS_BLUE);
 
     const uint8_t *chunk;
     int len = coap_get_payload(response, &chunk);
@@ -68,14 +64,14 @@ void response_handler_LPG(coap_message_t *response) {
     printf("lpg valore: %d \n",value);
     if(lpgValue == 1) {
         printf("lpg is normal\n");
-        leds_single_on(LEDS_GREEN);
+        leds_on(LEDS_GREEN);
     } else if(lpgValue == 2) {
         printf("lpg is dangerous\n");
-        leds_single_on(LEDS_RED);
+        leds_on(LEDS_RED);
     } else if(lpgValue == 3) {
         nRisklpg++;
         printf("lpg is critical\n");
-        leds_single_on(LEDS_RED);
+        leds_on(LEDS_RED);
     } else {
         printf("lpg is unknown\n");
     }
@@ -143,10 +139,18 @@ void registration_handler(coap_message_t *response) {
     cJSON *ipv6temp_item = cJSON_GetObjectItemCaseSensitive(json, "t");
     cJSON *ipv6lpg_item = cJSON_GetObjectItemCaseSensitive(json, "l");
 
+
+
     if (cJSON_IsString(ipv6temp_item) && cJSON_IsString(ipv6lpg_item)) {
-        strncpy(ipv6temp, ipv6temp_item->valuestring, sizeof(ipv6temp) - 1);
-        strncpy(ipv6lpg, ipv6lpg_item->valuestring, sizeof(ipv6lpg) - 1);
+        char full_ipv6temp[50];
+        char full_ipv6lpg[50];
+        snprintf(full_ipv6temp, sizeof(full_ipv6temp), "fd00:0:0:0:%s", ipv6temp_item->valuestring);
+        snprintf(full_ipv6lpg, sizeof(full_ipv6lpg), "fd00:0:0:0:%s", ipv6lpg_item->valuestring);
+
+        strncpy(ipv6temp, full_ipv6temp, sizeof(ipv6temp) - 1);
         ipv6temp[sizeof(ipv6temp) - 1] = '\0';
+
+        strncpy(ipv6lpg, full_ipv6lpg, sizeof(ipv6lpg) - 1);
         ipv6lpg[sizeof(ipv6lpg) - 1] = '\0';
 
         printf("Registered IPv6temp: %s\n", ipv6temp);
@@ -165,6 +169,7 @@ PROCESS_THREAD(coap_client_process, ev, data) {
     static coap_message_t request[1];
     static struct etimer registration_timer;
     static struct etimer main_timer;
+    static struct etimer red_timer;
 
     coap_endpoint_parse(SERVER_EP_JAVA, strlen(SERVER_EP_JAVA), &server_ep_java);
 
@@ -184,6 +189,18 @@ PROCESS_THREAD(coap_client_process, ev, data) {
     }
 
     if (registered) {
+
+        if(lpgValue==3)
+        {
+            leds_toggle(LEDS_RED);
+        }
+        if(etimer_expired(&red_timer))
+        {
+            leds_toggle(LEDS_RED);
+            etimer_reset(&red_timer);
+        }
+
+
         static coap_endpoint_t server_ep_temp;
         static coap_endpoint_t server_ep_lpg;
 

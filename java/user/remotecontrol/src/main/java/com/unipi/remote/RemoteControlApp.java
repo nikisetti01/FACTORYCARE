@@ -80,32 +80,37 @@ public class RemoteControlApp {
 
                 case 2:
                     // show status of actuators
-                    System.out.print("Enter the name of the actuator to check: ");
-                    String actuatorName = scanner.nextLine();
-                    System.out.println("Actuator: " + actuatorName);
-                    List<PairNameIp> ipsToContact = db.getIPs("actuator");
+                    Boolean checkDevice0 = false;
+                    String nodeName0 = null;
+                    String filter = null;
 
-                    String ipcont = null;
+                    while(!checkDevice0){
+                        System.out.print("Enter the name of the node to turn off: ");
+                        nodeName0 = scanner.nextLine();
+                        //checking of the device is a valid one
+                        if (nodeName0.equals("actuator") || nodeName0.equals("sprinkler")) {
+                            checkDevice0 = true;
+                            filter="actuator";
 
-                    for (PairNameIp pair : ipsToContact) {
-                        if(pair.name.equals(actuatorName))
+                        }else if(nodeName0.equals("lpgsensor") || nodeName0.equals("thermometer"))
                         {
-                            ipcont = pair.ip;
+                            checkDevice0 = true;
+                            filter="sensor";
+                        }
+                        else{
+                            System.out.println("Invalid device name");
+                        }
+                        
+                        if(db.getIPs(filter)==null)
+                        {
+                            System.out.println(filter + "might be not working or inactive\n");
+                        }else
+                        {
+                            System.out.println(filter + " active and working properly\n");
                         }
                     }
-                    if(ipcont == null)
-                    {
-                        System.out.println("No actuator found");
-                        break;
-                    }
-                    CoapClient client3 = new CoapClient("coap://[" + ipcont + "]:5683");
-                    boolean response3 = client3.ping();
 
-                    if (response3) {
-                        System.out.println("Server is up");
-                    } else {
-                        System.out.println("Server is down or not responding");
-                    }
+                    
                     break;
 
 
@@ -173,12 +178,12 @@ public class RemoteControlApp {
                             ipcont2 = pair.ip;
                         }
                     }
-                    CoapClient client4 = new CoapClient("coap://[" +'f'+ ipcont2 + "]/shutdown");
-                    System.out.println("RICHIEDO SHUTDOWN A coap://[" +'f'+ ipcont2 + "]/shutdown");
+                    CoapClient client4 = new CoapClient("coap://[" + 'f' + ipcont2 + "]/shutdown");
+                    System.out.println("RICHIEDO SHUTDOWN A coap://[" +'f' +ipcont2 + "]/shutdown");
                     CoapResponse response4 = client4.get();
 
                     if (response4 != null) {
-                        System.out.println(nodeName + " is shutted");
+                        System.out.println(nodeName + " is shutted\n");
                         //remove from ipv6_addresses the device ip
                         db.removeIp(ipcont2);
                     } else {
