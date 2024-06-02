@@ -44,6 +44,8 @@ void write_samples() {
         samples[sample_count].timeid = sample_count;
         samples[sample_count].temperature = random_rand() % 30;
         samples[sample_count].humidity = random_rand() % 100;
+        printf("SAMPLES %f\n",samples[sample_count].temperature);
+        printf("SAMPLES %f\n", samples[sample_count].humidity);
         sample_count++;
     } else {
         LOG_WARN("Sample array is full\n");
@@ -150,7 +152,7 @@ PROCESS_THREAD(thermometer_process, ev, data)
         leds_off(LEDS_RED);
         leds_single_off(LEDS_YELLOW);
         write_samples();
-        printf(" a sample %f \n", samples[0].temperature);
+        printf(" a sample %f \n", samples[1].temperature);
         printf("Activate server term\n");
         //LOG_INFO("Starting Erbium Example Server\n");
         
@@ -183,7 +185,7 @@ PROCESS_THREAD(thermometer_process, ev, data)
             }
             if (etimer_expired(&prediction_timer)) {
                 res_predict_temp.trigger();
-                delete_samples();
+                //delete_samples();
                 write_samples();
                 etimer_reset(&prediction_timer);
             }

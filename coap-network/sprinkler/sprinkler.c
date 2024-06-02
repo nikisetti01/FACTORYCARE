@@ -60,6 +60,8 @@ float update_water_production_temperature(float water, float last_temperature, f
     else
         diff = next_temperature - last_temperature;
     water += diff * k_temp;
+    if(water<0)
+        water = water*-1;
     return water;
 }
 
@@ -210,8 +212,8 @@ PROCESS_THREAD(coap_client_process, ev, data) {
     }
 
     if (registered == 1) {
-        char addr_temp[100] = "coap://[fd00:0:0:0:";
-        char addr_lpg[100] = "coap://[fd00:0:0:0:";
+        char addr_temp[100] = "coap://[";
+        char addr_lpg[100] = "coap://[";
         strcat(addr_temp, ipv6temp);
         strcat(addr_temp, "]:5683");
         strcat(addr_lpg, ipv6lpg);

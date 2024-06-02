@@ -38,12 +38,13 @@ static void res_get_handler(coap_message_t *request, coap_message_t *response, u
 
     // Usa le variabili globali per ottenere temperatura ed umidità
     printf("count %d\n", count);
-    printf("new_temperature %f\n", new_temperature);
-    printf("new_humidity %f\n", new_humidity);
 
     // leggi la temperatura e l'umidità dalla variabile globale sensors e mettile in new_temperature e new_humidity con count corrispettivo
     new_temperature = samples[count].temperature;
     new_humidity = samples[count].humidity;
+
+    printf("new_temperature %f\n", new_temperature);
+    printf("new_humidity %f\n", new_humidity);
 
     // Crea un json poi da mandare come richiesta coap
     cJSON *root = cJSON_CreateObject();

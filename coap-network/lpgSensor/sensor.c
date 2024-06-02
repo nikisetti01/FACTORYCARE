@@ -181,7 +181,7 @@ while(ev != button_hal_press_event || pressed==0) {
 
 
       PROCESS_WAIT_EVENT();
-       if(sample.co>-1 || shutdown==1){
+       if(sample.co==-1 || shutdown==1){
                 shutdown=1;
                 printf("Shutdown incremented\n");
           
