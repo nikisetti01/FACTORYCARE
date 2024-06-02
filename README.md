@@ -1,105 +1,31 @@
-Industrial IoT Application for Hazard Detection - Industry 4.0
-Overview
+FactoryCare
+Lorenzo Menchini, Niccolò Settimelli
+A.A. 2023/2024
+Project Overview
+Introduction
 
-This repository contains an example Industrial IoT (IIoT) application designed for Industry 4.0. The application aims to detect hazardous zones using sensors and actuators, providing real-time monitoring and control capabilities. The system utilizes Contiki OS, the CoAP protocol, and incorporates machine learning models for predictive analytics.
-Features
+FactoryCare addresses the increasing rate of fatalities in confined spaces in Italy, often caused by toxic gas inhalation or high temperatures. From 2005 to 2018, there were 37 incidents, with 66.7% involving the inhalation of asphyxiating gases, leading to 62 worker deaths. In 2024, 20% of workplace fatalities occur in these environments, with a mortality rate of about 2.7 deaths per incident. To combat this, FactoryCare uses IoT technologies to predict and detect hazardous situations, classify them, and directly alert workers. The primary goal is to prevent accidents through predictive detection and immediate intervention.
+Application Logic
 
-    Sensors:
-        Thermometer: Measures the temperature.
-        Air Quality Detector: Monitors air quality levels.
+FactoryCare is centered around sensor servers that sample various environmental parameters. Each sensor has an embedded machine learning model. Thermometers predict future temperatures, while LPG sensors classify air risk levels. These predictions are sent to actuators, which respond according to the detected risk level, categorized as Low Risk (LR), Moderate Risk (MR), or Critical Risk (CR). The system ensures prompt responses to prevent harmful incidents for workers.
+Architecture
 
-    Actuators:
-        Ventilation System: Activates to regulate air quality.
-        Sprinkler System: Activates in response to high temperature readings.
+The device network consists of a CoAP network using NRF52849 dongles for real sensors. Sensors and actuators communicate with each other and the external environment through a border router. Initially, sensors and actuators register dynamically with the Java Cloud Application, which monitors data and stores it in a MySQL database. Users interact through a user interface to observe devices and communicate directly with actuators, providing insights into recent risk moments and allowing manual adjustments.
+Machine Learning Models
 
-    Protocols:
-        Contiki OS: An open-source operating system for the Internet of Things.
-        CoAP Protocol: Used for efficient communication between sensors and actuators.
+FactoryCare incorporates TensorFlow models adapted to C using the emlearn library. The temperature prediction model uses historical temperature and humidity data to predict future temperatures within the thermometer sensor. For air danger classification, the LPG sensor classifies risk levels based on various environmental factors.
+CoAP Network
 
-    Machine Learning:
-        Integrated ML models for predicting hazardous temperature levels and critical air quality.
-        Utilizes emlearn for lightweight, embedded machine learning.
+The CoAP network consists of client/server sensors and actuators. Sensors act as internal servers, offering resources observable by both actuators and the Java Cloud Application. Actuators act as clients to sensors and provide externally modifiable resources upon request from the User Application.
+Cloud Application and Database
 
-    Database:
-        MySQL: Stores sensor data and system logs.
+The Cloud Application manages sensor and actuator registrations and monitors sensor data, storing it in a MySQL database. During the registration phase, sensors send a JSON packet with their details to the Cloud Application. Once registered, the application observes sensor data and inserts it into the database.
+Remote User Application
 
-    Applications:
-        Java Monitoring Application: Monitors and logs sensor data in real-time.
-        User Application: Provides an interface for active system monitoring and control.
+The Remote User Application allows monitoring of device status and direct communication with actuators via COAP GET and POST requests. Users can set temperature thresholds, check actuator status, get the number of danger events, and turn off nodes.
+Data Encapsulation and Representation
 
-System Architecture
+COAP message exchanges use simple PLAIN TEXT payloads for straightforward communication. During registration and monitoring phases, data is encapsulated in JSON format. The communication model follows the SenML object model for consistent and accurate data representation.
+Grafana Integration
 
-    Sensor Nodes: Collect environmental data (temperature, air quality) and predict potential hazards using embedded ML models.
-    Actuator Nodes: Respond to hazardous conditions by activating the ventilation and sprinkler systems.
-    Communication Layer: Uses Contiki OS and CoAP protocol to facilitate communication between sensor nodes, actuator nodes, and the central server.
-    Central Server: Runs the Java monitoring application, logs data into the MySQL database, and provides data to the User Application for active monitoring.
-    User Interface: Displays real-time data and system status, allows users to manually control actuators.
-
-Installation
-Prerequisites
-
-    Contiki OS
-    Java Development Kit (JDK)
-    MySQL Server
-    Maven (for Java application)
-    emlearn (for ML models)
-
-Setup
-
-    Clone the Repository:
-
-    sh
-
-git clone https://github.com/yourusername/industrial-iot-application.git
-cd industrial-iot-application
-
-Setup Contiki OS:
-
-    Follow the instructions on the Contiki OS website to set up the development environment.
-
-Deploy Sensor and Actuator Code:
-
-    Navigate to the contiki_code directory and compile the sensor and actuator code.
-    Upload the compiled code to the respective sensor and actuator nodes.
-
-Configure MySQL Database:
-
-    Install MySQL Server and create a database:
-
-    sql
-
-CREATE DATABASE iot_industry4;
-
-Import the provided schema:
-
-sh
-
-    mysql -u username -p iot_industry4 < schema.sql
-
-Build and Run Java Monitoring Application:
-
-    Navigate to the java_monitoring_app directory.
-    Build the application using Maven:
-
-    sh
-
-mvn clean install
-
-Run the application:
-
-sh
-
-        java -jar target/monitoring-app.jar
-
-    Start User Application:
-        Navigate to the user_application directory.
-        Follow the instructions in the README to set up and run the user interface.
-
-Usage
-
-    Monitoring:
-        Launch the Java Monitoring Application to start collecting and logging sensor data.
-        Access the User Application via your web browser to view real-time data and system status.
-
-    Control:
-        Use the User Application to manually activate or deactivate the ventilation and sprinkler systems.
+FactoryCare integrates with Grafana for real-time monitoring and visualization of sensor data, providing an intuitive interface for users to analyze environmental conditions and system performance.
