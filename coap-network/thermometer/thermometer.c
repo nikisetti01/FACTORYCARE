@@ -130,7 +130,7 @@ PROCESS_THREAD(thermometer_process, ev, data)
             cJSON_Delete(root);
             PROCESS_EXIT();
         }
-        printf("Payload: %s, Length: %o\n", payload, strlen(payload));
+        printf("Payload: %s, Length: %lo\n", payload, strlen(payload));
         coap_set_payload(request, (uint8_t *)payload, strlen(payload));
         
 

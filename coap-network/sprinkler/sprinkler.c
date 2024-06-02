@@ -74,10 +74,11 @@ void registration_handler(coap_message_t* response) {
         LOG_ERR("Request timed out\n");
         return;
     }
-
+  
     int len = coap_get_payload(response, &chunk);
     char payload[len + 1];
-    memcpy(payload, chunk, len);
+  
+    strncpy(payload, (char *)chunk, len);
     payload[len] = '\0';  // Ensure null-terminated string
     printf("payload code  : %s \n", payload);
 
@@ -97,21 +98,21 @@ void registration_handler(coap_message_t* response) {
         // Extract the IPv6 addresses
         cJSON *ipv6temp_item_test = cJSON_GetObjectItemCaseSensitive(json, "t");
         cJSON *ipv6lpg_item_test = cJSON_GetObjectItemCaseSensitive(json, "l");
-        cJSON *ipv6temp_item = NULL;
-        cJSON *ipv6lpg_item = NULL;
+        char ipv6temp_item [50];
+        char ipv6lpg_item[50];
 
         if (cJSON_IsString(ipv6temp_item_test) || cJSON_IsString(ipv6lpg_item_test)) {
             if (cJSON_IsString(ipv6temp_item_test))
-                ipv6temp_item = cJSON_GetObjectItemCaseSensitive(json, "t");
+               snprintf(ipv6temp_item, sizeof(ipv6temp_item), "fd00:0:0:0:%s", ipv6temp_item_test->valuestring);
             if (cJSON_IsString(ipv6lpg_item_test))
-                ipv6lpg_item = cJSON_GetObjectItemCaseSensitive(json, "l");
+                snprintf(ipv6lpg_item, sizeof(ipv6lpg_item), "fd00:0:0:0:%s", ipv6lpg_item_test->valuestring);
             if (cJSON_IsString(ipv6temp_item_test) && cJSON_IsString(ipv6lpg_item_test))
                 registered = 1;
             else
                 printf("waiting for all the sensors\n");
 
-            strncpy(ipv6temp, ipv6temp_item->valuestring, sizeof(ipv6temp) - 1);
-            strncpy(ipv6lpg, ipv6lpg_item->valuestring, sizeof(ipv6lpg) - 1);
+            strncpy(ipv6temp, ipv6temp_item, sizeof(ipv6temp) - 1);
+            strncpy(ipv6lpg, ipv6lpg_item, sizeof(ipv6lpg) - 1);
 
             // Ensure null termination
             ipv6temp[sizeof(ipv6temp) - 1] = '\0';
