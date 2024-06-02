@@ -130,7 +130,6 @@ PROCESS_THREAD(thermometer_process, ev, data)
             cJSON_Delete(root);
             PROCESS_EXIT();
         }
-        printf("Payload: %s, Length: %lo\n", payload, strlen(payload));
         coap_set_payload(request, (uint8_t *)payload, strlen(payload));
         
 
@@ -167,10 +166,10 @@ PROCESS_THREAD(thermometer_process, ev, data)
         etimer_set(&monitoring_timer, CLOCK_SECOND * 2);
    
 
-        while (shutdown!=1) {
+        while (1) {
 
             PROCESS_YIELD();
-            if(samples[0].humidity==-1){
+            if(samples[0].humidity==-1 || shutdown==1){
                 shutdown=1;
                 printf("Shutdown incremented\n");
             

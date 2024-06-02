@@ -14,7 +14,7 @@ build/cooja/obj/node-id.o: ../../../../os/sys/node-id.c \
  ../../../../arch/platform/cooja/./lib/simEnvChange.h \
  ../../../../arch/platform/cooja/./sys/cooja_mt.h ../../../../os/sys/pt.h \
  ../../../../os/sys/clock.h ../../../../os/sys/node-id.h \
- ../../../../os/net/linkaddr.h ../../../../os/net/../contiki.h
+ ../../../../os/net/linkaddr.h
 ../../../../os/net/app-layer/coap/module-macros.h:
 ../../../../os/contiki.h:
 ../../../../arch/platform/cooja/./contiki-conf.h:
@@ -41,4 +41,3 @@ project-conf.h:
 ../../../../os/sys/clock.h:
 ../../../../os/sys/node-id.h:
 ../../../../os/net/linkaddr.h:
-../../../../os/net/../contiki.h:

@@ -58,8 +58,6 @@ void write_sample() {
     cJSON_AddItemToArray(ss,cJSON_CreateBool(sample.light));
     cJSON_AddItemToArray(ss,cJSON_CreateNumber(3)); //prediction
     cJSON_AddItemToObject(root,"ss",ss);
-    char *json = cJSON_Print(root);
-    printf("length %lo\n", strlen(json));
 
 }
 coap_message_t request[1];  
@@ -146,7 +144,6 @@ while(ev != button_hal_press_event || pressed==0) {
       LOG_ERR("Failed to print JSON object\n");
       PROCESS_EXIT();
     }
-    printf("Payload: %s, Length: %lu\n", payload, strlen(payload));
     coap_set_payload(request, (uint8_t *)payload, strlen(payload));
     //printf("il payload %s  lenght  %ld \n",payload, strlen(payload));
 
@@ -155,7 +152,6 @@ while(ev != button_hal_press_event || pressed==0) {
 		//coap_set_payload(request, (uint8_t *)"sensor", sizeof("sensor") - 1);
 	
     printf("Tentativo di registrazione a %s\n",SERVER_EP_JAVA);
-    printf("il payload %s  lenght  %lu \n",payload, strlen(payload));
     coap_set_payload(request, (uint8_t *)payload, strlen(payload));
     printf("Sending the registration request\n");
 		COAP_BLOCKING_REQUEST(&server_ep_java, request, client_chunk_handler);
@@ -181,11 +177,11 @@ while(ev != button_hal_press_event || pressed==0) {
 
 
     etimer_set(&timer, CLOCK_SECOND * 10);
-    while(shutdown!=1) {
+    while(1) {
 
 
       PROCESS_WAIT_EVENT();
-       if(sample.co>-1){
+       if(sample.co>-1 || shutdown==1){
                 shutdown=1;
                 printf("Shutdown incremented\n");
           

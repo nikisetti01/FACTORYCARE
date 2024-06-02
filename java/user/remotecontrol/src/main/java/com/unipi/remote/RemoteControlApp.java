@@ -33,7 +33,7 @@ public class RemoteControlApp {
             System.out.println("4. Turn off a node"); //DONE 
             System.out.println("5. exit"); //DONE
             System.out.print("\n chose and option: ");
-
+        try{
             int choice = scanner.nextInt();
             scanner.nextLine();
 
@@ -85,7 +85,7 @@ public class RemoteControlApp {
                     String filter = null;
 
                     while(!checkDevice0){
-                        System.out.print("Enter the name of the node to turn off: ");
+                        System.out.print("insert the node to check: ");
                         nodeName0 = scanner.nextLine();
                         //checking of the device is a valid one
                         if (nodeName0.equals("actuator") || nodeName0.equals("sprinkler")) {
@@ -165,9 +165,7 @@ public class RemoteControlApp {
                     if(nodeName.equals("actuator") || nodeName.equals("sprinkler"))
                     {
                         filterDb = "actuator";
-                    }
-                    //taking the ip of the node
-                    List<PairNameIp> ipsToContact2 = db.getIPs(filterDb);
+                        List<PairNameIp> ipsToContact2 = db.getIPs(filterDb);
 
                     String ipcont2 = null;
 
@@ -189,6 +187,32 @@ public class RemoteControlApp {
                     } else {
                         System.out.println("Server is down or not responding");
                     }
+                    }else if(nodeName.equals("lpgsensor") || nodeName.equals("thermometer"))
+                    {
+                        List<PairNameIp> ipsToContact = db.getIPs(filterDb);
+                        String ipcont = null;
+
+                        for (PairNameIp pair : ipsToContact) {
+                            System.out.println("name e ip: " + pair.name + " " + pair.ip);
+                            if(pair.name.equals(nodeName))
+                            {
+                                ipcont = pair.ip;
+                            }
+                        }
+                        CoapClient client3 = new CoapClient("coap://["+ ipcont + "]/shutdown");
+                        System.out.println("RICHIEDO SHUTDOWN A coap://["+ipcont + "]/shutdown");
+                        CoapResponse response3 = client3.get();
+
+                        if (response3 != null) {
+                            System.out.println(nodeName + " is shutted\n");
+                            //remove from ipv6_addresses the device ip
+                            db.removeIp(ipcont);
+                        } else {
+                            System.out.println("Server is down or not responding");
+                        }
+                    }
+                    //taking the ip of the node
+                    
                     break;
 
                 case 5:
@@ -197,9 +221,14 @@ public class RemoteControlApp {
                     System.exit(0);
                     break;
                     
-                default:
-                    System.out.println("Invalid choice");
+            default:
+                System.out.println("Invalid choice");
             }
+        }catch(Exception e)
+        {
+            System.out.println("Invalid input");
+            scanner.nextLine();
+        }
         }
     }
 }
