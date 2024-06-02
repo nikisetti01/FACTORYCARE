@@ -47,6 +47,7 @@ static coap_observee_t *obs_temp = NULL;
 static coap_observee_t *obs_lpg = NULL;
 static int lpgValue = 0;
 static int tempValue = 0;
+static int shutdown=0;
 
 void response_handler_LPG(coap_message_t *response) {
     if(response==NULL) {
@@ -204,8 +205,8 @@ PROCESS_THREAD(coap_client_process, ev, data) {
         static coap_endpoint_t server_ep_temp;
         static coap_endpoint_t server_ep_lpg;
 
-        char addr_temp[50] = "coap://[";
-        char addr_lpg[50] = "coap://[";
+        char addr_temp[100] = "coap://[";
+        char addr_lpg[100] = "coap://[";
         strcat(addr_temp, ipv6temp);
         strcat(addr_temp, "]:5683");
         strcat(addr_lpg, ipv6lpg);
@@ -221,13 +222,12 @@ PROCESS_THREAD(coap_client_process, ev, data) {
         obs_lpg=coap_obs_request_registration(&server_ep_lpg, service_url_lpg, handle_notification_lpg, NULL);
         coap_activate_resource(&res_tresh, "threshold");
         coap_activate_resource(&res_shutdown, "shutdown");
-        int shutdown=0;
 
         etimer_set(&main_timer, CLOCK_SECOND * 2);
         //shutdown=0;
-        while (shutdown!=1) {
+        while (1) {
             PROCESS_WAIT_EVENT();
-            if(temp_tresh==-1){
+            if(temp_tresh==-1 || shutdown==1){
                 shutdown=1;
                 printf("Shutdown incremented\n");
                 temp_tresh=25;
