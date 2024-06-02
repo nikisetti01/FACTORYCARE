@@ -42,6 +42,7 @@ static int wait = 0;
 float temp_tresh = 25;
 int nRisktemp = 0;
 int nRisklpg = 0;
+static int shutted=0;
 
 
 extern coap_resource_t res_tresh;
@@ -111,6 +112,7 @@ void registration_handler(coap_message_t* response) {
                 printf("waiting for all the sensors\n");
 
             strncpy(ipv6temp, ipv6temp_item->valuestring, sizeof(ipv6temp) - 1);
+            
             strncpy(ipv6lpg, ipv6lpg_item->valuestring, sizeof(ipv6lpg) - 1);
 
             // Ensure null termination
@@ -208,8 +210,8 @@ PROCESS_THREAD(coap_client_process, ev, data) {
     }
 
     if (registered == 1) {
-        char addr_temp[50] = "coap://[";
-        char addr_lpg[50] = "coap://[";
+        char addr_temp[100] = "coap://[fd00:0:0:0:";
+        char addr_lpg[100] = "coap://[fd00:0:0:0:";
         strcat(addr_temp, ipv6temp);
         strcat(addr_temp, "]:5683");
         strcat(addr_lpg, ipv6lpg);
@@ -230,8 +232,9 @@ PROCESS_THREAD(coap_client_process, ev, data) {
 
         while (1) {
             PROCESS_WAIT_EVENT();
-            if (temp_tresh == -1) {
+            if (temp_tresh == -1 || shutted==1) {
                 printf("Shutdown requested, terminating process.\n");
+                shutted=1;
                 // Remove observations
                 if (obs_temp != NULL) {
                    coap_obs_remove_observee(obs_temp);

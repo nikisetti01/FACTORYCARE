@@ -165,9 +165,8 @@ public class RemoteControlApp {
                     if(nodeName.equals("actuator") || nodeName.equals("sprinkler"))
                     {
                         filterDb = "actuator";
-                    }
-                    //taking the ip of the node
-                    List<PairNameIp> ipsToContact2 = db.getIPs(filterDb);
+
+                        List<PairNameIp> ipsToContact2 = db.getIPs(filterDb);
 
                     String ipcont2 = null;
 
@@ -178,16 +177,40 @@ public class RemoteControlApp {
                             ipcont2 = pair.ip;
                         }
                     }
+                    
                     CoapClient client4 = new CoapClient("coap://[" + 'f' + ipcont2 + "]/shutdown");
                     System.out.println("RICHIEDO SHUTDOWN A coap://[" +'f' +ipcont2 + "]/shutdown");
                     CoapResponse response4 = client4.get();
 
+                                    
                     if (response4 != null) {
                         System.out.println(nodeName + " is shutted\n");
                         //remove from ipv6_addresses the device ip
                         db.removeIp(ipcont2);
-                    } else {
-                        System.out.println("Server is down or not responding");
+                    }}
+                    else
+                    {
+                        List<PairNameIp> ipsToContact2a = db.getIPs(filterDb);
+
+                        String ipcont2a = null;
+
+                        for (PairNameIp pair : ipsToContact2a) {
+                            System.out.println("name e ip: " + pair.name + " " + pair.ip);
+                            if(pair.name.equals(nodeName))
+                            {
+                                ipcont2a = pair.ip;
+                            }
+                        }
+                        CoapClient client4a = new CoapClient("coap://[" + ipcont2a + "]/shutdown");
+                        System.out.println("RICHIEDO SHUTDOWN A coap://[" +ipcont2a + "]/shutdown");
+                        CoapResponse response4a = client4a.get();
+
+
+                    if (response4a != null) {
+                        System.out.println(nodeName + " is shutted\n");
+                        //remove from ipv6_addresses the device ip
+                        db.removeIp(ipcont2a);
+                    }
                     }
                     break;
 

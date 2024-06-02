@@ -142,8 +142,8 @@ void registration_handler(coap_message_t *response) {
 
 
     if (cJSON_IsString(ipv6temp_item) && cJSON_IsString(ipv6lpg_item)) {
-        char full_ipv6temp[50];
-        char full_ipv6lpg[50];
+        char full_ipv6temp[100];
+        char full_ipv6lpg[100];
         snprintf(full_ipv6temp, sizeof(full_ipv6temp), "fd00:0:0:0:%s", ipv6temp_item->valuestring);
         snprintf(full_ipv6lpg, sizeof(full_ipv6lpg), "fd00:0:0:0:%s", ipv6lpg_item->valuestring);
 
@@ -204,8 +204,8 @@ PROCESS_THREAD(coap_client_process, ev, data) {
         static coap_endpoint_t server_ep_temp;
         static coap_endpoint_t server_ep_lpg;
 
-        char addr_temp[50] = "coap://[";
-        char addr_lpg[50] = "coap://[";
+        char addr_temp[100] = "coap://[";
+        char addr_lpg[100] = "coap://[";
         strcat(addr_temp, ipv6temp);
         strcat(addr_temp, "]:5683");
         strcat(addr_lpg, ipv6lpg);
@@ -227,11 +227,10 @@ PROCESS_THREAD(coap_client_process, ev, data) {
         //shutdown=0;
         while (shutdown!=1) {
             PROCESS_WAIT_EVENT();
-            if(temp_tresh==-1){
+            if(temp_tresh==-1 || shutdown==1){
                 shutdown=1;
                 printf("Shutdown incremented\n");
-                temp_tresh=25;
-                 if (obs_temp != NULL) {
+                if (obs_temp != NULL) {
                    coap_obs_remove_observee(obs_temp);
                 }
                 if (obs_lpg != NULL) {
